@@ -1,0 +1,64 @@
+.register-wrapper {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.register-container {
+  width: 300px;
+  background-color: wheat;
+  padding: 24px 32px;
+  border-radius: 2px;
+  font-family: "Roboto", sans-serif;
+  position: absolute;
+  top: calc(50% - 56px);
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  h1 {
+    text-align: center;
+    font-weight: 500;
+    font-size: 30px;
+    margin-bottom: 30px;
+  }
+
+  input {
+    width: 100%;
+  }
+
+  button {
+    margin: 16px 0;
+    background-color: #405de6;
+    color: white;
+    padding: 12px 0;
+    border: none;
+    border-radius: 5px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    width: 100%;
+
+    &:hover {
+      background-color: #5b51d8;
+    }
+  }
+}
+
+.register {
+  position: relative;
+
+  mat-progress-bar {
+    position: absolute;
+    left: -32px;
+    right: -32px;
+    top: -24px;
+    width: calc(100% + 64px);
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+  }
+}

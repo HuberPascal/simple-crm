@@ -1,0 +1,76 @@
+<div class="sign-in-wrapper">
+  <div class="sign-in-container">
+    <div class="sign-in">
+      <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+
+      <h1>Simple CRM</h1>
+
+      <form (submit)="login(email, password)" class="sign-in-section">
+        <mat-form-field
+          appearance="outline"
+          class="email-and-password-container"
+        >
+          <mat-label>Email</mat-label>
+          <input
+            type="email"
+            [(ngModel)]="email"
+            name="email"
+            placeholder="Email"
+            matInput
+            required
+          />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Password</mat-label>
+
+          <input
+            matInput
+            type="password"
+            [(ngModel)]="password"
+            name="password"
+            placeholder="Password"
+            required
+          />
+        </mat-form-field>
+
+        <div *ngIf="errorMessage" class="error-message">
+          Login failed. Please check your credentials and try again.
+        </div>
+
+        <button type="submit" class="log-in-btn">Log In</button>
+      </form>
+
+      <div class="other-sign-in-methods">
+        <div class="gray-line"></div>
+        <span>OR</span>
+        <div class="gray-line"></div>
+      </div>
+
+      <div class="google-sign-in-container">
+        <img
+          (click)="googleLogin()"
+          class="google-sign-in"
+          src="../../assets/img/google-sign-in.png"
+          alt="Google Icon"
+        />
+      </div>
+
+      <div class="guest-login">
+        <button (click)="guestLogin()">Log in as guest</button>
+      </div>
+
+      <div class="forgot-password-container">
+        <span routerLink="/forgot-password">Forgot password?</span>
+      </div>
+
+      <div class="separator"></div>
+
+      <div class="create-account-container">
+        <span
+          >Don't have an account? <a routerLink="/register">Sign up</a></span
+        >
+      </div>
+    </div>
+  </div>
+</div>

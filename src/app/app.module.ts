@@ -21,17 +21,22 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFireModule } from '@angular/fire/compat';
-// import { environment } from '../environments/environments';
+import { environment } from '../environments/environments';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 // import { getDatabase, provideDatabase } from '@angular/fire/database';
+import { getAuth, provideAuth } from '@angular/fire/auth';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatCardModule } from '@angular/material/card';
 import { UserDetailComponent } from './user-detail/user-detail.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { DialogEditAddressComponent } from './dialog-edit-address/dialog-edit-address.component';
 import { DialogEditUserComponent } from './dialog-edit-user/dialog-edit-user.component';
+import { RegisterComponent } from './register/register.component';
+import { SignInComponent } from './sign-in/sign-in.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +47,9 @@ import { DialogEditUserComponent } from './dialog-edit-user/dialog-edit-user.com
     UserDetailComponent,
     DialogEditAddressComponent,
     DialogEditUserComponent,
+    RegisterComponent,
+    SignInComponent,
+    ForgotPasswordComponent,
   ],
   imports: [
     BrowserModule,
@@ -61,7 +69,9 @@ import { DialogEditUserComponent } from './dialog-edit-user/dialog-edit-user.com
     MatProgressBarModule,
     MatCardModule,
     MatMenuModule,
-    AngularFireModule,
+    // AngularFireModule,
+    // provideFirebaseApp(() => initializeApp(environment.firebase)),
+
     provideFirebaseApp(() =>
       initializeApp({
         projectId: 'simple-crm-4cea6',
@@ -73,6 +83,8 @@ import { DialogEditUserComponent } from './dialog-edit-user/dialog-edit-user.com
       })
     ),
     provideFirestore(() => getFirestore()),
+    provideAuth(() => getAuth()),
+    AngularFireAuthModule,
     // provideDatabase(() => getDatabase()),
   ],
   providers: [provideClientHydration()],

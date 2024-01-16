@@ -7,7 +7,7 @@
 }
 
 .sidenav {
-  width: 300px;
+  width: 250px;
 }
 
 .logo-container {
@@ -23,6 +23,13 @@ mat-toolbar,
 mat-toolbar-row {
   min-height: 56px;
   height: 56px;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: calc(100% - 57px);
 }
 
 .menu-items {
@@ -50,6 +57,10 @@ mat-toolbar-row {
       outline: none;
     }
   }
+}
+
+.sidebar-bottom-section {
+  margin-bottom: 100px;
 }
 
 .router-container {

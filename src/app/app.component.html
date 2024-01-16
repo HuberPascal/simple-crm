@@ -1,11 +1,22 @@
 <mat-drawer-container class="mat-drawer-container" autosize>
-  <mat-drawer #drawer class="sidenav" [opened]="true" mode="side">
+  <mat-drawer #drawer class="sidenav" [opened]="isDrawerOpened" mode="side">
     <div class="logo-container">Platz für Logo</div>
 
-    <ul class="menu-items">
-      <li routerLink="/"><mat-icon>fact_check</mat-icon>Dashboard</li>
-      <li routerLink="/user"><mat-icon>perm_identity</mat-icon>User</li>
-    </ul>
+    <div class="sidebar">
+      <ul class="menu-items">
+        <li routerLink="/dashboard">
+          <mat-icon>fact_check</mat-icon>Dashboard
+        </li>
+        <li routerLink="/user"><mat-icon>perm_identity</mat-icon>User</li>
+      </ul>
+
+      <div class="sidebar-bottom-section">
+        <ul class="menu-items">
+          <li (click)="logout()">Logout</li>
+          <li routerLink="/">Imprint</li>
+        </ul>
+      </div>
+    </div>
   </mat-drawer>
 
   <div class="example-sidenav-content">
