@@ -16,6 +16,7 @@
   <div class="user-details">
     <h2>{{ user.firstName }} {{ user.lastName }}</h2>
     <span>{{ user.email }}</span>
+    <span>{{ user.birthDate }}</span>
   </div>
 </mat-card>
 
@@ -40,4 +41,33 @@
     {{ user.street }} <br />
     {{ user.zipCode }} {{ user.city }}
   </mat-card-content>
+</mat-card>
+
+<mat-card class="mt-32">
+  <table class="detail-table">
+    <tr>
+      <th>Order Date</th>
+      <th>Amount Sold</th>
+      <th>Product Name</th>
+      <th>Order Status</th>
+      <th>Price per Unit</th>
+      <th>Total Value</th>
+    </tr>
+    <tr *ngFor="let order of allOrders">
+      <td>{{ order.orderDate }}</td>
+      <td>{{ order.amount }}</td>
+      <td>{{ order.product }}</td>
+      <td>{{ order.orderStatus }}</td>
+      <td>{{ order.price }} CHF</td>
+      <td>{{ order.amount * order.price }} CHF</td>
+    </tr>
+    <tr>
+      <td colspan="5"></td>
+      <!-- Leere Zellen über mehrere Spalten -->
+      <td>
+        <!-- Gesamtsumme berechnen -->
+        <strong>Total: {{ calculateTotal() }} CHF</strong>
+      </td>
+    </tr>
+  </table>
 </mat-card>

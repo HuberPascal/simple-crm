@@ -13,7 +13,11 @@ const routes: Routes = [
   { path: 'sign-in', component: SignInComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'user', component: UserComponent, canActivate: [authGuard] },
-  { path: 'user/:id', component: UserDetailComponent },
+  {
+    path: 'user/:id',
+    component: UserDetailComponent,
+    canActivate: [authGuard],
+  },
   { path: 'register', component: RegisterComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
 ];

@@ -32,3 +32,49 @@
   right: 0;
   top: 0;
 }
+
+.detail-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  tr {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    &:first-child {
+      cursor: unset;
+      &:hover {
+        background-color: unset;
+      }
+    }
+
+    &:last-child {
+      cursor: unset;
+      &:hover {
+        background-color: unset;
+      }
+    }
+
+    &:last-child {
+      border-bottom: 0;
+    }
+    cursor: pointer;
+
+    td {
+      height: 48px;
+
+      &:first-child {
+        padding-left: 16px;
+      }
+    }
+
+    th {
+      text-align: start;
+      &:first-child {
+        padding-left: 16px;
+      }
+    }
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+  }
+}
