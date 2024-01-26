@@ -78,3 +78,23 @@
     }
   }
 }
+
+.user-detail-container {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+}
+
+mat-card {
+  width: 100%;
+  height: auto;
+
+  h2 {
+    text-align: center;
+  }
+
+  p {
+    display: flex;
+    justify-content: space-between;
+  }
+}

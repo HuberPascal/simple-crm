@@ -1,16 +1,7 @@
 <mat-card class="user-detail-header">
-  <button
-    [matMenuTriggerFor]="userMenu"
-    class="pin-right-upper-corner"
-    mat-icon-button
-    aria-label="Example icon button with a vertical three dot icon"
-  >
-    <mat-icon>more_vert</mat-icon>
+  <button class="pin-right-upper-corner" mat-icon-button (click)="deleteUser()">
+    <mat-icon>delete</mat-icon>
   </button>
-
-  <mat-menu #userMenu="matMenu">
-    <button mat-menu-item (click)="editUserDetail()">Edit</button>
-  </mat-menu>
 
   <img src="./assets/img/profile-img.png" alt="" />
   <div class="user-details">
@@ -33,15 +24,62 @@
   <mat-menu #addressMenu="matMenu">
     <button mat-menu-item (click)="editMenu()">Edit</button>
   </mat-menu>
-
-  <mat-card-header>
-    <mat-card-title>Address</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    {{ user.street }} <br />
-    {{ user.zipCode }} {{ user.city }}
-  </mat-card-content>
 </mat-card>
+
+<div class="user-detail-container">
+  <mat-card>
+    <button
+      [matMenuTriggerFor]="userMenu"
+      class="pin-right-upper-corner"
+      mat-icon-button
+      aria-label="Example icon button with a vertical three dot icon"
+    >
+      <mat-icon>more_vert</mat-icon>
+    </button>
+
+    <mat-menu #userMenu="matMenu">
+      <button mat-menu-item (click)="editUserDetail()">Edit</button>
+    </mat-menu>
+
+    <mat-card-content>
+      <h2>About user</h2>
+      <p>
+        <span>First name:</span>
+        <span>{{ user.firstName }}</span>
+      </p>
+      <p>
+        <span> Last name: </span>
+        <span>{{ user.lastName }}</span>
+      </p>
+      <p>
+        <span>Birthdate:</span>
+        <span>{{ user.birthDate }}</span>
+      </p>
+      <p>
+        <span>E-Mail:</span>
+        <span>{{ user.email }}</span>
+      </p>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-content>
+      <h2>Address</h2>
+      <p>
+        <span>Street:</span>
+        <span>{{ user.street }}</span>
+      </p>
+      <p>
+        <span>Zip code:</span>
+        <span>{{ user.zipCode }}</span>
+      </p>
+      <p>
+        <span>City</span>
+        <span> {{ user.city }}</span>
+      </p>
+    </mat-card-content>
+  </mat-card>
+</div>
 
 <mat-card class="mt-32">
   <table class="detail-table">

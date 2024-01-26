@@ -12,9 +12,13 @@ import { collection, doc, onSnapshot } from 'firebase/firestore';
 })
 export class UserComponent {
   user = new User();
-  allUsers: any[] = [];
+  allUsers: any[] = []; // Ihre vollständigen Benutzerdaten
+  filteredUsers: any[] = []; // Gefilterte Benutzerdaten
+  selectedFilter: string = 'First Name'; // Standardmäßig nach 'First Name' filtern
 
-  constructor(public db: Firestore, public dialog: MatDialog) {}
+  constructor(public db: Firestore, public dialog: MatDialog) {
+    this.filteredUsers = this.allUsers;
+  }
 
   ngOnInit(): void {
     try {
@@ -31,6 +35,9 @@ export class UserComponent {
           };
         });
         console.log('Aktuelle Benutzerdaten:', this.allUsers);
+
+        // Hier rufen Sie filterUsers() auf, nachdem die Daten geladen wurden
+        this.filterUsers();
       });
     } catch (error) {
       console.error('Fehler beim Aktualisieren der Daten:', error);
@@ -55,5 +62,29 @@ export class UserComponent {
 
   openDialog() {
     this.dialog.open(DialogAddUserComponent);
+  }
+
+  // User Filtern
+  filterUsers() {
+    switch (this.selectedFilter) {
+      case 'First Name':
+        this.filteredUsers = this.allUsers.sort((a, b) =>
+          a.firstName.localeCompare(b.firstName)
+        );
+        break;
+      case 'Last Name':
+        this.filteredUsers = this.allUsers.sort((a, b) =>
+          a.lastName.localeCompare(b.lastName)
+        );
+        break;
+      case 'City':
+        this.filteredUsers = this.allUsers.sort((a, b) =>
+          a.city.localeCompare(b.city)
+        );
+        break;
+      default:
+        this.filteredUsers = this.allUsers;
+        break;
+    }
   }
 }

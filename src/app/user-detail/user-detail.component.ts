@@ -14,6 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogEditAddressComponent } from '../dialog-edit-address/dialog-edit-address.component';
 import { DialogEditUserComponent } from '../dialog-edit-user/dialog-edit-user.component';
 import { Order } from '../../models/order.class';
+import { DialogDeleteUserComponent } from '../dialog-delete-user/dialog-delete-user.component';
 
 @Component({
   selector: 'app-user-detail',
@@ -78,6 +79,11 @@ export class UserDetailComponent {
   editUserDetail() {
     const dialog = this.dialog.open(DialogEditUserComponent);
     dialog.componentInstance.user = new User(this.user.toJSON());
+    dialog.componentInstance.userId = this.userId;
+  }
+
+  deleteUser() {
+    const dialog = this.dialog.open(DialogDeleteUserComponent);
     dialog.componentInstance.userId = this.userId;
   }
 

@@ -11,7 +11,6 @@ import { doc, updateDoc } from 'firebase/firestore';
 })
 export class DialogEditUserComponent {
   user: User = new User();
-  // userId: string | undefined;
   loading: boolean = false;
   userId: string | null = '';
   birthDate!: Date;

@@ -37,6 +37,7 @@ import { DialogEditUserComponent } from './dialog-edit-user/dialog-edit-user.com
 import { RegisterComponent } from './register/register.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { DialogDeleteUserComponent } from './dialog-delete-user/dialog-delete-user.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
     RegisterComponent,
     SignInComponent,
     ForgotPasswordComponent,
+    DialogDeleteUserComponent,
   ],
   imports: [
     BrowserModule,
