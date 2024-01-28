@@ -1,0 +1,9 @@
+<h1 mat-dialog-title>Delete {{ order.product }}?</h1>
+<div mat-dialog-content>
+  Are you sure you want to permanently delete
+  <b>{{ order.product }}</b> from the CRM system? This action cannot be undone.
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button mat-dialog-close (click)="deleteOrder()">Delete</button>
+</div>

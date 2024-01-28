@@ -1,7 +1,7 @@
 import { UserDetailComponent } from '../app/user-detail/user-detail.component';
 
 export class Order {
-  [x: string]: any;
+  // [x: string]: any;
   orderDate: Date | null; // Erlaubt sowohl Date-Objekte als auch null
   amount: number;
   product: string;

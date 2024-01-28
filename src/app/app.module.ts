@@ -39,6 +39,7 @@ import { SignInComponent } from './sign-in/sign-in.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { DialogDeleteUserComponent } from './dialog-delete-user/dialog-delete-user.component';
 import { DialogEditOrderComponent } from './dialog-edit-order/dialog-edit-order.component';
+import { DialogDeleteOrderComponent } from './dialog-delete-order/dialog-delete-order.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { DialogEditOrderComponent } from './dialog-edit-order/dialog-edit-order.
     ForgotPasswordComponent,
     DialogDeleteUserComponent,
     DialogEditOrderComponent,
+    DialogDeleteOrderComponent,
   ],
   imports: [
     BrowserModule,

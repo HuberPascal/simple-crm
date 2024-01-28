@@ -18,6 +18,7 @@ import { DialogEditUserComponent } from '../dialog-edit-user/dialog-edit-user.co
 import { Order } from '../../models/order.class';
 import { DialogDeleteUserComponent } from '../dialog-delete-user/dialog-delete-user.component';
 import { DialogEditOrderComponent } from '../dialog-edit-order/dialog-edit-order.component';
+import { DialogDeleteOrderComponent } from '../dialog-delete-order/dialog-delete-order.component';
 
 @Component({
   selector: 'app-user-detail',
@@ -105,6 +106,12 @@ export class UserDetailComponent {
     const dialog = this.dialog.open(DialogDeleteUserComponent);
     dialog.componentInstance.user = new User(this.user.toJSON());
     dialog.componentInstance.userId = this.userId;
+  }
+
+  deleteOrder(order: string) {
+    const dialog = this.dialog.open(DialogDeleteOrderComponent);
+
+    dialog.componentInstance.order = new Order(order);
   }
 
   // Bestellung für den Richtigen Benutzer laden
