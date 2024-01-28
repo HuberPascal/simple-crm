@@ -71,3 +71,14 @@ mat-toolbar-row {
   padding-right: 56px;
   padding-top: 16px;
 }
+
+.mat-toolbar {
+  width: 50px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}

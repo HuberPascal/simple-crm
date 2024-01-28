@@ -3,6 +3,7 @@ import { Firestore } from '@angular/fire/firestore';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { deleteDoc, doc } from 'firebase/firestore';
+import { User } from '../../models/user.class';
 
 @Component({
   selector: 'app-dialog-delete-user',
@@ -11,6 +12,7 @@ import { deleteDoc, doc } from 'firebase/firestore';
 })
 export class DialogDeleteUserComponent {
   userId: string | null = '';
+  user: User = new User();
 
   constructor(
     public dialogRef: MatDialogRef<DialogDeleteUserComponent>,

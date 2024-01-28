@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
 import {
+  QuerySnapshot,
   collection,
   doc,
+  getDoc,
   getDocs,
   onSnapshot,
   query,
@@ -15,6 +17,7 @@ import { DialogEditAddressComponent } from '../dialog-edit-address/dialog-edit-a
 import { DialogEditUserComponent } from '../dialog-edit-user/dialog-edit-user.component';
 import { Order } from '../../models/order.class';
 import { DialogDeleteUserComponent } from '../dialog-delete-user/dialog-delete-user.component';
+import { DialogEditOrderComponent } from '../dialog-edit-order/dialog-edit-order.component';
 
 @Component({
   selector: 'app-user-detail',
@@ -22,14 +25,16 @@ import { DialogDeleteUserComponent } from '../dialog-delete-user/dialog-delete-u
   styleUrl: './user-detail.component.scss',
 })
 export class UserDetailComponent {
+  orderData: any;
   static convertTimestampToDate(orderDate: any): Date | null {
     throw new Error('Method not implemented.');
   }
   userId: string | null = '';
-  orderId: string | null = '';
+  // orderId: string | null = '';
   user: User = new User();
   order: Order = new Order();
   allOrders: any[] = [];
+  filteredOrders: any;
 
   constructor(
     public db: Firestore,
@@ -46,6 +51,7 @@ export class UserDetailComponent {
       if (this.userId) {
         this.getUser(this.userId);
         this.getOrders(this.userId);
+        // this.sortOrders(); // Bestellunge der Reihe nach sortieren
       }
     });
   }
@@ -53,7 +59,7 @@ export class UserDetailComponent {
   // User anhand der ID speichern in new User
   getUser(userId: any) {
     onSnapshot(doc(this.db, 'users', userId), (doc) => {
-      console.log('ich rufe die daten ab', doc.data());
+      console.log('Abgerufene Daten', doc.data());
       if (doc.exists()) {
         const userData = doc.data();
         // userData.birthDate ist ein Firebase Timestamp
@@ -82,30 +88,26 @@ export class UserDetailComponent {
     dialog.componentInstance.userId = this.userId;
   }
 
-  deleteUser() {
-    const dialog = this.dialog.open(DialogDeleteUserComponent);
+  editUserAdress() {
+    const dialog = this.dialog.open(DialogEditAddressComponent);
+    dialog.componentInstance.user = new User(this.user.toJSON());
     dialog.componentInstance.userId = this.userId;
   }
 
-  // getOrders(userId: any) {
-  //   onSnapshot(doc(this.db, 'orders', userId), (doc) => {
-  //     console.log('ich rufe die daten ab', doc.data());
-  //     if (doc.exists()) {
-  //       // this.order = new Order(doc.data());
-  //       const orderData = doc.data();
+  async editOrder(order: string) {
+    const dialog = this.dialog.open(DialogEditOrderComponent);
 
-  //       if (orderData['orderDate']) {
-  //         const dateObj = this.convertTimestampToDate(orderData['orderDate']);
-  //         orderData['orderDate'] = this.formatDate(dateObj);
-  //       }
-  //       this.order = new Order(orderData);
-  //     } else {
-  //       console.log('Keine Daten gefunden!');
-  //     }
-  //     console.log('Abgerufener Orders', this.order);
-  //   });
-  // }
+    // Die Richtige Order aufrufen --> orderId
+    dialog.componentInstance.order = new Order(order);
+  }
 
+  deleteUser() {
+    const dialog = this.dialog.open(DialogDeleteUserComponent);
+    dialog.componentInstance.user = new User(this.user.toJSON());
+    dialog.componentInstance.userId = this.userId;
+  }
+
+  // Bestellung für den Richtigen Benutzer laden
   getOrders(userId: string) {
     const ordersRef = collection(this.db, 'orders');
     const q = query(ordersRef, where('userId', '==', userId));
@@ -115,15 +117,20 @@ export class UserDetailComponent {
       (querySnapshot) => {
         this.allOrders = []; // Array leeren, um Duplikate bei erneuten Abfragen zu verhindern
         querySnapshot.forEach((doc) => {
+          const orderId = doc.id; // Hier erhalten Sie die doc-ID
+          // console.log('order', orderId);
           console.log('Bestellung:', doc.data());
           const orderData = doc.data();
+          orderData['orderId'] = orderId; // Fügen Sie die ID als separates Attribut hinzu
 
           if (orderData['orderDate']) {
             const dateObj = this.convertTimestampToDate(orderData['orderDate']);
             orderData['orderDate'] = this.formatDate(dateObj);
             this.order = new Order(orderData);
+            // this.order['orderId'] = orderId; ////////////////////// evt. löschen
           }
-          this.allOrders.push(new Order(orderData)); // Fügen Sie die umgewandelten Daten zum Array hinzu um es im HTML anzuzeigen
+          this.allOrders.push(new Order(orderData)); // Fügen Sie die umgewandelten Daten zum Array hinzu, um sie im HTML anzuzeigen
+          this.sortOrders(); // Bestellunge der Reihe nach sortieren
         });
       },
       (error) => {
@@ -171,5 +178,13 @@ export class UserDetailComponent {
       (total, order) => total + order.amount * order.price,
       0
     );
+  }
+
+  sortOrders() {
+    this.allOrders = this.allOrders.sort((a, b) => {
+      const orderA = parseFloat(a.orderDate);
+      const orderB = parseFloat(b.orderDate);
+      return orderA - orderB;
+    });
   }
 }

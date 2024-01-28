@@ -7,7 +7,13 @@
   <div class="user-details">
     <h2>{{ user.firstName }} {{ user.lastName }}</h2>
     <span>{{ user.email }}</span>
-    <span>{{ user.birthDate }}</span>
+    <a href="mailto:{{ user.email }}">
+      <mat-icon
+        matTooltipPosition="below"
+        matTooltip="Send mail to {{ user.firstName }}"
+        >mail</mat-icon
+      >
+    </a>
   </div>
 </mat-card>
 
@@ -27,7 +33,7 @@
 </mat-card>
 
 <div class="user-detail-container">
-  <mat-card>
+  <mat-card class="padding-16">
     <button
       [matMenuTriggerFor]="userMenu"
       class="pin-right-upper-corner"
@@ -62,7 +68,20 @@
     </mat-card-content>
   </mat-card>
 
-  <mat-card>
+  <mat-card class="padding-16">
+    <button
+      [matMenuTriggerFor]="userMenuAdress"
+      class="pin-right-upper-corner"
+      mat-icon-button
+      aria-label="Example icon button with a vertical three dot icon"
+    >
+      <mat-icon>more_vert</mat-icon>
+    </button>
+
+    <mat-menu #userMenuAdress="matMenu">
+      <button mat-menu-item (click)="editUserAdress()">Edit</button>
+    </mat-menu>
+
     <mat-card-content>
       <h2>Address</h2>
       <p>
@@ -90,6 +109,7 @@
       <th>Order Status</th>
       <th>Price per Unit</th>
       <th>Total Value</th>
+      <th>Action</th>
     </tr>
     <tr *ngFor="let order of allOrders">
       <td>{{ order.orderDate }}</td>
@@ -98,6 +118,22 @@
       <td>{{ order.orderStatus }}</td>
       <td>{{ order.price }} CHF</td>
       <td>{{ order.amount * order.price }} CHF</td>
+      <td class="action-container">
+        <button
+          (click)="editOrder(order)"
+          mat-icon-button
+          aria-label="Example icon button with a edit icon"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button
+          class="delete"
+          mat-icon-button
+          aria-label="Example icon button with a delete icon"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
     </tr>
     <tr>
       <td colspan="5"></td>

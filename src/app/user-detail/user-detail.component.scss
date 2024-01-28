@@ -29,8 +29,8 @@
 
 .pin-right-upper-corner {
   position: absolute;
-  right: 0;
-  top: 0;
+  right: 8px;
+  top: 8px;
 }
 
 .detail-table {
@@ -39,44 +39,43 @@
 
   tr {
     border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    // &:first-child {
+    //   cursor: unset;
+    //   &:hover {
+    //     background-color: unset;
+    //   }
+  }
+
+  // &:last-child {
+  //   cursor: unset;
+  //   &:hover {
+  //     background-color: unset;
+  //   }
+  // }
+
+  &:last-child {
+    border-bottom: 0;
+  }
+  // cursor: pointer;
+
+  td {
+    height: 48px;
+
     &:first-child {
-      cursor: unset;
-      &:hover {
-        background-color: unset;
-      }
-    }
-
-    &:last-child {
-      cursor: unset;
-      &:hover {
-        background-color: unset;
-      }
-    }
-
-    &:last-child {
-      border-bottom: 0;
-    }
-    cursor: pointer;
-
-    td {
-      height: 48px;
-
-      &:first-child {
-        padding-left: 16px;
-      }
-    }
-
-    th {
-      text-align: start;
-      &:first-child {
-        padding-left: 16px;
-      }
-    }
-
-    &:hover {
-      background-color: rgba(0, 0, 0, 0.04);
+      padding-left: 16px;
     }
   }
+
+  th {
+    text-align: start;
+    &:first-child {
+      padding-left: 16px;
+    }
+  }
+
+  // &:hover {
+  //   background-color: rgba(0, 0, 0, 0.04);
+  // }
 }
 
 .user-detail-container {
@@ -97,4 +96,8 @@ mat-card {
     display: flex;
     justify-content: space-between;
   }
+}
+
+.delete {
+  color: red;
 }

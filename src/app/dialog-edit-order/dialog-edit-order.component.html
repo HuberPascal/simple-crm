@@ -1,40 +1,52 @@
 <div class="dialog-container">
   <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
 
-  <h1 mat-dialog-title>Edit address</h1>
+  <h1 mat-dialog-title>Edit Order</h1>
   <div mat-dialog-content>
     <div>
       <div>
         <div class="pt-6">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Street + House No.</mat-label>
+          <mat-form-field appearance="outline" class="mr-16">
+            <mat-label>Amount</mat-label>
             <input
+              type="number"
               [disabled]="loading"
-              [(ngModel)]="user.street"
+              [(ngModel)]="order.amount"
               matInput
-              placeholder="Street + House No."
+              placeholder="Amount"
+            />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Price per Unit</mat-label>
+            <input
+              type="number"
+              [disabled]="loading"
+              [(ngModel)]="order.price"
+              matInput
+              placeholder="Price per Unit"
             />
           </mat-form-field>
         </div>
 
         <div>
           <mat-form-field appearance="outline" class="mr-16">
-            <mat-label>Zip code</mat-label>
+            <mat-label>Product Name</mat-label>
             <input
               [disabled]="loading"
-              [(ngModel)]="user.zipCode"
+              [(ngModel)]="order.product"
               matInput
-              placeholder="Zip code"
+              placeholder="Product Name"
             />
           </mat-form-field>
 
           <mat-form-field appearance="outline">
-            <mat-label>City</mat-label>
+            <mat-label>Order Status</mat-label>
             <input
               [disabled]="loading"
-              [(ngModel)]="user.city"
+              [(ngModel)]="order.orderStatus"
               matInput
-              placeholder="City"
+              placeholder="Order Status"
             />
           </mat-form-field>
         </div>
@@ -44,9 +56,9 @@
           Cancel
         </button>
         <button
+          (click)="saveOrder()"
           [disabled]="loading"
           mat-button
-          (click)="saveUser()"
           cdkFocusInitial
         >
           Save
