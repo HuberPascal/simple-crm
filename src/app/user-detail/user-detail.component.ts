@@ -19,6 +19,7 @@ import { Order } from '../../models/order.class';
 import { DialogDeleteUserComponent } from '../dialog-delete-user/dialog-delete-user.component';
 import { DialogEditOrderComponent } from '../dialog-edit-order/dialog-edit-order.component';
 import { DialogDeleteOrderComponent } from '../dialog-delete-order/dialog-delete-order.component';
+import { DialogAddOrderComponent } from '../dialog-add-order/dialog-add-order.component';
 
 @Component({
   selector: 'app-user-detail',
@@ -160,8 +161,8 @@ export class UserDetailComponent {
           year: 'numeric',
           month: 'long',
           day: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit',
+          // hour: '2-digit',
+          // minute: '2-digit',
           // second: '2-digit',
         })
       : '';
@@ -193,5 +194,14 @@ export class UserDetailComponent {
       const orderB = parseFloat(b.orderDate);
       return orderA - orderB;
     });
+  }
+
+  openDialog() {
+    const dialog = this.dialog.open(DialogAddOrderComponent);
+    dialog.componentInstance.userId = this.userId;
+  }
+
+  formatNumberWithApostrophe(number: number): string {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'");
   }
 }

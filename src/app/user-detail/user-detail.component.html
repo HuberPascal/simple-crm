@@ -116,8 +116,8 @@
       <td>{{ order.amount }}</td>
       <td>{{ order.product }}</td>
       <td>{{ order.orderStatus }}</td>
-      <td>{{ order.price }} CHF</td>
-      <td>{{ order.amount * order.price }} CHF</td>
+      <td>{{ formatNumberWithApostrophe(order.price) }} CHF</td>
+      <td>{{ formatNumberWithApostrophe(order.amount * order.price) }} CHF</td>
       <td class="action-container">
         <button
           (click)="editOrder(order)"
@@ -141,8 +141,21 @@
       <!-- Leere Zellen über mehrere Spalten -->
       <td>
         <!-- Gesamtsumme berechnen -->
-        <strong>Total: {{ calculateTotal() }} CHF</strong>
+        <strong
+          >Total: {{ formatNumberWithApostrophe(calculateTotal()) }} CHF</strong
+        >
       </td>
     </tr>
   </table>
 </mat-card>
+
+<button
+  (click)="openDialog()"
+  class="add-order-btn"
+  mat-fab
+  color="primary"
+  matTooltip="Add order"
+  matTooltipPosition="above"
+>
+  <mat-icon>add</mat-icon>
+</button>

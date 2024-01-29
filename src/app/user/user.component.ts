@@ -36,28 +36,12 @@ export class UserComponent {
         });
         console.log('Aktuelle Benutzerdaten:', this.allUsers);
 
-        // Hier rufen Sie filterUsers() auf, nachdem die Daten geladen wurden
+        // filterUsers() aufrufen, nachdem die Daten geladen wurden
         this.filterUsers();
       });
     } catch (error) {
       console.error('Fehler beim Aktualisieren der Daten:', error);
     }
-
-    // Wenn die Daten aktualisiert werden in dem Eintrag: users
-    // try {
-    //   const usersCollectionRef = collection(this.db, 'users');
-    //   onSnapshot(usersCollectionRef, (snapshot) => {
-    //     snapshot.docs.forEach((doc) => {
-    //       console.log(
-    //         `Die ID von dem Snapshot ist: ${doc.id}, Data: `,
-    //         doc.data()
-    //       );
-    //       console.log('allUsers ist', this.allUsers);
-    //     });
-    //   });
-    // } catch (error) {
-    //   console.error('Fehler beim Aktualisieren der Daten:', error);
-    // }
   }
 
   openDialog() {

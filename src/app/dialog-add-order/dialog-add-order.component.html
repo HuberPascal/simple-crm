@@ -1,0 +1,93 @@
+<div class="dialog-container">
+  <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+
+  <h1 mat-dialog-title>Add Order</h1>
+  <form mat-dialog-content #orderForm="ngForm">
+    <div class="pt-6">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Order Date</mat-label>
+        <input
+          [disabled]="loading"
+          [(ngModel)]="order.orderDate"
+          matInput
+          placeholder="Order Date"
+          name="orderDate"
+          [matDatepicker]="picker1"
+          required
+        />
+        <mat-datepicker-toggle
+          matIconSuffix
+          [for]="picker1"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field appearance="outline" class="mr-16">
+        <mat-label>Amount Sold</mat-label>
+        <input
+          [disabled]="loading"
+          [(ngModel)]="order.amount"
+          matInput
+          placeholder="Amount Sold"
+          type="number"
+          name="amount"
+          required
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Price per Unit</mat-label>
+        <input
+          [disabled]="loading"
+          [(ngModel)]="order.price"
+          matInput
+          placeholder="Price per Unit"
+          type="number"
+          name="price"
+          required
+        />
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field appearance="outline" class="mr-16">
+        <mat-label>Product Name</mat-label>
+        <input
+          [disabled]="loading"
+          [(ngModel)]="order.product"
+          matInput
+          placeholder="Product Name"
+          name="product"
+          required
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Order Status</mat-label>
+        <mat-select [(ngModel)]="selectedValue" name="orderStatus" required="">
+          <mat-option
+            *ngFor="let orderStatusOption of orderStatus"
+            [value]="orderStatusOption.value"
+          >
+            {{ orderStatusOption.viewValue }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </form>
+  <div mat-dialog-actions>
+    <button (click)="dialogRef.close()" [disabled]="loading" mat-button>
+      Cancel
+    </button>
+    <button
+      [disabled]="loading || isSaveButtonDisabled()"
+      mat-button
+      (click)="saveOrder()"
+      cdkFocusInitial
+    >
+      Save
+    </button>
+  </div>
+</div>

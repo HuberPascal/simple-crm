@@ -14,6 +14,7 @@
               [(ngModel)]="order.amount"
               matInput
               placeholder="Amount"
+              required
             />
           </mat-form-field>
 
@@ -25,6 +26,7 @@
               [(ngModel)]="order.price"
               matInput
               placeholder="Price per Unit"
+              required
             />
           </mat-form-field>
         </div>
@@ -37,17 +39,20 @@
               [(ngModel)]="order.product"
               matInput
               placeholder="Product Name"
+              required
             />
           </mat-form-field>
 
           <mat-form-field appearance="outline">
             <mat-label>Order Status</mat-label>
-            <input
-              [disabled]="loading"
-              [(ngModel)]="order.orderStatus"
-              matInput
-              placeholder="Order Status"
-            />
+            <mat-select [(ngModel)]="selectedValue" name="orderStatus">
+              <mat-option
+                *ngFor="let orderStatusOption of orderStatus"
+                [value]="orderStatusOption.value"
+              >
+                {{ orderStatusOption.viewValue }}
+              </mat-option>
+            </mat-select>
           </mat-form-field>
         </div>
       </div>
@@ -57,7 +62,7 @@
         </button>
         <button
           (click)="saveOrder()"
-          [disabled]="loading"
+          [disabled]="loading || isSaveButtonDisabled()"
           mat-button
           cdkFocusInitial
         >

@@ -40,6 +40,8 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { DialogDeleteUserComponent } from './dialog-delete-user/dialog-delete-user.component';
 import { DialogEditOrderComponent } from './dialog-edit-order/dialog-edit-order.component';
 import { DialogDeleteOrderComponent } from './dialog-delete-order/dialog-delete-order.component';
+import { DialogAddOrderComponent } from './dialog-add-order/dialog-add-order.component';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -56,6 +58,7 @@ import { DialogDeleteOrderComponent } from './dialog-delete-order/dialog-delete-
     DialogDeleteUserComponent,
     DialogEditOrderComponent,
     DialogDeleteOrderComponent,
+    DialogAddOrderComponent,
   ],
   imports: [
     BrowserModule,
@@ -75,6 +78,7 @@ import { DialogDeleteOrderComponent } from './dialog-delete-order/dialog-delete-
     MatProgressBarModule,
     MatCardModule,
     MatMenuModule,
+    MatSelectModule,
     // AngularFireModule,
     // provideFirebaseApp(() => initializeApp(environment.firebase)),
 
