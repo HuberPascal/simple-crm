@@ -62,3 +62,24 @@
     border-top-right-radius: 2px;
   }
 }
+
+.account-container {
+  text-align: center;
+  a {
+    text-decoration: none;
+    color: #0000ff;
+  }
+}
+
+.arrow-back {
+  position: absolute;
+  top: 24px;
+  left: 25px;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.verdeckt {
+  background-color: gray !important;
+  cursor: unset !important;
+}

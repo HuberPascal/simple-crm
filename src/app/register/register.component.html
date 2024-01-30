@@ -1,29 +1,20 @@
-<!-- <form (ngSubmit)="register(email, password)">
-  <input
-    type="email"
-    [(ngModel)]="email"
-    name="email"
-    placeholder="E-Mail"
-    required
-  />
-  <input
-    type="password"
-    [(ngModel)]="password"
-    name="password"
-    placeholder="Passwort"
-    required
-  />
-  <button type="submit">Registrieren</button>
-</form> -->
-
 <div class="register-wrapper">
   <div class="register-container">
+    <mat-icon
+      matTooltip="Login Options"
+      matTooltipPosition="below"
+      routerLink="/sign-in"
+      class="arrow-back"
+      >arrow_back_ios_new</mat-icon
+    >
+
     <div class="register">
       <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
 
-      <h1>Konto erstellen</h1>
+      <h1>Sign up</h1>
 
-      <form (submit)="register(email, password)" class="sign-in-section">
+      <form (submit)="onSubmit(email, password)" class="sign-in-section">
+        <!-- Email input -->
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Email</mat-label>
           <input
@@ -33,12 +24,21 @@
             placeholder="Email"
             matInput
             required
+            (input)="validateMail()"
           />
         </mat-form-field>
 
+        <div *ngIf="!isEmailValid" class="error-message">
+          Please provide a valid email address.
+        </div>
+
+        <div *ngIf="!isEmailExists" class="error-message">
+          This email address is already registered.
+        </div>
+
+        <!-- Password input -->
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Password</mat-label>
-
           <input
             matInput
             type="password"
@@ -46,14 +46,25 @@
             name="password"
             placeholder="Password"
             required
+            (input)="validatePassword()"
           />
         </mat-form-field>
-        <div *ngIf="isEmailValid" class="error-message">
-          Provide a valid email address
+        <div *ngIf="!isPasswordValid" class="error-message">
+          Password must have at least 8 characters, including one number, one
+          uppercase letter, and one lowercase letter.
         </div>
 
-        <button type="submit">Sign up</button>
+        <button
+          [disabled]="!ispassword"
+          [ngClass]="{ verdeckt: !ismail || !ispassword }"
+          type="submit"
+        >
+          Sign up
+        </button>
       </form>
+    </div>
+    <div class="account-container">
+      Already have an account? <a routerLink="/sign-in">Sign in</a>
     </div>
   </div>
 </div>
