@@ -36,9 +36,11 @@
 .detail-table {
   width: 100%;
   border-collapse: collapse;
+  margin-bottom: 30px;
 
   tr {
     border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+
     // &:first-child {
     //   cursor: unset;
     //   &:hover {
@@ -106,4 +108,32 @@ mat-card {
   position: absolute;
   right: 56px;
   bottom: 56px;
+}
+
+.purchase-total-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.total-orders-container {
+  width: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+
+  p {
+    margin: 0;
+  }
+}
+
+.total-revenue {
+  margin: 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.bold {
+  font-weight: 600;
 }

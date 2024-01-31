@@ -51,7 +51,7 @@ export class DialogAddOrderComponent {
     { value: 'Processing', viewValue: 'Processing' },
     { value: 'Shipped', viewValue: 'Shipped' },
     { value: 'Delivered', viewValue: 'Delivered' },
-    { value: 'Canceled', viewValue: 'Canceled' },
+    // { value: 'Canceled', viewValue: 'Canceled' },
   ];
 
   isSaveButtonDisabled(): boolean {

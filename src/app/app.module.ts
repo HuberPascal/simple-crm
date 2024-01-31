@@ -42,6 +42,8 @@ import { DialogEditOrderComponent } from './dialog-edit-order/dialog-edit-order.
 import { DialogDeleteOrderComponent } from './dialog-delete-order/dialog-delete-order.component';
 import { DialogAddOrderComponent } from './dialog-add-order/dialog-add-order.component';
 import { MatSelectModule } from '@angular/material/select';
+import { ImprintComponent } from './imprint/imprint.component';
+import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +61,8 @@ import { MatSelectModule } from '@angular/material/select';
     DialogEditOrderComponent,
     DialogDeleteOrderComponent,
     DialogAddOrderComponent,
+    ImprintComponent,
+    PrivacyPolicyComponent,
   ],
   imports: [
     BrowserModule,

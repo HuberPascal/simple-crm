@@ -47,6 +47,7 @@ export class SignInComponent {
     this.authService
       .googleLogin()
       .then(() => {
+        this.appComponent.isDrawerOpened = true;
         // Erfolgreich eingeloggt, Benutzer weiterleiten
         console.log('Erfolgreich über Google eingeloggt');
 
@@ -64,6 +65,7 @@ export class SignInComponent {
     this.authService
       .guestLogin()
       .then(() => {
+        this.appComponent.isDrawerOpened = true;
         console.log('Gast Login erfolgreich');
 
         // Erfolgreich als Gast angemeldet, Benutzer weiterleiten

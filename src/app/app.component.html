@@ -12,8 +12,11 @@
 
       <div class="sidebar-bottom-section">
         <ul class="menu-items">
-          <li (click)="logout()">Logout</li>
-          <li routerLink="/"><mat-icon>info</mat-icon>Legal Notice</li>
+          <li routerLink="/imprint"><mat-icon>info</mat-icon>Imprint</li>
+          <li routerLink="/privacy-policy">
+            <mat-icon>policy</mat-icon>Privacy policy
+          </li>
+          <li (click)="logout()"><mat-icon>logout</mat-icon>Logout</li>
         </ul>
       </div>
     </div>

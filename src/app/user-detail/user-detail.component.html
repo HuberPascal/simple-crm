@@ -100,6 +100,29 @@
   </mat-card>
 </div>
 
+<div class="mt-32">
+  <p>Purchases:</p>
+  <div class="purchase-total-container">
+    <mat-card class="total-orders-container">
+      <p>
+        Total Orders:
+        <span class="bold"
+          >&nbsp;{{ formatNumberWithApostrophe(allOrders.length) }}</span
+        >
+      </p>
+    </mat-card>
+
+    <mat-card class="total-orders-container">
+      <p class="total-revenue">
+        <span>Total Revenue:</span>
+        <span class="bold"
+          >{{ formatNumberWithApostrophe(calculateTotal()) }} CHF</span
+        >
+      </p>
+    </mat-card>
+  </div>
+</div>
+
 <mat-card class="mt-32">
   <table class="detail-table">
     <tr>
@@ -136,16 +159,14 @@
         </button>
       </td>
     </tr>
-    <tr>
+    <!-- <tr>
       <td colspan="5"></td>
-      <!-- Leere Zellen über mehrere Spalten -->
       <td>
-        <!-- Gesamtsumme berechnen -->
         <strong
           >Total: {{ formatNumberWithApostrophe(calculateTotal()) }} CHF</strong
         >
       </td>
-    </tr>
+    </tr> -->
   </table>
 </mat-card>
 

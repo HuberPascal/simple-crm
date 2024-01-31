@@ -20,6 +20,7 @@ export class AppComponent {
     this.authService
       .logout()
       .then(() => {
+        this.isDrawerOpened = false;
         console.log('Erfolgreich ausgeloggt');
         this.router.navigate(['/sign-in']); // Ersetzen Sie '/home' durch den Pfad Ihrer Wahl
         // Behandeln des erfolgreichen Logouts, z.B. den Benutzer umleiten
