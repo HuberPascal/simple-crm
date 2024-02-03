@@ -19,6 +19,7 @@ import {
 })
 export class AuthService {
   isLoggedIn: any;
+
   constructor(private auth: Auth) {}
 
   register(email: string, password: string) {
@@ -51,10 +52,24 @@ export class AuthService {
    * @returns A promise that resolves to a boolean value indicating whether the user is authenticated or not.
    */
   checkAuth() {
+    return new Promise<boolean>(async (resolve, reject) => {
+      onAuthStateChanged(this.auth, (user) => {
+        if (user && !user.isAnonymous) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+    });
+  }
+
+  checkAuthLoggedInAsGuest() {
     return new Promise<boolean>((resolve, reject) => {
       onAuthStateChanged(this.auth, (user) => {
         if (user) {
-          resolve(true);
+          // Überprüfen Sie, ob der Benutzer anonym angemeldet ist
+          const isAnonymous = user.isAnonymous;
+          resolve(isAnonymous);
         } else {
           resolve(false);
         }

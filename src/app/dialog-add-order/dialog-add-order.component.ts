@@ -3,6 +3,7 @@ import { Firestore } from '@angular/fire/firestore';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Order } from '../../models/order.class';
 import { addDoc, collection } from 'firebase/firestore';
+import { UserService } from '../user.service';
 
 interface OrderStatus {
   value: string;
@@ -22,7 +23,8 @@ export class DialogAddOrderComponent {
 
   constructor(
     public dialogRef: MatDialogRef<DialogAddOrderComponent>,
-    public db: Firestore
+    public db: Firestore,
+    private userService: UserService
   ) {}
 
   async saveOrder() {
@@ -38,8 +40,18 @@ export class DialogAddOrderComponent {
       userData.userId = userId;
       userData.orderStatus = selectedOrderStatus;
 
-      const docRef = await addDoc(collection(this.db, 'orders'), userData);
-      console.log(`Added JSON document with ID: ${docRef.id}`);
+      if (this.userService.isGuestUser) {
+        const docRef = await addDoc(
+          collection(this.db, 'guest_users'),
+          userData
+        );
+        console.log(
+          `Added JSON document with ID Guest Collection: ${docRef.id}`
+        );
+      } else {
+        const docRef = await addDoc(collection(this.db, 'orders'), userData);
+        console.log(`Added JSON document with ID: ${docRef.id}`);
+      }
     } catch (error) {
       console.error('Fehler beim Schreiben der Dokumente (JSON):', error);
     }

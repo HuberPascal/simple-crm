@@ -11,7 +11,6 @@ import { Order } from '../../models/order.class';
 })
 export class DialogDeleteOrderComponent {
   order: Order = new Order();
-  // userId: string | null = '';
   orderId: string | null = '';
   loading: boolean = false;
 

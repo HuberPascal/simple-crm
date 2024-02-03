@@ -26,7 +26,6 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from '../environments/environments';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
-// import { getDatabase, provideDatabase } from '@angular/fire/database';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatCardModule } from '@angular/material/card';
@@ -44,6 +43,8 @@ import { DialogAddOrderComponent } from './dialog-add-order/dialog-add-order.com
 import { MatSelectModule } from '@angular/material/select';
 import { ImprintComponent } from './imprint/imprint.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
+import { GuestDashboardComponent } from './guest-dashboard/guest-dashboard.component';
+import { GuestUserComponent } from './guest-user/guest-user.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +64,8 @@ import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.componen
     DialogAddOrderComponent,
     ImprintComponent,
     PrivacyPolicyComponent,
+    GuestDashboardComponent,
+    GuestUserComponent,
   ],
   imports: [
     BrowserModule,

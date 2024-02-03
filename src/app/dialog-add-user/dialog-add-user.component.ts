@@ -11,6 +11,8 @@ import {
   onSnapshot,
 } from '@angular/fire/firestore';
 import { MatDialogRef } from '@angular/material/dialog';
+import { SignInComponent } from '../sign-in/sign-in.component';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-dialog-add-user',
@@ -24,7 +26,8 @@ export class DialogAddUserComponent {
 
   constructor(
     public dialogRef: MatDialogRef<DialogAddUserComponent>,
-    public db: Firestore
+    public db: Firestore,
+    private userService: UserService
   ) {}
 
   async saveUser() {
@@ -33,9 +36,22 @@ export class DialogAddUserComponent {
     this.loading = true;
 
     try {
-      const userData = this.user.toJSON(); // Holen Sie sich das JSON-Objekt von der User-Klasse
-      const docRef = await addDoc(collection(this.db, 'users'), userData);
-      console.log(`Added JSON document with ID: ${docRef.id}`);
+      const userData = this.user.toJSON();
+
+      if (this.userService.isGuestUser) {
+        // Für Gastbenutzer in der "guest_users"-Sammlung speichern
+        const docRef = await addDoc(
+          collection(this.db, 'guest_users'),
+          userData
+        );
+        console.log(
+          `Added JSON document with ID in Guest Collection: ${docRef.id}`
+        );
+      } else {
+        // Für registrierte Benutzer in der "users"-Sammlung speichern
+        const docRef = await addDoc(collection(this.db, 'users'), userData);
+        console.log(`Added JSON document with ID: ${docRef.id}`);
+      }
     } catch (error) {
       console.error('Fehler beim Schreiben der Dokumente (JSON):', error);
     }

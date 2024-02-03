@@ -34,7 +34,12 @@
       <th>City</th>
       <th>E-Mail</th>
     </tr>
-    <tr *ngFor="let user of filteredUsers" [routerLink]="['/user', user.id]">
+    <tr
+      *ngFor="let user of filteredUsers"
+      [routerLink]="
+        isUserLoggedIn ? ['/user', user.id] : ['/guest/user', user.id]
+      "
+    >
       <td>{{ user.firstName }}</td>
       <td>{{ user.lastName }}</td>
       <td>{{ user.city }}</td>

@@ -20,6 +20,7 @@ import { DialogDeleteUserComponent } from '../dialog-delete-user/dialog-delete-u
 import { DialogEditOrderComponent } from '../dialog-edit-order/dialog-edit-order.component';
 import { DialogDeleteOrderComponent } from '../dialog-delete-order/dialog-delete-order.component';
 import { DialogAddOrderComponent } from '../dialog-add-order/dialog-add-order.component';
+import { AuthService } from '../services/firebase-auth.service';
 
 @Component({
   selector: 'app-user-detail',
@@ -41,7 +42,8 @@ export class UserDetailComponent {
   constructor(
     public db: Firestore,
     private route: ActivatedRoute,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -50,17 +52,28 @@ export class UserDetailComponent {
       this.userId = paramMap.get('id');
       // this.orderId = paramMap.get('id');
       console.log('user id', this.userId);
+
       if (this.userId) {
-        this.getUser(this.userId);
         this.getOrders(this.userId);
-        // this.sortOrders(); // Bestellunge der Reihe nach sortieren
+        this.authService
+          .checkAuthLoggedInAsGuest()
+          .then(async (isAnonymous) => {
+            if (isAnonymous) {
+              // Logik für Gastbenutzer
+              this.getUser(this.userId, 'guest_users');
+            } else {
+              // Logik für angemeldete Benutzer
+              this.getUser(this.userId, 'users');
+            }
+          });
+        // this.sortOrders(); // Bestellungen der Reihe nach sortieren
       }
     });
   }
 
   // User anhand der ID speichern in new User
-  getUser(userId: any) {
-    onSnapshot(doc(this.db, 'users', userId), (doc) => {
+  getUser(userId: any, user: string) {
+    onSnapshot(doc(this.db, user, userId), (doc) => {
       console.log('Abgerufene Daten', doc.data());
       if (doc.exists()) {
         const userData = doc.data();
@@ -77,6 +90,25 @@ export class UserDetailComponent {
       console.log('Abgerufener User', this.user);
     });
   }
+
+  // getGuestUSer(userId: any) {
+  //   onSnapshot(doc(this.db, 'guest_users', userId), (doc) => {
+  //     console.log('Abgerufene Daten', doc.data());
+  //     if (doc.exists()) {
+  //       const userData = doc.data();
+  //       // userData.birthDate ist ein Firebase Timestamp
+  //       if (userData['birthDate']) {
+  //         const userObj = this.convertTimestampToDate(userData['birthDate']);
+  //         userData['birthDate'] = this.formatDateBirthday(userObj);
+  //       }
+  //       this.user = new User(userData);
+  //       // this.user = new User(doc.data());
+  //     } else {
+  //       console.log('Keine Daten gefunden!');
+  //     }
+  //     console.log('Abgerufener User', this.user);
+  //   });
+  // }
 
   editMenu() {
     const dialog = this.dialog.open(DialogEditAddressComponent);

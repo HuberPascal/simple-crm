@@ -9,16 +9,34 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { authGuard } from './services/auth.guard';
 import { ImprintComponent } from './imprint/imprint.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
+import { GuestUserComponent } from './guest-user/guest-user.component';
+import { GuestDashboardComponent } from './guest-dashboard/guest-dashboard.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/sign-in', pathMatch: 'full' },
   { path: 'sign-in', component: SignInComponent },
-  { path: 'dashboard', component: DashboardComponent },
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'guest/dashboard',
+    component: GuestDashboardComponent,
+  },
   { path: 'user', component: UserComponent, canActivate: [authGuard] },
+  {
+    path: 'guest/user',
+    component: UserComponent,
+  },
   {
     path: 'user/:id',
     component: UserDetailComponent,
     canActivate: [authGuard],
+  },
+  {
+    path: 'guest/user/:id',
+    component: UserDetailComponent,
   },
   { path: 'register', component: RegisterComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },

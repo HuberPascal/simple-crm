@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from '../services/firebase-auth.service';
 import { Router } from '@angular/router';
 import { AppComponent } from '../app.component';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -18,7 +19,8 @@ export class SignInComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private appComponent: AppComponent
+    private appComponent: AppComponent,
+    private userService: UserService
   ) {}
 
   login(email: string, password: string) {
@@ -28,9 +30,10 @@ export class SignInComponent {
       .then(() => {
         this.appComponent.isDrawerOpened = true;
         console.log('Login erfolgreich');
+        this.appComponent.isUserLoggedIn = true;
 
         // Erfolgreich angemeldet, Benutzer weiterleiten
-        this.router.navigate(['/dashboard']); // Ersetzen Sie '/home' durch den Pfad Ihrer Wahl
+        this.router.navigate(['user/dashboard']);
       })
       .catch((error) => {
         // Fehlerbehandlung
@@ -51,7 +54,7 @@ export class SignInComponent {
         // Erfolgreich eingeloggt, Benutzer weiterleiten
         console.log('Erfolgreich über Google eingeloggt');
 
-        this.router.navigate(['/dashboard']); // Ersetzen Sie '/home' durch den Pfad Ihrer Wahl
+        this.router.navigate(['user/dashboard']);
       })
       .catch((error) => {
         // Fehlerbehandlung
@@ -67,9 +70,10 @@ export class SignInComponent {
       .then(() => {
         this.appComponent.isDrawerOpened = true;
         console.log('Gast Login erfolgreich');
+        // this.userService.isGuestUser = true;
 
         // Erfolgreich als Gast angemeldet, Benutzer weiterleiten
-        this.router.navigate(['/dashboard']); // Ersetzen Sie '/home' durch den Pfad Ihrer Wahl
+        this.router.navigate(['guest/dashboard']);
       })
       .catch((error) => {
         // Fehlerbehandlung
