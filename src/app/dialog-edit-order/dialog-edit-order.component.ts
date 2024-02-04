@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 import { MatDialogRef } from '@angular/material/dialog';
-import { DialogEditAddressComponent } from '../dialog-edit-address/dialog-edit-address.component';
 import { Order } from '../../models/order.class';
-import { User } from '../../models/user.class';
-import { addDoc, collection, doc, updateDoc } from 'firebase/firestore';
+import { doc, updateDoc } from 'firebase/firestore';
+import { AuthService } from '../services/firebase-auth.service';
 
 interface OrderStatus {
   value: string;
@@ -25,7 +24,8 @@ export class DialogEditOrderComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<DialogEditOrderComponent>,
-    public db: Firestore
+    public db: Firestore,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -33,6 +33,7 @@ export class DialogEditOrderComponent implements OnInit {
   }
 
   async saveOrder() {
+    this.loading = true;
     const orderData = this.order;
     const orderId = this.order['orderId'];
 
@@ -41,9 +42,17 @@ export class DialogEditOrderComponent implements OnInit {
 
     this.order.orderStatus = selectedOrderStatus;
 
-    const docRef = doc(this.db, 'orders', `${orderId}`);
-    // const docRef = doc(this.db, 'orders', 'FyHulF0Gx2KT0YLzHNi9');
-    console.log('Das Dokument hat die ID', orderId);
+    let docRef: any;
+
+    const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
+
+    if (isAnonymous) {
+      docRef = doc(this.db, 'guest_orders', `${orderId}`);
+      console.log('Das Dokument hat die ID', orderId);
+    } else {
+      docRef = doc(this.db, 'orders', `${orderId}`);
+      console.log('Das Dokument hat die ID', orderId);
+    }
 
     // Firestore Dokument aktualisieren
     try {
@@ -59,6 +68,7 @@ export class DialogEditOrderComponent implements OnInit {
     } catch (error) {
       console.error('Fehler beim Aktualisieren des Dokuments:', error);
     }
+    this.loading = false;
   }
 
   orderStatus: OrderStatus[] = [

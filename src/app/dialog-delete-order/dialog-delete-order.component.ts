@@ -3,6 +3,7 @@ import { Firestore } from '@angular/fire/firestore';
 import { MatDialogRef } from '@angular/material/dialog';
 import { deleteDoc, doc } from 'firebase/firestore';
 import { Order } from '../../models/order.class';
+import { AuthService } from '../services/firebase-auth.service';
 
 @Component({
   selector: 'app-dialog-delete-order',
@@ -16,17 +17,29 @@ export class DialogDeleteOrderComponent {
 
   constructor(
     public dialogRef: MatDialogRef<DialogDeleteOrderComponent>,
-    public db: Firestore
+    public db: Firestore,
+    private authService: AuthService
   ) {}
 
   async deleteOrder() {
+    this.loading = true;
     const orderId = this.order['orderId'];
+    const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
+    let firebaseData;
 
     try {
-      await deleteDoc(doc(this.db, 'orders', `${orderId}`));
-      this.dialogRef.close();
+      if (isAnonymous) {
+        firebaseData = doc(this.db, 'guest_orders', `${orderId}`);
+        await deleteDoc(firebaseData);
+        this.dialogRef.close();
+      } else {
+        firebaseData = doc(this.db, 'orders', `${orderId}`);
+        await deleteDoc(firebaseData);
+        this.dialogRef.close();
+      }
     } catch (error) {
       console.error('Fehler beim Löschen des Benutzers: ', error);
     }
+    this.loading = false;
   }
 }

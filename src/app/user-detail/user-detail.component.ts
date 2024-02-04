@@ -48,24 +48,23 @@ export class UserDetailComponent {
 
   ngOnInit() {
     // Die ID aus der URL holen
-    this.route.paramMap.subscribe((paramMap) => {
+    this.route.paramMap.subscribe(async (paramMap) => {
       this.userId = paramMap.get('id');
       // this.orderId = paramMap.get('id');
       console.log('user id', this.userId);
 
+      const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
+
       if (this.userId) {
-        this.getOrders(this.userId);
-        this.authService
-          .checkAuthLoggedInAsGuest()
-          .then(async (isAnonymous) => {
-            if (isAnonymous) {
-              // Logik für Gastbenutzer
-              this.getUser(this.userId, 'guest_users');
-            } else {
-              // Logik für angemeldete Benutzer
-              this.getUser(this.userId, 'users');
-            }
-          });
+        if (isAnonymous) {
+          // Logik für Gastbenutzer
+          this.getUser(this.userId, 'guest_users');
+          this.getOrders(this.userId, 'guest_orders');
+        } else {
+          // Logik für angemeldete Benutzer
+          this.getUser(this.userId, 'users');
+          this.getOrders(this.userId, 'orders');
+        }
         // this.sortOrders(); // Bestellungen der Reihe nach sortieren
       }
     });
@@ -148,8 +147,8 @@ export class UserDetailComponent {
   }
 
   // Bestellung für den Richtigen Benutzer laden
-  getOrders(userId: string) {
-    const ordersRef = collection(this.db, 'orders');
+  getOrders(userId: any, orders: string) {
+    const ordersRef = collection(this.db, orders);
     const q = query(ordersRef, where('userId', '==', userId));
 
     onSnapshot(

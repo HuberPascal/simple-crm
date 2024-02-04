@@ -11,6 +11,7 @@
           [(ngModel)]="user.firstName"
           matInput
           placeholder="First Name"
+          required
         />
         <!-- <mat-hint>Please enter a name</mat-hint> -->
       </mat-form-field>
@@ -22,6 +23,7 @@
           [(ngModel)]="user.lastName"
           matInput
           placeholder="Last Name"
+          required
         />
         <!-- <mat-hint>Please enter a name</mat-hint> -->
       </mat-form-field>
@@ -34,8 +36,15 @@
         [(ngModel)]="user.email"
         matInput
         placeholder="E-Mail"
+        type="email"
+        (input)="validateMail()"
+        required
       />
     </mat-form-field>
+
+    <div *ngIf="!ismail" class="error-message">
+      Please provide a valid email address.
+    </div>
 
     <div>
       <mat-form-field appearance="outline" class="full-width">
@@ -46,6 +55,7 @@
           matInput
           placeholder="Birth Date"
           [matDatepicker]="picker1"
+          required
         />
         <mat-datepicker-toggle
           matIconSuffix
@@ -64,6 +74,7 @@
           [(ngModel)]="user.street"
           matInput
           placeholder="Street + House No."
+          required
         />
       </mat-form-field>
     </div>
@@ -76,6 +87,8 @@
           [(ngModel)]="user.zipCode"
           matInput
           placeholder="Zip code"
+          type="number"
+          required
         />
       </mat-form-field>
 
@@ -86,6 +99,7 @@
           [(ngModel)]="user.city"
           matInput
           placeholder="City"
+          required
         />
       </mat-form-field>
     </div>
@@ -95,7 +109,7 @@
       Cancel
     </button>
     <button
-      [disabled]="loading"
+      [disabled]="loading || isSaveButtonDisabled()"
       mat-button
       (click)="saveUser()"
       cdkFocusInitial

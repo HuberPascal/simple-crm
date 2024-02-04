@@ -4,6 +4,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { Order } from '../../models/order.class';
 import { addDoc, collection } from 'firebase/firestore';
 import { UserService } from '../user.service';
+import { AuthService } from '../services/firebase-auth.service';
 
 interface OrderStatus {
   value: string;
@@ -24,10 +25,13 @@ export class DialogAddOrderComponent {
   constructor(
     public dialogRef: MatDialogRef<DialogAddOrderComponent>,
     public db: Firestore,
-    private userService: UserService
+    private userService: UserService,
+    private authService: AuthService
   ) {}
 
   async saveOrder() {
+    this.loading = true;
+
     try {
       const userId = this.userId;
       const userData = this.order.toJSON(); // Holen Sie sich das JSON-Objekt von der User-Klasse
@@ -40,9 +44,11 @@ export class DialogAddOrderComponent {
       userData.userId = userId;
       userData.orderStatus = selectedOrderStatus;
 
-      if (this.userService.isGuestUser) {
+      const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
+
+      if (isAnonymous) {
         const docRef = await addDoc(
-          collection(this.db, 'guest_users'),
+          collection(this.db, 'guest_orders'),
           userData
         );
         console.log(
@@ -52,6 +58,12 @@ export class DialogAddOrderComponent {
         const docRef = await addDoc(collection(this.db, 'orders'), userData);
         console.log(`Added JSON document with ID: ${docRef.id}`);
       }
+
+      // if (this.userService.isGuestUser) {
+
+      // } else {
+
+      // }
     } catch (error) {
       console.error('Fehler beim Schreiben der Dokumente (JSON):', error);
     }

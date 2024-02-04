@@ -4,9 +4,7 @@ import { DialogAddUserComponent } from '../dialog-add-user/dialog-add-user.compo
 import { User } from '../../models/user.class';
 import { Firestore } from '@angular/fire/firestore';
 import { collection, doc, onSnapshot } from 'firebase/firestore';
-import { SignInComponent } from '../sign-in/sign-in.component';
 import { UserService } from '../user.service';
-import { Auth } from '@angular/fire/auth';
 import { AuthService } from '../services/firebase-auth.service';
 
 @Component({
@@ -21,8 +19,6 @@ export class UserComponent {
   selectedFilter: string = 'First Name'; // Standardmäßig nach 'First Name' filtern
   isUserLoggedIn: boolean = false;
 
-  // isAnonymous: boolean | undefined;
-
   constructor(
     public db: Firestore,
     public dialog: MatDialog,
@@ -34,31 +30,22 @@ export class UserComponent {
 
   async ngOnInit(): Promise<void> {
     this.isUserLoggedIn = await this.authService.checkAuth();
-    this.authService.checkAuthLoggedInAsGuest().then(async (isAnonymous) => {
-      // this.isAnonymous = isAnonymous;
-      if (isAnonymous) {
-        // Der Benutzer ist anonym (Gast)
-        await this.getGuestUserData(); // Methode, um Musterdaten für Gastbenutzer abzurufen
-        console.log('Der Benutzer ist anonym (Gast).');
-      } else {
-        // Der Benutzer ist nicht anonym (registriert)
-        await this.getRegisterUserData();
-        console.log('Der Benutzer ist nicht anonym (registriert).');
-      }
-    });
+    const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
 
-    // if (this.userService.isGuestUser) {
-    //   await this.getGuestUserData(); // Methode, um Musterdaten für Gastbenutzer abzurufen
-    //   console.log('guets ist', this.userService.isGuestUser);
-    // } else {
-    //   // Normale Anmeldung für registrierte Benutzer
-
-    // }
+    if (isAnonymous) {
+      // Der Benutzer ist anonym (Gast)
+      await this.getUserData('guest_users'); // Methode, um Musterdaten für Gastbenutzer abzurufen
+      console.log('Der Benutzer ist anonym (Gast).');
+    } else {
+      // Der Benutzer ist nicht anonym (registriert)
+      await this.getUserData('users');
+      console.log('Der Benutzer ist nicht anonym (registriert).');
+    }
   }
 
-  async getRegisterUserData() {
+  async getUserData(user: string) {
     try {
-      const usersCollectionRef = collection(this.db, 'users');
+      const usersCollectionRef = collection(this.db, user);
       onSnapshot(usersCollectionRef, (snapshot) => {
         this.allUsers = snapshot.docs.map((doc) => {
           const userData = doc.data();
@@ -71,30 +58,6 @@ export class UserComponent {
           };
         });
         console.log('Aktuelle Benutzerdaten:', this.allUsers);
-
-        // filterUsers() aufrufen, nachdem die Daten geladen wurden
-        this.filterUsers();
-      });
-    } catch (error) {
-      console.error('Fehler beim Aktualisieren der Daten:', error);
-    }
-  }
-
-  async getGuestUserData() {
-    try {
-      const usersCollectionRef = collection(this.db, 'guest_users');
-      onSnapshot(usersCollectionRef, (snapshot) => {
-        this.allUsers = snapshot.docs.map((doc) => {
-          const userData = doc.data();
-          return {
-            id: doc.id,
-            firstName: userData['firstName'],
-            lastName: userData['lastName'],
-            email: userData['email'],
-            city: userData['city'],
-          };
-        });
-        console.log('Aktuelle Benutzerdaten vom Gast :', this.allUsers);
 
         // filterUsers() aufrufen, nachdem die Daten geladen wurden
         this.filterUsers();
