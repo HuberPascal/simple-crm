@@ -33,7 +33,7 @@ export class SignInComponent {
         this.appComponent.isUserLoggedIn = true;
 
         // Erfolgreich angemeldet, Benutzer weiterleiten
-        this.router.navigate(['user/dashboard']);
+        this.router.navigate(['dashboard']);
       })
       .catch((error) => {
         // Fehlerbehandlung
@@ -54,7 +54,7 @@ export class SignInComponent {
         // Erfolgreich eingeloggt, Benutzer weiterleiten
         console.log('Erfolgreich über Google eingeloggt');
 
-        this.router.navigate(['user/dashboard']);
+        this.router.navigate(['dashboard']);
       })
       .catch((error) => {
         // Fehlerbehandlung

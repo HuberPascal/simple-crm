@@ -1,1 +1,27 @@
-<p>dashboard works!</p>
+<h2>hello!</h2>
+<h1>Welcome Back Pascal 👋</h1>
+
+<div class="overview">
+  <mat-card>
+    <span> <mat-icon>group</mat-icon>User </span>
+    <p>3</p>
+  </mat-card>
+  <mat-card>
+    <span><mat-icon>inventory_2</mat-icon>Products</span>
+    <p>11</p>
+  </mat-card>
+  <mat-card>
+    <span> <mat-icon>bar_chart_4_bars</mat-icon>Revenue</span>
+    <p>1200 CHF</p>
+  </mat-card>
+</div>
+
+<div class="chart-container">
+  <span><mat-icon>pin_drop</mat-icon> User Residence</span>
+  <canvas id="MyChartResidence">{{ chartResidence }}</canvas>
+</div>
+
+<div class="chart-container">
+  <span><mat-icon>pin_drop</mat-icon> User Residence</span>
+  <canvas id="MyChartProducts">{{ chartResidence }}</canvas>
+</div>
