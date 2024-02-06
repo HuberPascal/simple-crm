@@ -13,7 +13,20 @@
 
       <h1>Sign up</h1>
 
-      <form (submit)="onSubmit(email, password)" class="sign-in-section">
+      <form (submit)="onSubmit(email, password, name)" class="sign-in-section">
+        <!-- Name input -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Name</mat-label>
+          <input
+            type="text"
+            [(ngModel)]="name"
+            name="name"
+            placeholder="Name"
+            matInput
+            required
+          />
+        </mat-form-field>
+
         <!-- Email input -->
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Email</mat-label>

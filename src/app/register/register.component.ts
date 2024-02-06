@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../services/firebase-auth.service';
 import { Router } from '@angular/router';
+import { Firestore } from '@angular/fire/firestore';
+import { addDoc, collection } from 'firebase/firestore';
+import { updateProfile } from 'firebase/auth';
 
 @Component({
   selector: 'app-register',
@@ -8,6 +11,7 @@ import { Router } from '@angular/router';
   styleUrl: './register.component.scss',
 })
 export class RegisterComponent {
+  name: string = '';
   email: string = '';
   password: string = '';
   mail: string = '';
@@ -16,14 +20,17 @@ export class RegisterComponent {
   userPassword: string | undefined;
   loading: boolean = false;
   isEmailValid: boolean = true;
-  // password: string = '';
-  // isEmailValid: boolean = true;
   isPasswordValid: boolean = true;
   isEmailExists: boolean = true;
   ispassword: boolean = false;
   ismail: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    public db: Firestore,
+    private auth: AuthService
+  ) {}
 
   validateMail() {
     // E-Mail-Validierung
@@ -59,7 +66,7 @@ export class RegisterComponent {
   }
 
   // register(email: string, password: string) {
-  onSubmit(email: string, password: string) {
+  onSubmit(email: string, password: string, name: string) {
     this.loading = true;
 
     // Überprüfen, ob die E-Mail-Adresse bereits registriert ist
@@ -74,9 +81,10 @@ export class RegisterComponent {
         // Fehlerbehandlung
         if (error) {
           this.authService
-            .register(email, password)
+            .register(email, password, name)
             .then(() => {
               // Erfolgreich registriert
+              this.authService.saveUserName(name);
               this.isUserRegister = true;
               this.userEmail = this.email;
               this.userPassword = this.password;

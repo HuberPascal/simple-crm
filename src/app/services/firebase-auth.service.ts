@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import {
   Auth,
   createUserWithEmailAndPassword,
@@ -12,17 +12,51 @@ import {
   signInAnonymously,
   signInWithPopup,
   signOut,
+  updateProfile,
 } from 'firebase/auth';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {
+export class AuthService implements OnInit {
   isLoggedIn: any;
+  displayName: string = '';
 
   constructor(private auth: Auth) {}
 
-  register(email: string, password: string) {
+  ngOnInit(): void {}
+
+  saveUserName(name: string) {
+    const user_auth: any = this.auth.currentUser;
+
+    if (user_auth) {
+      updateProfile(user_auth, {
+        displayName: name,
+      })
+        .then(() => {
+          console.log('updateProfile ist', user_auth.displayName);
+          // Profil aktualisiert!
+          this.displayName = user_auth.displayName;
+        })
+        .catch((error) => {
+          console.error('Fehler bei updateDoc', error);
+        });
+    } else {
+      console.error('Benutzer ist nicht authentifiziert');
+    }
+  }
+
+  getUserName() {
+    const user_auth: any = this.auth.currentUser;
+
+    if (user_auth) {
+      this.displayName = user_auth.displayName;
+
+      console.log('userDisplay Name ist', this.displayName);
+    }
+  }
+
+  async register(email: string, password: string, name: string) {
     return createUserWithEmailAndPassword(this.auth, email, password);
   }
 

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import Chart from 'chart.js/auto';
+import { AuthService } from '../services/firebase-auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,10 +10,16 @@ import Chart from 'chart.js/auto';
 export class DashboardComponent implements OnInit {
   public chartResidence: any;
   public chartProducts: any;
+  displayName: string = '';
+
+  constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
     this.createChartResidence();
     this.createChartProducts();
+    this.authService.getUserName(); // displayName-Wert aktualisieren
+    this.displayName = this.authService.displayName;
+    console.log('dashboard displayName ist', this.displayName);
   }
 
   createChartResidence() {
@@ -56,7 +63,7 @@ export class DashboardComponent implements OnInit {
       type: 'doughnut', // Typ des horizontalen Balkendiagramms
 
       data: {
-        labels: ['Red', 'Blue', 'Yellow'],
+        labels: ['Apple iPhone', 'LG TV', 'MacBook Pro'],
         datasets: [
           {
             label: 'My First Dataset',

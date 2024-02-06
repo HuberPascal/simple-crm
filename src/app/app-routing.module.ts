@@ -22,7 +22,7 @@ const routes: Routes = [
   },
   {
     path: 'guest/dashboard',
-    component: GuestDashboardComponent,
+    component: DashboardComponent,
   },
   { path: 'user', component: UserComponent, canActivate: [authGuard] },
   {

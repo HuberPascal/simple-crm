@@ -28,6 +28,7 @@ export class SignInComponent {
     this.authService
       .login(email, password)
       .then(() => {
+        this.authService.getUserName();
         this.appComponent.isDrawerOpened = true;
         console.log('Login erfolgreich');
         this.appComponent.isUserLoggedIn = true;

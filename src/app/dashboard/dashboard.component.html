@@ -1,5 +1,5 @@
-<h2>hello!</h2>
-<h1>Welcome Back Pascal 👋</h1>
+<h1 *ngIf="displayName">Welcome Back {{ displayName }} 👋</h1>
+<h1 *ngIf="!displayName">Hello Guest! 👋</h1>
 
 <div class="overview">
   <mat-card>
@@ -16,12 +16,24 @@
   </mat-card>
 </div>
 
-<div class="chart-container">
-  <span><mat-icon>pin_drop</mat-icon> User Residence</span>
+<div class="first-chart-container">
+  <span><mat-icon>pin_drop</mat-icon>User Residence</span>
   <canvas id="MyChartResidence">{{ chartResidence }}</canvas>
 </div>
 
-<div class="chart-container">
-  <span><mat-icon>pin_drop</mat-icon> User Residence</span>
-  <canvas id="MyChartProducts">{{ chartResidence }}</canvas>
+<div class="product-sales-section">
+  <div class="second-chart-container">
+    <span><mat-icon>pin_drop</mat-icon>Product sales</span>
+    <canvas id="MyChartProducts">{{ chartResidence }}</canvas>
+  </div>
+  <div class="card-container">
+    <mat-card>
+      <span><mat-icon>trending_up</mat-icon>Most Popular</span>
+      <p>PC Repair</p>
+    </mat-card>
+    <mat-card>
+      <span><mat-icon>trending_down</mat-icon>Most Popular</span>
+      <p>PC Repair</p>
+    </mat-card>
+  </div>
 </div>
