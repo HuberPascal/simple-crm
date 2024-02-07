@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import Chart from 'chart.js/auto';
 import { AuthService } from '../services/firebase-auth.service';
+import { UserComponent } from '../user/user.component';
+import { Firestore, docSnapshots } from '@angular/fire/firestore';
+import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
+import { UserService } from '../user.service';
+import { User } from '../../models/user.class';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,14 +16,22 @@ export class DashboardComponent implements OnInit {
   public chartResidence: any;
   public chartProducts: any;
   displayName: string = '';
+  allUsers: any = '';
+  numberOfUsers: number = 0;
+  totalAmount: number = 0;
+  city: string = '';
+  allCities: string[] = [];
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, public db: Firestore) {}
 
   ngOnInit(): void {
     this.createChartResidence();
     this.createChartProducts();
     this.authService.getUserName(); // displayName-Wert aktualisieren
     this.displayName = this.authService.displayName;
+    this.getNumberOfUsers();
+    this.calculateTotalOfAllOrders();
+    this.extractCitiesFromUserData();
     console.log('dashboard displayName ist', this.displayName);
   }
 
@@ -86,5 +99,75 @@ export class DashboardComponent implements OnInit {
         aspectRatio: 4, // Ändern Sie diesen Wert, um die Höhe anzupassen
       },
     });
+  }
+
+  // async getNumberOfUsers() {
+
+  async getNumberOfUsers() {
+    const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
+    let firebaseData;
+
+    if (isAnonymous) {
+      firebaseData = collection(this.db, 'guest_users');
+    } else {
+      firebaseData = collection(this.db, 'users');
+    }
+
+    const querySnapshot = await getDocs(firebaseData);
+    this.numberOfUsers = querySnapshot.size;
+    console.log(
+      'Anzahl der Dokumente in der Sammlung "users":',
+      this.numberOfUsers
+    );
+  }
+
+  async calculateTotalOfAllOrders() {
+    const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
+    let firebaseData;
+
+    if (isAnonymous) {
+      firebaseData = collection(this.db, 'guest_orders');
+    } else {
+      firebaseData = collection(this.db, 'orders');
+    }
+
+    try {
+      const querySnapshot = await getDocs(firebaseData);
+      querySnapshot.forEach((doc) => {
+        const orderData = doc.data();
+        const amount = orderData['amount']; // assuming 'amount' is the field containing the order amount
+        const price = orderData['price']; // assuming 'amount' is the field containing the order amount
+        const orderTotal = amount * price;
+        this.totalAmount += orderTotal;
+      });
+      console.log('Gesamtbetrag aller Bestellungen:', this.totalAmount);
+    } catch (error) {
+      console.error('Fehler beim Abrufen der Bestellungen:', error);
+    }
+  }
+
+  async extractCitiesFromUserData() {
+    const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
+    let firebaseData;
+
+    if (isAnonymous) {
+      firebaseData = collection(this.db, 'guest_users');
+    } else {
+      firebaseData = collection(this.db, 'users');
+    }
+
+    try {
+      const querySnapshot = await getDocs(firebaseData);
+      querySnapshot.forEach((doc) => {
+        const orderData = doc.data();
+        // this.city = orderData['city'];
+        this.allCities.push(orderData['city']);
+
+        // hier muss das Array noch gefiltert werden
+      });
+      console.log('Alle cities:', this.allCities);
+    } catch (error) {
+      console.error('Fehler beim Abrufen der Städte:', error);
+    }
   }
 }

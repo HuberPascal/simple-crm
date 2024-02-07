@@ -36,10 +36,12 @@ export class UserComponent {
       // Der Benutzer ist anonym (Gast)
       await this.getUserData('guest_users'); // Methode, um Musterdaten für Gastbenutzer abzurufen
       console.log('Der Benutzer ist anonym (Gast).');
+      console.log('so viele Users gibt es', this.filteredUsers.length);
     } else {
       // Der Benutzer ist nicht anonym (registriert)
       await this.getUserData('users');
       console.log('Der Benutzer ist nicht anonym (registriert).');
+      console.log('so viele Users gibt es', this.filteredUsers.length);
     }
   }
 
@@ -61,6 +63,7 @@ export class UserComponent {
 
         // filterUsers() aufrufen, nachdem die Daten geladen wurden
         this.filterUsers();
+        console.log('so viele Users gibt es', this.allUsers.length);
       });
     } catch (error) {
       console.error('Fehler beim Aktualisieren der Daten:', error);
@@ -94,4 +97,6 @@ export class UserComponent {
         break;
     }
   }
+
+  getNumberOfUsers() {}
 }
