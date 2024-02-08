@@ -21,30 +21,37 @@ export class DashboardComponent implements OnInit {
   totalAmount: number = 0;
   city: string = '';
   allCities: string[] = [];
+  topThreeCities: string[] = [];
+  cityCounts: number[] = [];
 
   constructor(private authService: AuthService, public db: Firestore) {}
 
   ngOnInit(): void {
-    this.createChartResidence();
     this.createChartProducts();
     this.authService.getUserName(); // displayName-Wert aktualisieren
     this.displayName = this.authService.displayName;
     this.getNumberOfUsers();
     this.calculateTotalOfAllOrders();
     this.extractCitiesFromUserData();
+    // this.createChartResidence();
     console.log('dashboard displayName ist', this.displayName);
   }
 
   createChartResidence() {
+    console.log('hat es bereits einen wert?', this.topThreeCities);
     this.chartResidence = new Chart('MyChartResidence', {
       type: 'bar', // Typ des horizontalen Balkendiagramms
 
       data: {
-        labels: ['Berlin', 'Hannover', 'Zürich'],
+        labels: [
+          this.topThreeCities[0],
+          this.topThreeCities[1],
+          this.topThreeCities[2],
+        ],
         datasets: [
           {
-            label: 'User',
-            data: [65, 59, 34],
+            label: 'Cities',
+            data: [this.cityCounts[0], this.cityCounts[1], this.cityCounts[2]],
             backgroundColor: [
               'rgba(255, 99, 132, 0.2)',
               'rgba(255, 159, 64, 0.2)',
@@ -73,7 +80,7 @@ export class DashboardComponent implements OnInit {
 
   createChartProducts() {
     this.chartProducts = new Chart('MyChartProducts', {
-      type: 'doughnut', // Typ des horizontalen Balkendiagramms
+      type: 'doughnut',
 
       data: {
         labels: ['Apple iPhone', 'LG TV', 'MacBook Pro'],
@@ -101,73 +108,107 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  // async getNumberOfUsers() {
-
-  async getNumberOfUsers() {
+  async getUserFirebaseData() {
     const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
     let firebaseData;
 
     if (isAnonymous) {
-      firebaseData = collection(this.db, 'guest_users');
+      return (firebaseData = collection(this.db, 'guest_users'));
     } else {
-      firebaseData = collection(this.db, 'users');
+      return (firebaseData = collection(this.db, 'users'));
     }
+  }
 
+  async getOrderFirebaseData() {
+    const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
+    let firebaseData;
+
+    if (isAnonymous) {
+      return (firebaseData = collection(this.db, 'guest_orders'));
+    } else {
+      return (firebaseData = collection(this.db, 'orders'));
+    }
+  }
+
+  async getNumberOfUsers() {
+    const firebaseData = await this.getUserFirebaseData();
     const querySnapshot = await getDocs(firebaseData);
     this.numberOfUsers = querySnapshot.size;
-    console.log(
-      'Anzahl der Dokumente in der Sammlung "users":',
-      this.numberOfUsers
-    );
   }
 
   async calculateTotalOfAllOrders() {
-    const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
-    let firebaseData;
-
-    if (isAnonymous) {
-      firebaseData = collection(this.db, 'guest_orders');
-    } else {
-      firebaseData = collection(this.db, 'orders');
-    }
+    const firebaseData = await this.getOrderFirebaseData();
 
     try {
       const querySnapshot = await getDocs(firebaseData);
-      querySnapshot.forEach((doc) => {
+      querySnapshot.forEach(async (doc) => {
         const orderData = doc.data();
-        const amount = orderData['amount']; // assuming 'amount' is the field containing the order amount
-        const price = orderData['price']; // assuming 'amount' is the field containing the order amount
-        const orderTotal = amount * price;
+        const orderTotal = await this.calculateOrderTotal(orderData);
         this.totalAmount += orderTotal;
       });
-      console.log('Gesamtbetrag aller Bestellungen:', this.totalAmount);
     } catch (error) {
       console.error('Fehler beim Abrufen der Bestellungen:', error);
     }
   }
 
-  async extractCitiesFromUserData() {
-    const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
-    let firebaseData;
+  async calculateOrderTotal(orderData: any) {
+    const amount = orderData['amount'];
+    const price = orderData['price'];
+    return amount * price;
+  }
 
-    if (isAnonymous) {
-      firebaseData = collection(this.db, 'guest_users');
-    } else {
-      firebaseData = collection(this.db, 'users');
-    }
+  async extractCitiesFromUserData() {
+    const firebaseData = await this.getUserFirebaseData();
 
     try {
       const querySnapshot = await getDocs(firebaseData);
       querySnapshot.forEach((doc) => {
         const orderData = doc.data();
-        // this.city = orderData['city'];
         this.allCities.push(orderData['city']);
-
-        // hier muss das Array noch gefiltert werden
       });
-      console.log('Alle cities:', this.allCities);
-    } catch (error) {
-      console.error('Fehler beim Abrufen der Städte:', error);
-    }
+    } catch (error) {}
+
+    this.cityCount();
+  }
+
+  cityCount() {
+    // Häufigkeit jeder Stadt zählen
+    const cityCount = this.cityCounter(this.allCities);
+
+    // Sortiert die Städte basierend auf ihrer Häufigkeit
+    const sortedCities = this.sortCitiesByCount(cityCount);
+
+    // Die drei häufigsten Städte auswählen
+    this.topThreeCities = sortedCities.slice(0, 3);
+
+    // Durchlaufe die topThreeCities und speichere die Anzahl der Vorkommen jeder Stadt in cityCounts
+    this.topThreeCities.forEach((city) => {
+      const count = cityCount[city];
+      this.cityCounts.push(count);
+    });
+    this.createChartResidence();
+  }
+
+  // Funktion zum Zählen der Vorkommen von Elementen in einem Array
+  cityCounter(array: any) {
+    return array.reduce((accumulator: any, element: any) => {
+      accumulator[element] = (accumulator[element] || 0) + 1;
+      return accumulator;
+    }, {});
+  }
+
+  extractCityCounts(cityCount: any) {
+    const cityCounts: number[] = [];
+
+    this.topThreeCities.forEach((city) => {
+      const count = cityCount[city];
+      cityCounts.push(count);
+    });
+
+    return cityCounts;
+  }
+
+  sortCitiesByCount(cityCount: { [key: string]: number }) {
+    return Object.keys(cityCount).sort((a, b) => cityCount[b] - cityCount[a]);
   }
 }
