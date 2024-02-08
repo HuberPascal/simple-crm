@@ -23,18 +23,20 @@ export class DashboardComponent implements OnInit {
   allCities: string[] = [];
   topThreeCities: string[] = [];
   cityCounts: number[] = [];
+  allProducts: string[] = [];
+  topThreeProducts: string[] = [];
+  productsCounts: number[] = [];
 
   constructor(private authService: AuthService, public db: Firestore) {}
 
   ngOnInit(): void {
-    this.createChartProducts();
+    // this.createChartProducts();
     this.authService.getUserName(); // displayName-Wert aktualisieren
     this.displayName = this.authService.displayName;
     this.getNumberOfUsers();
     this.calculateTotalOfAllOrders();
     this.extractCitiesFromUserData();
-    // this.createChartResidence();
-    console.log('dashboard displayName ist', this.displayName);
+    this.extractProductsFromUserData();
   }
 
   createChartResidence() {
@@ -83,11 +85,19 @@ export class DashboardComponent implements OnInit {
       type: 'doughnut',
 
       data: {
-        labels: ['Apple iPhone', 'LG TV', 'MacBook Pro'],
+        labels: [
+          this.topThreeProducts[0],
+          this.topThreeProducts[1],
+          this.topThreeProducts[2],
+        ],
         datasets: [
           {
             label: 'My First Dataset',
-            data: [300, 50, 100],
+            data: [
+              this.productsCounts[0],
+              this.productsCounts[1],
+              this.productsCounts[2],
+            ],
             backgroundColor: [
               'rgba(255, 99, 132, 0.2)',
               'rgba(255, 159, 64, 0.2)',
@@ -210,5 +220,39 @@ export class DashboardComponent implements OnInit {
 
   sortCitiesByCount(cityCount: { [key: string]: number }) {
     return Object.keys(cityCount).sort((a, b) => cityCount[b] - cityCount[a]);
+  }
+
+  async extractProductsFromUserData() {
+    const firebaseData = await this.getOrderFirebaseData();
+
+    try {
+      const querySnapshot = await getDocs(firebaseData);
+      querySnapshot.forEach((doc) => {
+        const orderData = doc.data();
+        this.allProducts.push(orderData['product']);
+      });
+      console.log('produkte aus allProducts sind', this.allProducts);
+    } catch (error) {}
+    this.productCount();
+  }
+
+  productCount() {
+    const productCount = this.productCounter(this.allProducts);
+    const sortedCities = this.sortCitiesByCount(productCount);
+
+    this.topThreeProducts = sortedCities.slice(0, 3);
+
+    this.topThreeProducts.forEach((product) => {
+      const count = productCount[product];
+      this.productsCounts.push(count);
+    });
+    this.createChartProducts();
+  }
+
+  productCounter(array: any) {
+    return array.reduce((accumulator: any, element: any) => {
+      accumulator[element] = (accumulator[element] || 0) + 1;
+      return accumulator;
+    }, {});
   }
 }
