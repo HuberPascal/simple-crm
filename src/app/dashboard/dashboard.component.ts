@@ -26,6 +26,7 @@ export class DashboardComponent implements OnInit {
   allProducts: string[] = [];
   topThreeProducts: string[] = [];
   productsCounts: number[] = [];
+  productWithLowestCount: string = '';
 
   constructor(private authService: AuthService, public db: Firestore) {}
 
@@ -92,7 +93,7 @@ export class DashboardComponent implements OnInit {
         ],
         datasets: [
           {
-            label: 'My First Dataset',
+            label: 'Products',
             data: [
               this.productsCounts[0],
               this.productsCounts[1],
@@ -222,6 +223,12 @@ export class DashboardComponent implements OnInit {
     return Object.keys(cityCount).sort((a, b) => cityCount[b] - cityCount[a]);
   }
 
+  sortProductByCount(productCount: { [key: string]: number }) {
+    return Object.keys(productCount).sort(
+      (a, b) => productCount[b] - productCount[a]
+    );
+  }
+
   async extractProductsFromUserData() {
     const firebaseData = await this.getOrderFirebaseData();
 
@@ -231,16 +238,23 @@ export class DashboardComponent implements OnInit {
         const orderData = doc.data();
         this.allProducts.push(orderData['product']);
       });
-      console.log('produkte aus allProducts sind', this.allProducts);
+      console.log('Produkte aus allProducts sind', this.allProducts);
     } catch (error) {}
     this.productCount();
   }
 
   productCount() {
     const productCount = this.productCounter(this.allProducts);
-    const sortedCities = this.sortCitiesByCount(productCount);
+    const sortedProducts = this.sortProductByCount(productCount);
+    this.productWithLowestCount = sortedProducts[sortedProducts.length - 1];
+    this.productWithLowestCount =
+      this.productWithLowestCount.charAt(0).toLocaleUpperCase() +
+      this.productWithLowestCount.slice(1);
+    this.productWithLowestCount =
+      this.productWithLowestCount.charAt(0).toUpperCase() +
+      this.productWithLowestCount.slice(1);
 
-    this.topThreeProducts = sortedCities.slice(0, 3);
+    this.topThreeProducts = sortedProducts.slice(0, 3);
 
     this.topThreeProducts.forEach((product) => {
       const count = productCount[product];
