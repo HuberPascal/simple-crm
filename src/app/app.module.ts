@@ -45,6 +45,8 @@ import { ImprintComponent } from './imprint/imprint.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 import { GuestDashboardComponent } from './guest-dashboard/guest-dashboard.component';
 import { GuestUserComponent } from './guest-user/guest-user.component';
+import { ProductsComponent } from './products/products.component';
+import { DialogAddProductComponent } from './dialog-add-product/dialog-add-product.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +68,8 @@ import { GuestUserComponent } from './guest-user/guest-user.component';
     PrivacyPolicyComponent,
     GuestDashboardComponent,
     GuestUserComponent,
+    ProductsComponent,
+    DialogAddProductComponent,
   ],
   imports: [
     BrowserModule,

@@ -25,7 +25,6 @@ export class DialogAddOrderComponent {
   constructor(
     public dialogRef: MatDialogRef<DialogAddOrderComponent>,
     public db: Firestore,
-    private userService: UserService,
     private authService: AuthService
   ) {}
 

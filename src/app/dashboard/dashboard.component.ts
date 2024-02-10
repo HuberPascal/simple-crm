@@ -32,12 +32,16 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     // this.createChartProducts();
-    this.authService.getUserName(); // displayName-Wert aktualisieren
-    this.displayName = this.authService.displayName;
+    this.getUserByName();
     this.getNumberOfUsers();
     this.calculateTotalOfAllOrders();
     this.extractCitiesFromUserData();
     this.extractProductsFromUserData();
+  }
+
+  getUserByName() {
+    this.authService.getUserName(); // displayName-Wert aktualisieren
+    this.displayName = this.authService.displayName;
   }
 
   createChartResidence() {
@@ -158,7 +162,7 @@ export class DashboardComponent implements OnInit {
         this.totalAmount += orderTotal;
       });
     } catch (error) {
-      console.error('Fehler beim Abrufen der Bestellungen:', error);
+      console.error('Fehler beim Abrufen der Produkte:', error);
     }
   }
 

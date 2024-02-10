@@ -5,10 +5,13 @@
     <div class="sidebar">
       <ul class="menu-items">
         <li [routerLink]="isUserLoggedIn ? '/dashboard' : '/guest/dashboard'">
-          <mat-icon>fact_check</mat-icon>Dashboard
+          <mat-icon>space_dashboard</mat-icon>Dashboard
         </li>
         <li [routerLink]="isUserLoggedIn ? '/user' : '/guest/user'">
           <mat-icon>perm_identity</mat-icon>User
+        </li>
+        <li [routerLink]="isUserLoggedIn ? '/products' : '/guest/products'">
+          <mat-icon>inventory_2</mat-icon>Products
         </li>
       </ul>
 

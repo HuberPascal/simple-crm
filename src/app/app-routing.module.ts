@@ -11,6 +11,7 @@ import { ImprintComponent } from './imprint/imprint.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 import { GuestUserComponent } from './guest-user/guest-user.component';
 import { GuestDashboardComponent } from './guest-dashboard/guest-dashboard.component';
+import { ProductsComponent } from './products/products.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/sign-in', pathMatch: 'full' },
@@ -37,6 +38,15 @@ const routes: Routes = [
   {
     path: 'guest/user/:id',
     component: UserDetailComponent,
+  },
+  {
+    path: 'products',
+    component: ProductsComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'guest/products',
+    component: ProductsComponent,
   },
   { path: 'register', component: RegisterComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },

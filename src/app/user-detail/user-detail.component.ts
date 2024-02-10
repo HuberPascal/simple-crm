@@ -33,7 +33,6 @@ export class UserDetailComponent {
     throw new Error('Method not implemented.');
   }
   userId: string | null = '';
-  // orderId: string | null = '';
   user: User = new User();
   order: Order = new Order();
   allOrders: any[] = [];
