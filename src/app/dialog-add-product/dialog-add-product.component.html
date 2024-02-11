@@ -33,15 +33,14 @@
 
       <mat-form-field appearance="outline">
         <mat-label>Type</mat-label>
-        <input
-          [disabled]="loading"
-          [(ngModel)]="product.service"
-          matInput
-          placeholder="Type"
-          type="string"
-          name="type"
-          required
-        />
+        <mat-select [(ngModel)]="selectedValue" name="type" required="">
+          <mat-option
+            *ngFor="let orderTypeOption of orderType"
+            [value]="orderTypeOption.value"
+          >
+            {{ orderTypeOption.viewValue }}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
     </div>
   </form>

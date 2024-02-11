@@ -5,6 +5,11 @@ import { Firestore } from '@angular/fire/firestore';
 import { AuthService } from '../services/firebase-auth.service';
 import { addDoc, collection } from 'firebase/firestore';
 
+interface OrderType {
+  value: string;
+  viewValue: string;
+}
+
 @Component({
   selector: 'app-dialog-add-product',
   templateUrl: './dialog-add-product.component.html',
@@ -29,7 +34,10 @@ export class DialogAddProductComponent {
       console.log('userData ist', userData);
 
       // Holen Sie sich den ausgewählten Order Status
-      const selectedOrderStatus = this.selectedValue;
+      const selectedTypeStatus = this.selectedValue;
+
+      // Fügen Sie die userId zum userData hinzu
+      userData.orderType = selectedTypeStatus;
 
       const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
 
@@ -53,8 +61,11 @@ export class DialogAddProductComponent {
   }
 
   isSaveButtonDisabled(): boolean {
-    return (
-      !this.product.price || !this.product.product || !this.product.service
-    );
+    return !this.product.price || !this.product.product || !this.selectedValue;
   }
+
+  orderType: OrderType[] = [
+    { value: 'Product', viewValue: 'Product' },
+    { value: 'Service', viewValue: 'Service' },
+  ];
 }
