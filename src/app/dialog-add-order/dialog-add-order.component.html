@@ -23,6 +23,20 @@
       </mat-form-field>
     </div>
 
+    <div class="pt-6">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Product Name</mat-label>
+        <mat-select [(ngModel)]="selectedProduct" name="productName" required>
+          <mat-option
+            *ngFor="let product of productName"
+            [value]="{ name: product.value, price: product.price }"
+          >
+            {{ product.viewValue }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
     <div>
       <mat-form-field appearance="outline" class="mr-16">
         <mat-label>Amount Sold</mat-label>
@@ -33,33 +47,6 @@
           placeholder="Amount Sold"
           type="number"
           name="amount"
-          required
-        />
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Price per Unit</mat-label>
-        <input
-          [disabled]="loading"
-          [(ngModel)]="order.price"
-          matInput
-          placeholder="Price per Unit"
-          type="number"
-          name="price"
-          required
-        />
-      </mat-form-field>
-    </div>
-
-    <div>
-      <mat-form-field appearance="outline" class="mr-16">
-        <mat-label>Product Name</mat-label>
-        <input
-          [disabled]="loading"
-          [(ngModel)]="order.product"
-          matInput
-          placeholder="Product Name"
-          name="product"
           required
         />
       </mat-form-field>
@@ -87,7 +74,7 @@
       (click)="saveOrder()"
       cdkFocusInitial
     >
-      Save
+      Add
     </button>
   </div>
 </div>

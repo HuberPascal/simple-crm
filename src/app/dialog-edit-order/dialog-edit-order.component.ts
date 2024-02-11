@@ -58,7 +58,7 @@ export class DialogEditOrderComponent implements OnInit {
     try {
       await updateDoc(docRef, {
         amount: orderData.amount,
-        price: orderData.price,
+        // price: orderData.price,
         product: orderData.product,
         orderStatus: orderData.orderStatus,
       });
@@ -80,10 +80,8 @@ export class DialogEditOrderComponent implements OnInit {
 
   isSaveButtonDisabled(): boolean {
     return (
-      !this.order.price ||
-      !this.order.product ||
-      !this.order.amount ||
-      !this.selectedValue
+      // !this.order.price ||
+      !this.order.product || !this.order.amount || !this.selectedValue
     );
   }
 }

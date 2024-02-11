@@ -21,6 +21,7 @@ import { DialogEditOrderComponent } from '../dialog-edit-order/dialog-edit-order
 import { DialogDeleteOrderComponent } from '../dialog-delete-order/dialog-delete-order.component';
 import { DialogAddOrderComponent } from '../dialog-add-order/dialog-add-order.component';
 import { AuthService } from '../services/firebase-auth.service';
+import { Product } from '../../models/product.class';
 
 @Component({
   selector: 'app-user-detail',
@@ -35,8 +36,10 @@ export class UserDetailComponent {
   userId: string | null = '';
   user: User = new User();
   order: Order = new Order();
+  product: Product = new Product();
   allOrders: any[] = [];
   filteredOrders: any;
+  allProducts: any[] = [];
 
   constructor(
     public db: Firestore,
@@ -67,6 +70,7 @@ export class UserDetailComponent {
         // this.sortOrders(); // Bestellungen der Reihe nach sortieren
       }
     });
+    this.getProducts();
   }
 
   // User anhand der ID speichern in new User
@@ -210,9 +214,38 @@ export class UserDetailComponent {
   openDialog() {
     const dialog = this.dialog.open(DialogAddOrderComponent);
     dialog.componentInstance.userId = this.userId;
+    dialog.componentInstance.allProducts = this.allProducts;
+    // dialog.componentInstance.order = new Order(this.order.toJSON());
   }
 
   formatNumberWithApostrophe(number: number): string {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'");
+  }
+
+  async getProducts() {
+    // const firebaseData = collection(this.db, 'products');
+    const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
+
+    if (isAnonymous) {
+      await this.getProductData('guest_products');
+    } else {
+      await this.getProductData('products');
+    }
+  }
+
+  async getProductData(product: string) {
+    try {
+      const productCollectionRef = collection(this.db, product);
+      onSnapshot(productCollectionRef, (snapshot) => {
+        this.allProducts = [];
+        snapshot.forEach((doc) => {
+          const productData = doc.data();
+          this.allProducts.push(productData);
+          console.log('in user-detail sind all products', this.allProducts);
+        });
+      });
+    } catch (error) {
+      console.error('Fehler beim Laden der Produkt-Daten:', error);
+    }
   }
 }
