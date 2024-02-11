@@ -1,0 +1,63 @@
+<div class="dialog-container">
+  <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+
+  <h1 mat-dialog-title>Edit Product</h1>
+  <div mat-dialog-content>
+    <div>
+      <div>
+        <div class="pt-6">
+          <mat-form-field appearance="outline" class="mr-16">
+            <mat-label>Product Name</mat-label>
+            <input
+              type="text"
+              [disabled]="loading"
+              [(ngModel)]="product.productName"
+              matInput
+              placeholder="Product Name"
+              required
+            />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Price per Unit</mat-label>
+            <input
+              type="number"
+              [disabled]="loading"
+              [(ngModel)]="product.price"
+              matInput
+              placeholder="Price per Unit"
+              required
+            />
+          </mat-form-field>
+        </div>
+
+        <div>
+          <mat-form-field appearance="outline">
+            <mat-label>Type</mat-label>
+            <mat-select [(ngModel)]="selectedValue" name="productType">
+              <mat-option
+                *ngFor="let productTypeOption of productType"
+                [value]="productTypeOption.value"
+              >
+                {{ productTypeOption.viewValue }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div mat-dialog-actions>
+        <button (click)="dialogRef.close()" [disabled]="loading" mat-button>
+          Cancel
+        </button>
+        <button
+          (click)="saveProduct()"
+          [disabled]="loading || isSaveButtonDisabled()"
+          mat-button
+          cdkFocusInitial
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

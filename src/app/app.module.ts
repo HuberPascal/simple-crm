@@ -47,6 +47,8 @@ import { GuestDashboardComponent } from './guest-dashboard/guest-dashboard.compo
 import { GuestUserComponent } from './guest-user/guest-user.component';
 import { ProductsComponent } from './products/products.component';
 import { DialogAddProductComponent } from './dialog-add-product/dialog-add-product.component';
+import { DialogEditProductComponent } from './dialog-edit-product/dialog-edit-product.component';
+import { DialogDeleteProductComponent } from './dialog-delete-product/dialog-delete-product.component';
 
 @NgModule({
   declarations: [
@@ -70,6 +72,8 @@ import { DialogAddProductComponent } from './dialog-add-product/dialog-add-produ
     GuestUserComponent,
     ProductsComponent,
     DialogAddProductComponent,
+    DialogEditProductComponent,
+    DialogDeleteProductComponent,
   ],
   imports: [
     BrowserModule,

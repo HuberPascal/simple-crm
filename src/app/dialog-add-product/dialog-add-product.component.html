@@ -8,7 +8,7 @@
         <mat-label>Product Name</mat-label>
         <input
           [disabled]="loading"
-          [(ngModel)]="product.product"
+          [(ngModel)]="product.productName"
           matInput
           placeholder="Product"
           name="product"
@@ -35,10 +35,10 @@
         <mat-label>Type</mat-label>
         <mat-select [(ngModel)]="selectedValue" name="type" required="">
           <mat-option
-            *ngFor="let orderTypeOption of orderType"
-            [value]="orderTypeOption.value"
+            *ngFor="let productTypeOption of productType"
+            [value]="productTypeOption.value"
           >
-            {{ orderTypeOption.viewValue }}
+            {{ productTypeOption.viewValue }}
           </mat-option>
         </mat-select>
       </mat-form-field>

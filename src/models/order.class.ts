@@ -18,7 +18,7 @@ export class Order {
     this.orderStatus = obj ? obj.orderStatus : '';
     this.price = obj ? obj.price : '';
     this.userId = obj ? obj.userId : ''; // Initialisieren der userId
-    this.orderId = obj ? obj.orderId : ''; // Initialisieren der userId
+    this.orderId = obj ? obj.orderId : ''; // Initialisieren der orderId
   }
 
   public toJSON() {

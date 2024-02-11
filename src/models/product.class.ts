@@ -3,19 +3,21 @@ import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 
 export class Product {
-  product: string;
+  productName: string;
   price: number;
   orderType: string | undefined;
+  productId: string;
 
   constructor(obj?: any) {
-    this.product = obj ? obj.product : '';
+    this.productName = obj ? obj.productName : '';
     this.price = obj ? obj.price : '';
     this.orderType = obj ? obj.orderType : '';
+    this.productId = obj ? obj.productId : '';
   }
 
   public toJSON() {
     return {
-      product: this.product,
+      productName: this.productName,
       price: this.price,
       orderType: this.orderType,
     };

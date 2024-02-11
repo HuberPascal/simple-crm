@@ -5,7 +5,7 @@ import { Firestore } from '@angular/fire/firestore';
 import { AuthService } from '../services/firebase-auth.service';
 import { addDoc, collection } from 'firebase/firestore';
 
-interface OrderType {
+interface ProductType {
   value: string;
   viewValue: string;
 }
@@ -61,10 +61,12 @@ export class DialogAddProductComponent {
   }
 
   isSaveButtonDisabled(): boolean {
-    return !this.product.price || !this.product.product || !this.selectedValue;
+    return (
+      !this.product.price || !this.product.productName || !this.selectedValue
+    );
   }
 
-  orderType: OrderType[] = [
+  productType: ProductType[] = [
     { value: 'Product', viewValue: 'Product' },
     { value: 'Service', viewValue: 'Service' },
   ];

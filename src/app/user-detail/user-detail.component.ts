@@ -89,25 +89,6 @@ export class UserDetailComponent {
     });
   }
 
-  // getGuestUSer(userId: any) {
-  //   onSnapshot(doc(this.db, 'guest_users', userId), (doc) => {
-  //     console.log('Abgerufene Daten', doc.data());
-  //     if (doc.exists()) {
-  //       const userData = doc.data();
-  //       // userData.birthDate ist ein Firebase Timestamp
-  //       if (userData['birthDate']) {
-  //         const userObj = this.convertTimestampToDate(userData['birthDate']);
-  //         userData['birthDate'] = this.formatDateBirthday(userObj);
-  //       }
-  //       this.user = new User(userData);
-  //       // this.user = new User(doc.data());
-  //     } else {
-  //       console.log('Keine Daten gefunden!');
-  //     }
-  //     console.log('Abgerufener User', this.user);
-  //   });
-  // }
-
   editMenu() {
     const dialog = this.dialog.open(DialogEditAddressComponent);
     dialog.componentInstance.user = new User(this.user.toJSON());
