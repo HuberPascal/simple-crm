@@ -54,3 +54,25 @@
 .delete {
   color: red;
 }
+
+.product-filter {
+  margin-bottom: 30px;
+
+  .product-filter-btn {
+    display: flex;
+    gap: 20px;
+
+    button {
+      padding: 15px 20px;
+      border: none;
+      border-radius: 5px;
+      background-color: #7090d7;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .selected {
+      background-color: var(--primary-color);
+    }
+  }
+}

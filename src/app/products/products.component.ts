@@ -18,6 +18,10 @@ export class ProductsComponent implements OnInit {
   allProducts: any[] = [];
   order: Order = new Order();
   product: Product = new Product();
+  selectedFilter: string = 'Product Name'; // Standardmäßig nach 'Product Name' filtern
+  filteredProducts: any[] = []; // Gefilterte Benutzerdaten
+  // allProducts: any[] = []; // Ihre vollständigen Benutzerdaten
+
   // productId: any;
 
   constructor(
@@ -50,6 +54,7 @@ export class ProductsComponent implements OnInit {
           productData['productId'] = productId;
           this.allProducts.push(productData);
         });
+        this.filterProducts();
       });
     } catch (error) {
       console.error('Fehler beim Aktualisieren der Produkte-Daten:', error);
@@ -70,5 +75,29 @@ export class ProductsComponent implements OnInit {
   async deleteProduct(product: string) {
     const dialog = this.dialog.open(DialogDeleteProductComponent);
     dialog.componentInstance.product = new Product(product);
+  }
+
+  // User Filtern
+  filterProducts() {
+    switch (this.selectedFilter) {
+      case 'Product Name':
+        this.filteredProducts = this.allProducts.sort((a, b) =>
+          a.productName.localeCompare(b.productName)
+        );
+        break;
+      case 'Price per Unit':
+        this.filteredProducts = this.allProducts.sort(
+          (a, b) => a.price - b.price
+        );
+        break;
+      case 'Type':
+        this.filteredProducts = this.allProducts.sort((a, b) =>
+          a.orderType.localeCompare(b.orderType)
+        );
+        break;
+      default:
+        this.filteredProducts = this.allProducts;
+        break;
+    }
   }
 }

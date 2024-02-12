@@ -2,6 +2,30 @@
   <h1><mat-icon>inventory_2</mat-icon> Products</h1>
 </div>
 
+<div class="product-filter">
+  <p>Filter by:</p>
+  <div class="product-filter-btn">
+    <button
+      [class.selected]="selectedFilter === 'Product Name'"
+      (click)="selectedFilter = 'Product Name'; filterProducts()"
+    >
+      Product Name
+    </button>
+    <button
+      [class.selected]="selectedFilter === 'Price per Unit'"
+      (click)="selectedFilter = 'Price per Unit'; filterProducts()"
+    >
+      Price per Unit
+    </button>
+    <button
+      [class.selected]="selectedFilter === 'Type'"
+      (click)="selectedFilter = 'Type'; filterProducts()"
+    >
+      Type
+    </button>
+  </div>
+</div>
+
 <mat-card>
   <table class="order-table">
     <tr>
