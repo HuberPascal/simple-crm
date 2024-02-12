@@ -42,42 +42,12 @@ export class DialogAddOrderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // this.getProducts();
     this.productName = this.allProducts.map((product) => ({
       value: product.productName,
       viewValue: `${product.productName} - ${product.price} CHF`, // Füge den Produktnamen und den Preis hinzu
       price: product.price,
     }));
-    console.log('der preis ist', this.allProducts);
   }
-
-  // async getProducts() {
-  //   // const firebaseData = collection(this.db, 'products');
-  //   const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
-
-  //   if (isAnonymous) {
-  //     await this.getProductData('guest_products');
-  //   } else {
-  //     await this.getProductData('products');
-  //   }
-  // }
-
-  // async getProductData(product: string) {
-  //   try {
-  //     const productCollectionRef = collection(this.db, product);
-  //     onSnapshot(productCollectionRef, (snapshot) => {
-  //       this.allProducts = [];
-  //       snapshot.forEach((doc) => {
-  //         // this.allProducts = [];
-  //         const productData = doc.data();
-  //         this.allProducts.push(productData);
-  //         console.log('allProducts sind:', this.allProducts);
-  //       });
-  //     });
-  //   } catch (error) {
-  //     console.error('Fehler beim Laden der Produkt-Daten:', error);
-  //   }
-  // }
 
   async saveOrder() {
     this.loading = true;

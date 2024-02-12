@@ -116,6 +116,8 @@ export class UserDetailComponent {
 
     // Die Richtige Order aufrufen --> orderId
     dialog.componentInstance.order = new Order(order);
+    dialog.componentInstance.productValue = this.product.productName;
+    dialog.componentInstance.allProducts = this.allProducts;
   }
 
   deleteUser() {

@@ -8,11 +8,11 @@
   </mat-card>
   <mat-card>
     <span><mat-icon>inventory_2</mat-icon>Products</span>
-    <p>11</p>
+    <p>{{ getNumberOfProduct }}</p>
   </mat-card>
   <mat-card>
     <span> <mat-icon>bar_chart_4_bars</mat-icon>Revenue</span>
-    <p>{{ totalAmount }} CHF</p>
+    <p>{{ formatNumberWithApostrophe(totalAmount) }} CHF</p>
   </mat-card>
 </div>
 

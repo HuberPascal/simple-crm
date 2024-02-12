@@ -18,6 +18,7 @@ export class DashboardComponent implements OnInit {
   displayName: string = '';
   allUsers: any = '';
   numberOfUsers: number = 0;
+  getNumberOfProduct: number = 0;
   totalAmount: number = 0;
   city: string = '';
   allCities: string[] = [];
@@ -34,6 +35,7 @@ export class DashboardComponent implements OnInit {
     // this.createChartProducts();
     this.getUserByName();
     this.getNumberOfUsers();
+    this.getNumberOfProducts();
     this.calculateTotalOfAllOrders();
     this.extractCitiesFromUserData();
     this.extractProductsFromUserData();
@@ -134,6 +136,17 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  async getProductFirebaseData() {
+    const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
+    let firebaseData;
+
+    if (isAnonymous) {
+      return (firebaseData = collection(this.db, 'guest_products'));
+    } else {
+      return (firebaseData = collection(this.db, 'products'));
+    }
+  }
+
   async getOrderFirebaseData() {
     const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
     let firebaseData;
@@ -149,6 +162,12 @@ export class DashboardComponent implements OnInit {
     const firebaseData = await this.getUserFirebaseData();
     const querySnapshot = await getDocs(firebaseData);
     this.numberOfUsers = querySnapshot.size;
+  }
+
+  async getNumberOfProducts() {
+    const firebaseData = await this.getProductFirebaseData();
+    const querySnapshot = await getDocs(firebaseData);
+    this.getNumberOfProduct = querySnapshot.size;
   }
 
   async calculateTotalOfAllOrders() {
@@ -272,5 +291,9 @@ export class DashboardComponent implements OnInit {
       accumulator[element] = (accumulator[element] || 0) + 1;
       return accumulator;
     }, {});
+  }
+
+  formatNumberWithApostrophe(number: number): string {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'");
   }
 }

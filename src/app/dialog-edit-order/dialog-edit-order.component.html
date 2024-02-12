@@ -6,7 +6,7 @@
     <div>
       <div>
         <div class="pt-6">
-          <mat-form-field appearance="outline" class="mr-16 full-width">
+          <!-- <mat-form-field appearance="outline" class="mr-16 full-width">
             <mat-label>Product Name</mat-label>
             <input
               [disabled]="loading"
@@ -15,7 +15,23 @@
               placeholder="Product Name"
               required
             />
-          </mat-form-field>
+          </mat-form-field> -->
+
+          <!-- <mat-form-field appearance="outline" class="mr-16 full-width">
+            <mat-label>Product Name</mat-label>
+            <mat-select
+              [(ngModel)]="selectedProduct"
+              name="productName"
+              required
+            >
+              <mat-option
+                *ngFor="let product of productName"
+                [value]="product.value"
+              >
+                {{ product.viewValue }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field> -->
 
           <!-- <mat-form-field appearance="outline">
             <mat-label>Price per Unit</mat-label>
