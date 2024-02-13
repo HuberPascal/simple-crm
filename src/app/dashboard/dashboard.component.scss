@@ -1,3 +1,7 @@
+h1 {
+  color: #fff;
+}
+
 .overview {
   display: flex;
   justify-content: space-between;
@@ -9,6 +13,8 @@
     flex-direction: column;
     gap: 15px;
     padding: 16px;
+    background-color: #282953;
+    color: #fff;
   }
 
   span {
@@ -21,6 +27,8 @@
   p {
     text-align: center;
     font-size: 24px;
+    font-weight: 600;
+    color: #3151ff;
   }
 }
 
@@ -29,6 +37,8 @@
   margin-top: 30px;
   border-radius: 4px;
   padding: 16px;
+  background-color: #282953;
+  color: #fff;
 
   span {
     display: flex;
@@ -57,6 +67,8 @@
     border-radius: 4px;
     padding: 16px;
     width: 70%;
+    background-color: #282953;
+    color: #fff;
   }
 
   .card-container {
@@ -69,10 +81,18 @@
       display: flex;
       gap: 15px;
       padding: 16px;
+      background-color: #282953;
+      color: #fff;
 
       span {
         display: flex;
         align-items: center;
+      }
+
+      p {
+        color: #3151ff;
+        font-size: 16px;
+        font-weight: 600;
       }
     }
   }

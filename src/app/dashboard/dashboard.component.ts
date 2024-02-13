@@ -62,14 +62,14 @@ export class DashboardComponent implements OnInit {
             label: 'Cities',
             data: [this.cityCounts[0], this.cityCounts[1], this.cityCounts[2]],
             backgroundColor: [
-              'rgba(255, 99, 132, 0.2)',
-              'rgba(255, 159, 64, 0.2)',
-              'rgba(255, 205, 86, 0.2)',
+              'rgba(255, 99, 132, 0.4)',
+              'rgba(255, 159, 64, 0.4)',
+              'rgba(255, 205, 86, 0.4)',
             ],
             borderColor: [
-              'rgb(255, 99, 132)',
-              'rgb(255, 159, 64)',
-              'rgb(255, 205, 86)',
+              'rgb(255, 99, 132, 1.0)',
+              'rgb(255, 159, 64, 1.0)',
+              'rgb(255, 205, 86, 1.0)',
             ],
             borderWidth: 1,
           },
@@ -80,9 +80,24 @@ export class DashboardComponent implements OnInit {
         scales: {
           x: {
             beginAtZero: true,
+            ticks: {
+              color: '#fff',
+            },
+          },
+          y: {
+            ticks: {
+              color: '#fff',
+            },
           },
         },
         aspectRatio: 4, // Ändern Sie diesen Wert, um die Höhe anzupassen
+        plugins: {
+          legend: {
+            labels: {
+              color: '#fff',
+            },
+          },
+        },
       },
     });
   }
@@ -106,14 +121,14 @@ export class DashboardComponent implements OnInit {
               this.productsCounts[2],
             ],
             backgroundColor: [
-              'rgba(255, 99, 132, 0.2)',
-              'rgba(255, 159, 64, 0.2)',
-              'rgba(255, 205, 86, 0.2)',
+              'rgba(54, 162, 235, 0.4)',
+              'rgba(255, 206, 86, 0.4)',
+              'rgba(75, 192, 192, 0.4)',
             ],
             borderColor: [
-              'rgb(255, 99, 132)',
-              'rgb(255, 159, 64)',
-              'rgb(255, 205, 86)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
             ],
             hoverOffset: 4,
           },
@@ -121,6 +136,13 @@ export class DashboardComponent implements OnInit {
       },
       options: {
         aspectRatio: 4, // Ändern Sie diesen Wert, um die Höhe anzupassen
+        plugins: {
+          legend: {
+            labels: {
+              color: '#fff',
+            },
+          },
+        },
       },
     });
   }

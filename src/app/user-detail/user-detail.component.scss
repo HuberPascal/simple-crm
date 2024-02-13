@@ -56,6 +56,8 @@
 
   th {
     text-align: start;
+    color: #3151ff;
+
     &:first-child {
       padding-left: 16px;
     }
@@ -71,6 +73,10 @@
 mat-card {
   width: 100%;
   height: auto;
+  padding: 16px 0;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+  background-color: #282953;
+  color: #fff;
 
   h2 {
     text-align: center;
@@ -87,7 +93,7 @@ mat-card {
 }
 
 .add-order-btn {
-  position: absolute;
+  position: fixed;
   right: 56px;
   bottom: 56px;
 }

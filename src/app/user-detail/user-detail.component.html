@@ -17,22 +17,7 @@
   </div>
 </mat-card>
 
-<mat-card class="mt-32">
-  <button
-    [matMenuTriggerFor]="addressMenu"
-    class="pin-right-upper-corner"
-    mat-icon-button
-    aria-label="Example icon button with a vertical three dot icon"
-  >
-    <mat-icon>more_vert</mat-icon>
-  </button>
-
-  <mat-menu #addressMenu="matMenu">
-    <button mat-menu-item (click)="editMenu()">Edit</button>
-  </mat-menu>
-</mat-card>
-
-<div class="user-detail-container">
+<div class="user-detail-container mt-32">
   <mat-card class="padding-16">
     <button
       [matMenuTriggerFor]="userMenu"
