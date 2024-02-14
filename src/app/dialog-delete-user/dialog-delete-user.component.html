@@ -1,8 +1,8 @@
 <h1 mat-dialog-title>Delete {{ user.firstName }} {{ user.lastName }}</h1>
 <div mat-dialog-content>
   Are you sure you want to permanently delete
-  <b>{{ user.firstName }} {{ user.lastName }}</b> from the CRM system? This
-  action cannot be undone.
+  <span class="warn">{{ user.firstName }} {{ user.lastName }}</span>
+  from the CRM system? This action cannot be undone.
 </div>
 <div mat-dialog-actions>
   <button mat-button mat-dialog-close>Cancel</button>

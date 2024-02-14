@@ -69,7 +69,7 @@
 
         <button
           [disabled]="!ispassword"
-          [ngClass]="{ verdeckt: !ismail || !ispassword }"
+          [ngClass]="{ disabled: !ismail || !ispassword }"
           type="submit"
         >
           Sign up

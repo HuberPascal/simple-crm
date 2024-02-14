@@ -1,4 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+@import "@angular/material/prebuilt-themes/indigo-pink.css";
 
 html,
 body {
@@ -47,8 +48,14 @@ body {
   top: -16px;
 }
 
+.warn {
+  color: var(--warn-color);
+  font-weight: 600;
+}
+
 :root {
   --primary-color: #3f51b5; /* Beispiel für eine Primärfarbe */
   --secondary-color: #ff9900; /* Beispiel für eine Sekundärfarbe */
   --text-color: #333; /* Beispiel für eine Textfarbe */
+  --warn-color: #d32f2f;
 }

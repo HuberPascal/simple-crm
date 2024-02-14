@@ -5,12 +5,12 @@
   left: 0;
   right: 0;
   z-index: 1000;
-  background-color: rgba(0, 0, 0, 0.2);
+  background: linear-gradient(to bottom, #4d5cb3, transparent);
 }
 
 .sign-in-container {
   width: 300px;
-  background-color: wheat;
+  background-color: #fff;
   padding: 24px 32px;
   border-radius: 2px;
   font-family: "Roboto", sans-serif;
@@ -43,7 +43,7 @@
     font-weight: 500;
 
     &:hover {
-      background-color: #5b51d8;
+      background-color: #3f51b5;
     }
   }
 }
@@ -107,6 +107,7 @@
 
   span {
     cursor: pointer;
+    font-weight: 600;
   }
 }
 
@@ -125,6 +126,7 @@
   a {
     text-decoration: none;
     color: #0000ff;
+    font-weight: 600;
   }
 }
 

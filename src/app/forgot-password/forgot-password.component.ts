@@ -30,14 +30,15 @@ export class ForgotPasswordComponent {
         console.log('Email um das Passwort zurück zu setzen wurde verand');
 
         setTimeout(() => {
+          // this.sendMail = true;
           this.fadeOutBtn = true;
-
-          setTimeout(() => {
-            this.sendMail = false;
-            this.fadeOutBtn = false;
-            this.router.navigate(['/sign-in']); // Ersetzen Sie '/home' durch den Pfad Ihrer Wahl
-          }, 500);
         }, 3000);
+
+        setTimeout(() => {
+          // this.sendMail = false;
+          this.fadeOutBtn = false;
+        }, 1000);
+        this.router.navigate(['/sign-in']);
       })
       .catch((error) => {
         // Fehlerbehandlung

@@ -1,9 +1,9 @@
 .user-detail-header {
-  min-height: 250px;
-  background-color: #f6a30b;
+  min-height: 180px;
+  background-color: #3f51b5;
   display: flex;
   flex-direction: row;
-  align-items: flex-end;
+  align-items: center;
   padding: 16px;
 
   img {
@@ -21,9 +21,14 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
+  gap: 5px;
 
   h2 {
     margin-bottom: 0;
+  }
+
+  a {
+    color: #fff;
   }
 }
 
@@ -40,6 +45,16 @@
 
   tr {
     border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+
+    &:hover {
+      background-color: #3f51b5;
+      cursor: pointer;
+    }
+
+    &:first-child {
+      background-color: initial;
+      cursor: unset;
+    }
   }
 
   &:last-child {
@@ -57,9 +72,16 @@
   th {
     text-align: start;
     color: #3151ff;
+    font-weight: 600;
 
     &:first-child {
       padding-left: 16px;
+    }
+  }
+
+  button {
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.3);
     }
   }
 }
@@ -124,4 +146,9 @@ mat-card {
 
 .bold {
   font-weight: 600;
+}
+
+.purchases-container {
+  color: #fff;
+  font-size: 14px;
 }
