@@ -49,6 +49,7 @@ import { ProductsComponent } from './products/products.component';
 import { DialogAddProductComponent } from './dialog-add-product/dialog-add-product.component';
 import { DialogEditProductComponent } from './dialog-edit-product/dialog-edit-product.component';
 import { DialogDeleteProductComponent } from './dialog-delete-product/dialog-delete-product.component';
+import { SidenavComponent } from './sidenav/sidenav.component';
 
 @NgModule({
   declarations: [
@@ -74,6 +75,7 @@ import { DialogDeleteProductComponent } from './dialog-delete-product/dialog-del
     DialogAddProductComponent,
     DialogEditProductComponent,
     DialogDeleteProductComponent,
+    SidenavComponent,
   ],
   imports: [
     BrowserModule,
@@ -112,7 +114,7 @@ import { DialogDeleteProductComponent } from './dialog-delete-product/dialog-del
     AngularFireAuthModule,
     // provideDatabase(() => getDatabase()),
   ],
-  providers: [provideClientHydration()],
+  providers: [provideClientHydration(), DashboardComponent],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

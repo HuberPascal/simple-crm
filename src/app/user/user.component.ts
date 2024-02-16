@@ -29,7 +29,7 @@ export class UserComponent {
   }
 
   async ngOnInit(): Promise<void> {
-    this.isUserLoggedIn = await this.authService.checkAuth();
+    this.isUserLoggedIn = await this.authService.checkAuthLoggedInAsUser();
     const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
 
     if (isAnonymous) {

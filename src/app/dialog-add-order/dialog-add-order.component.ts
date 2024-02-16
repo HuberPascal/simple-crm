@@ -55,8 +55,6 @@ export class DialogAddOrderComponent implements OnInit {
     try {
       const userId = this.userId;
       const userData = this.order.toJSON(); // Holen Sie sich das JSON-Objekt von der User-Klasse
-      // const userDataProducts = this.product.toJSON(); // Holen Sie sich das JSON-Objekt von der User-Klasse
-      console.log('userData ist', userData);
 
       // Holen Sie sich den ausgewählten Order Status
       const selectedOrderStatus = this.selectedValue;
@@ -65,8 +63,6 @@ export class DialogAddOrderComponent implements OnInit {
       if (selectedProduct) {
         userData.product = selectedProduct.name;
         userData.price = selectedProduct.price;
-        // console.log('selectedProduct ist', productName);
-        // console.log('selectedProduct ist', productPrice);
       }
 
       // Fügen Sie die userId zum userData hinzu
@@ -89,24 +85,12 @@ export class DialogAddOrderComponent implements OnInit {
         const docRef = await addDoc(collection(this.db, 'orders'), userData);
         console.log(`Added JSON document with ID: ${docRef.id}`);
       }
-
-      // if (this.userService.isGuestUser) {
-
-      // } else {
-
-      // }
     } catch (error) {
       console.error('Fehler beim Schreiben der Dokumente (JSON):', error);
     }
     this.loading = false;
     this.dialogRef.close();
   }
-
-  // addProduct(product: any) {
-  //   console.log('es geht');
-  //   this.item.push(product);
-  //   console.log('das array item hat', this.item);
-  // }
 
   orderStatus: OrderStatus[] = [
     { value: 'Processing', viewValue: 'Processing' },

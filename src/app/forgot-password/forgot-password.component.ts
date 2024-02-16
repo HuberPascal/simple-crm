@@ -32,13 +32,13 @@ export class ForgotPasswordComponent {
         setTimeout(() => {
           // this.sendMail = true;
           this.fadeOutBtn = true;
-        }, 3000);
 
-        setTimeout(() => {
-          // this.sendMail = false;
-          this.fadeOutBtn = false;
-        }, 1000);
-        this.router.navigate(['/sign-in']);
+          setTimeout(() => {
+            // this.sendMail = false;
+            this.fadeOutBtn = false;
+          }, 1000);
+          this.router.navigate(['/sign-in']);
+        }, 3000);
       })
       .catch((error) => {
         // Fehlerbehandlung

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import Chart from 'chart.js/auto';
+import Chart, { BarController } from 'chart.js/auto';
 import { AuthService } from '../services/firebase-auth.service';
 import { UserComponent } from '../user/user.component';
 import { Firestore, docSnapshots } from '@angular/fire/firestore';
@@ -32,7 +32,6 @@ export class DashboardComponent implements OnInit {
   constructor(private authService: AuthService, public db: Firestore) {}
 
   ngOnInit(): void {
-    // this.createChartProducts();
     this.getUserByName();
     this.getNumberOfUsers();
     this.getNumberOfProducts();
@@ -41,110 +40,9 @@ export class DashboardComponent implements OnInit {
     this.extractProductsFromUserData();
   }
 
-  getUserByName() {
-    this.authService.getUserName(); // displayName-Wert aktualisieren
+  async getUserByName() {
+    await this.authService.getUserName(); // displayName-Wert aktualisieren
     this.displayName = this.authService.displayName;
-  }
-
-  createChartResidence() {
-    console.log('hat es bereits einen wert?', this.topThreeCities);
-    this.chartResidence = new Chart('MyChartResidence', {
-      type: 'bar', // Typ des horizontalen Balkendiagramms
-
-      data: {
-        labels: [
-          this.topThreeCities[0],
-          this.topThreeCities[1],
-          this.topThreeCities[2],
-        ],
-        datasets: [
-          {
-            label: 'Cities',
-            data: [this.cityCounts[0], this.cityCounts[1], this.cityCounts[2]],
-            backgroundColor: [
-              'rgba(255, 99, 132, 0.4)',
-              'rgba(255, 159, 64, 0.4)',
-              'rgba(255, 205, 86, 0.4)',
-            ],
-            borderColor: [
-              'rgb(255, 99, 132, 1.0)',
-              'rgb(255, 159, 64, 1.0)',
-              'rgb(255, 205, 86, 1.0)',
-            ],
-            borderWidth: 1,
-          },
-        ],
-      },
-      options: {
-        indexAxis: 'y',
-        scales: {
-          x: {
-            beginAtZero: true,
-            ticks: {
-              color: '#fff',
-            },
-          },
-          y: {
-            ticks: {
-              color: '#fff',
-            },
-          },
-        },
-        aspectRatio: 4, // Ändern Sie diesen Wert, um die Höhe anzupassen
-        plugins: {
-          legend: {
-            labels: {
-              color: '#fff',
-            },
-          },
-        },
-      },
-    });
-  }
-
-  createChartProducts() {
-    this.chartProducts = new Chart('MyChartProducts', {
-      type: 'doughnut',
-
-      data: {
-        labels: [
-          this.topThreeProducts[0],
-          this.topThreeProducts[1],
-          this.topThreeProducts[2],
-        ],
-        datasets: [
-          {
-            label: 'Products',
-            data: [
-              this.productsCounts[0],
-              this.productsCounts[1],
-              this.productsCounts[2],
-            ],
-            backgroundColor: [
-              'rgba(54, 162, 235, 0.4)',
-              'rgba(255, 206, 86, 0.4)',
-              'rgba(75, 192, 192, 0.4)',
-            ],
-            borderColor: [
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)',
-            ],
-            hoverOffset: 4,
-          },
-        ],
-      },
-      options: {
-        aspectRatio: 4, // Ändern Sie diesen Wert, um die Höhe anzupassen
-        plugins: {
-          legend: {
-            labels: {
-              color: '#fff',
-            },
-          },
-        },
-      },
-    });
   }
 
   async getUserFirebaseData() {
@@ -283,7 +181,6 @@ export class DashboardComponent implements OnInit {
         const orderData = doc.data();
         this.allProducts.push(orderData['product']);
       });
-      console.log('Produkte aus allProducts sind', this.allProducts);
     } catch (error) {}
     this.productCount();
   }
@@ -317,5 +214,105 @@ export class DashboardComponent implements OnInit {
 
   formatNumberWithApostrophe(number: number): string {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'");
+  }
+
+  createChartResidence() {
+    this.chartResidence = new Chart('MyChartResidence', {
+      type: 'bar', // Typ des horizontalen Balkendiagramms
+
+      data: {
+        labels: [
+          this.topThreeCities[0],
+          this.topThreeCities[1],
+          this.topThreeCities[2],
+        ],
+        datasets: [
+          {
+            label: 'Cities',
+            data: [this.cityCounts[0], this.cityCounts[1], this.cityCounts[2]],
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.4)',
+              'rgba(255, 159, 64, 0.4)',
+              'rgba(255, 205, 86, 0.4)',
+            ],
+            borderColor: [
+              'rgb(255, 99, 132, 1.0)',
+              'rgb(255, 159, 64, 1.0)',
+              'rgb(255, 205, 86, 1.0)',
+            ],
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        indexAxis: 'y',
+        scales: {
+          x: {
+            beginAtZero: true,
+            ticks: {
+              color: '#fff',
+            },
+          },
+          y: {
+            ticks: {
+              color: '#fff',
+            },
+          },
+        },
+        aspectRatio: 4, // Ändern Sie diesen Wert, um die Höhe anzupassen
+        plugins: {
+          legend: {
+            labels: {
+              color: '#fff',
+            },
+          },
+        },
+      },
+    });
+  }
+
+  createChartProducts() {
+    this.chartProducts = new Chart('MyChartProducts', {
+      type: 'doughnut',
+
+      data: {
+        labels: [
+          this.topThreeProducts[0],
+          this.topThreeProducts[1],
+          this.topThreeProducts[2],
+        ],
+        datasets: [
+          {
+            label: 'Products',
+            data: [
+              this.productsCounts[0],
+              this.productsCounts[1],
+              this.productsCounts[2],
+            ],
+            backgroundColor: [
+              'rgba(54, 162, 235, 0.4)',
+              'rgba(255, 206, 86, 0.4)',
+              'rgba(75, 192, 192, 0.4)',
+            ],
+            borderColor: [
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+            ],
+            hoverOffset: 4,
+          },
+        ],
+      },
+      options: {
+        aspectRatio: 4, // Ändern Sie diesen Wert, um die Höhe anzupassen
+        plugins: {
+          legend: {
+            labels: {
+              color: '#fff',
+            },
+          },
+        },
+      },
+    });
   }
 }

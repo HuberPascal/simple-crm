@@ -46,7 +46,7 @@ export class AuthService implements OnInit {
     }
   }
 
-  getUserName() {
+  async getUserName() {
     const user_auth: any = this.auth.currentUser;
 
     if (user_auth) {
@@ -81,14 +81,30 @@ export class AuthService implements OnInit {
     return signInWithPopup(this.auth, provider);
   }
 
+  logout() {
+    return signOut(this.auth);
+  }
+
   /**
    * Checks the authentication state of the user.
    * @returns A promise that resolves to a boolean value indicating whether the user is authenticated or not.
    */
-  checkAuth() {
+  checkAuthLoggedInAsUser() {
     return new Promise<boolean>(async (resolve, reject) => {
       onAuthStateChanged(this.auth, (user) => {
         if (user && !user.isAnonymous) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+    });
+  }
+
+  checkAuth() {
+    return new Promise<boolean>(async (resolve, reject) => {
+      onAuthStateChanged(this.auth, (user) => {
+        if (user) {
           resolve(true);
         } else {
           resolve(false);
@@ -109,9 +125,5 @@ export class AuthService implements OnInit {
         }
       });
     });
-  }
-
-  logout() {
-    return signOut(this.auth);
   }
 }

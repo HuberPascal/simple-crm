@@ -31,7 +31,6 @@ export class DialogAddProductComponent {
 
     try {
       const userData = this.product.toJSON(); // Holen Sie sich das JSON-Objekt von der User-Klasse
-      console.log('userData ist', userData);
 
       // Holen Sie sich den ausgewählten Order Status
       const selectedTypeStatus = this.selectedValue;

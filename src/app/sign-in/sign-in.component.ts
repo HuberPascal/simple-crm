@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../services/firebase-auth.service';
 import { Router } from '@angular/router';
-import { AppComponent } from '../app.component';
+import { SidenavComponent } from '../sidenav/sidenav.component';
 import { UserService } from '../user.service';
 
 @Component({
@@ -19,7 +19,7 @@ export class SignInComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private appComponent: AppComponent,
+    private SidenavComponent: SidenavComponent,
     private userService: UserService
   ) {}
 
@@ -29,9 +29,10 @@ export class SignInComponent {
       .login(email, password)
       .then(() => {
         this.authService.getUserName();
-        this.appComponent.isDrawerOpened = true;
+        this.SidenavComponent.loggedIn = true;
+        this.SidenavComponent.isDrawerOpened = true;
         console.log('Login erfolgreich');
-        this.appComponent.isUserLoggedIn = true;
+        this.SidenavComponent.isUserLoggedIn = true;
 
         // Erfolgreich angemeldet, Benutzer weiterleiten
         this.router.navigate(['dashboard']);
@@ -51,7 +52,7 @@ export class SignInComponent {
     this.authService
       .googleLogin()
       .then(() => {
-        this.appComponent.isDrawerOpened = true;
+        this.SidenavComponent.isDrawerOpened = true;
         // Erfolgreich eingeloggt, Benutzer weiterleiten
         console.log('Erfolgreich über Google eingeloggt');
 
@@ -69,7 +70,8 @@ export class SignInComponent {
     this.authService
       .guestLogin()
       .then(() => {
-        this.appComponent.isDrawerOpened = true;
+        this.SidenavComponent.loggedIn = true;
+        this.SidenavComponent.isDrawerOpened = true;
         console.log('Gast Login erfolgreich');
         // this.userService.isGuestUser = true;
 

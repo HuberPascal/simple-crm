@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Firestore } from '@angular/fire/firestore';
 import { addDoc, collection } from 'firebase/firestore';
 import { updateProfile } from 'firebase/auth';
+import { DashboardComponent } from '../dashboard/dashboard.component';
 
 @Component({
   selector: 'app-register',
@@ -28,8 +29,7 @@ export class RegisterComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
-    public db: Firestore,
-    private auth: AuthService
+    public db: Firestore
   ) {}
 
   validateMail() {
