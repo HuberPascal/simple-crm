@@ -114,7 +114,7 @@ import { SidenavComponent } from './sidenav/sidenav.component';
     AngularFireAuthModule,
     // provideDatabase(() => getDatabase()),
   ],
-  providers: [provideClientHydration(), DashboardComponent],
+  providers: [provideClientHydration()],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

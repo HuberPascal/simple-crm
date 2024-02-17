@@ -21,7 +21,7 @@ export class SidenavComponent {
   async ngOnInit(): Promise<void> {
     this.isUserLoggedIn = await this.authService.checkAuthLoggedInAsUser();
     this.loggedIn = await this.authService.checkAuth();
-    this.isDrawerOpened = !this.isDrawerOpened;
+    // this.isDrawerOpened = !this.isDrawerOpened;
   }
 
   logout() {
@@ -43,5 +43,13 @@ export class SidenavComponent {
       this.isDrawerOpened = !this.isDrawerOpened;
       this.drawer.toggle();
     }
+  }
+
+  checkIfEntryRoutes() {
+    const currentRoute = this.router.url;
+    return (
+      currentRoute.includes('/sign-in') || currentRoute.includes('/register'),
+      currentRoute.includes('/forgot-password')
+    );
   }
 }

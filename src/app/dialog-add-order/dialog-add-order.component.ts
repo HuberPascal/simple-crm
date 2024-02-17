@@ -7,6 +7,7 @@ import { addDoc, collection, getDoc, onSnapshot } from 'firebase/firestore';
 import { UserService } from '../user.service';
 import { AuthService } from '../services/firebase-auth.service';
 import { user } from '@angular/fire/auth';
+import { DatabaseService } from '../services/database.service';
 
 interface OrderStatus {
   value: string;
@@ -38,7 +39,8 @@ export class DialogAddOrderComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<DialogAddOrderComponent>,
     public db: Firestore,
-    private authService: AuthService
+    private authService: AuthService,
+    public database: DatabaseService
   ) {}
 
   ngOnInit(): void {
@@ -49,48 +51,48 @@ export class DialogAddOrderComponent implements OnInit {
     }));
   }
 
-  async saveOrder() {
-    this.loading = true;
+  // async saveOrder() {
+  //   this.loading = true;
 
-    try {
-      const userId = this.userId;
-      const userData = this.order.toJSON(); // Holen Sie sich das JSON-Objekt von der User-Klasse
+  //   try {
+  //     const userId = this.userId;
+  //     const userData = this.order.toJSON(); // Holen Sie sich das JSON-Objekt von der User-Klasse
 
-      // Holen Sie sich den ausgewählten Order Status
-      const selectedOrderStatus = this.selectedValue;
-      const selectedProduct = this.selectedProduct;
+  //     // Holen Sie sich den ausgewählten Order Status
+  //     const selectedOrderStatus = this.selectedValue;
+  //     const selectedProduct = this.selectedProduct;
 
-      if (selectedProduct) {
-        userData.product = selectedProduct.name;
-        userData.price = selectedProduct.price;
-      }
+  //     if (selectedProduct) {
+  //       userData.product = selectedProduct.name;
+  //       userData.price = selectedProduct.price;
+  //     }
 
-      // Fügen Sie die userId zum userData hinzu
-      userData.userId = userId;
+  //     // Fügen Sie die userId zum userData hinzu
+  //     userData.userId = userId;
 
-      userData.orderStatus = selectedOrderStatus;
-      // userData.product = selectedProduct;
+  //     userData.orderStatus = selectedOrderStatus;
+  //     // userData.product = selectedProduct;
 
-      const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
+  //     const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
 
-      if (isAnonymous) {
-        const docRef = await addDoc(
-          collection(this.db, 'guest_orders'),
-          userData
-        );
-        console.log(
-          `Added JSON document with ID Guest Collection: ${docRef.id}`
-        );
-      } else {
-        const docRef = await addDoc(collection(this.db, 'orders'), userData);
-        console.log(`Added JSON document with ID: ${docRef.id}`);
-      }
-    } catch (error) {
-      console.error('Fehler beim Schreiben der Dokumente (JSON):', error);
-    }
-    this.loading = false;
-    this.dialogRef.close();
-  }
+  //     if (isAnonymous) {
+  //       const docRef = await addDoc(
+  //         collection(this.db, 'guest_orders'),
+  //         userData
+  //       );
+  //       console.log(
+  //         `Added JSON document with ID Guest Collection: ${docRef.id}`
+  //       );
+  //     } else {
+  //       const docRef = await addDoc(collection(this.db, 'orders'), userData);
+  //       console.log(`Added JSON document with ID: ${docRef.id}`);
+  //     }
+  //   } catch (error) {
+  //     console.error('Fehler beim Schreiben der Dokumente (JSON):', error);
+  //   }
+  //   this.loading = false;
+  //   this.dialogRef.close();
+  // }
 
   orderStatus: OrderStatus[] = [
     { value: 'Processing', viewValue: 'Processing' },
@@ -109,5 +111,23 @@ export class DialogAddOrderComponent implements OnInit {
       !this.selectedValue ||
       !this.selectedProduct
     );
+  }
+
+  async saveOrder() {
+    try {
+      const userId = this.userId; // Annahme: Methode, um die userId zu erhalten
+      const orderData = this.order.toJSON(); // Annahme: Methode, um die Bestelldaten zu erhalten
+      const selectedValue = this.selectedValue; // Annahme: Wert des ausgewählten Status
+      const selectedProduct = this.selectedProduct; // Annahme: Ausgewähltes Produkt
+
+      await this.database.saveOrder(
+        userId,
+        orderData,
+        selectedValue,
+        selectedProduct
+      );
+    } catch (error) {
+      console.error('Fehler beim Speichern der Bestellung:', error);
+    }
   }
 }

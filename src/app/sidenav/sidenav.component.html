@@ -1,5 +1,11 @@
 <mat-drawer-container class="mat-drawer-container" autosize>
-  <mat-drawer #drawer class="sidenav" [opened]="isDrawerOpened" mode="side">
+  <mat-drawer
+    #drawer
+    class="sidenav"
+    [opened]="isDrawerOpened"
+    mode="side"
+    [ngClass]="{ 'hide-drawer': checkIfEntryRoutes() }"
+  >
     <div class="logo-container">Platz für Logo</div>
 
     <div class="sidebar">
