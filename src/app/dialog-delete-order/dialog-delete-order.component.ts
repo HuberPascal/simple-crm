@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
-import { Firestore } from '@angular/fire/firestore';
 import { MatDialogRef } from '@angular/material/dialog';
-import { deleteDoc, doc } from 'firebase/firestore';
 import { Order } from '../../models/order.class';
-import { AuthService } from '../services/firebase-auth.service';
+import { DatabaseService } from '../services/database.service';
 
 @Component({
   selector: 'app-dialog-delete-order',
@@ -17,29 +15,22 @@ export class DialogDeleteOrderComponent {
 
   constructor(
     public dialogRef: MatDialogRef<DialogDeleteOrderComponent>,
-    public db: Firestore,
-    private authService: AuthService
+    private database: DatabaseService
   ) {}
 
+  /**
+   * Delete Order Data in Firebase and close the dialog box.
+   */
   async deleteOrder() {
     this.loading = true;
     const orderId = this.order['orderId'];
-    const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
-    let firebaseData;
 
     try {
-      if (isAnonymous) {
-        firebaseData = doc(this.db, 'guest_orders', `${orderId}`);
-        await deleteDoc(firebaseData);
-        this.dialogRef.close();
-      } else {
-        firebaseData = doc(this.db, 'orders', `${orderId}`);
-        await deleteDoc(firebaseData);
-        this.dialogRef.close();
-      }
+      this.database.deleteOrder(orderId);
     } catch (error) {
-      console.error('Fehler beim Löschen des Benutzers: ', error);
+      console.error('Fehler beim löschen der Bestellung:', error);
     }
     this.loading = false;
+    this.dialogRef.close();
   }
 }

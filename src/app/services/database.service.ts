@@ -1,9 +1,8 @@
 import { Injectable, OnInit } from '@angular/core';
 import { AuthService } from './firebase-auth.service';
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, doc, deleteDoc } from 'firebase/firestore';
 import { Firestore } from '@angular/fire/firestore';
-import { AnyAaaaRecord } from 'dns';
-import { user } from '@angular/fire/auth';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -11,9 +10,15 @@ import { user } from '@angular/fire/auth';
 export class DatabaseService implements OnInit {
   isAnonymous: boolean = false;
 
-  constructor(private authService: AuthService, public db: Firestore) {}
+  constructor(
+    private authService: AuthService,
+    public db: Firestore,
+    private router: Router
+  ) {}
 
   async ngOnInit() {}
+
+  ////////// Save //////////
 
   /**
    * Provides the data for loading into firebase.
@@ -112,6 +117,64 @@ export class DatabaseService implements OnInit {
       }
     } catch (error) {
       console.error('Fehler beim Speichern der Bestellung:', error);
+    }
+  }
+
+  ////////// Delete //////////
+
+  /**
+   * Delete the order in Firebase.
+   * @param orderId
+   */
+  async deleteOrder(orderId: string) {
+    try {
+      const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
+
+      if (isAnonymous) {
+        await deleteDoc(doc(this.db, 'guest_orders', `${orderId}`));
+      } else {
+        await deleteDoc(doc(this.db, 'orders', `${orderId}`));
+      }
+    } catch (error) {
+      console.error('Fehler beim Löschen des Benutzers: ', error);
+    }
+  }
+
+  /**
+   * Delete the product in Firebase.
+   * @param productId
+   */
+  async deleteProduct(productId: string) {
+    try {
+      const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
+
+      if (isAnonymous) {
+        await deleteDoc(doc(this.db, 'guest_products', `${productId}`));
+      } else {
+        await deleteDoc(doc(this.db, 'products', `${productId}`));
+      }
+    } catch (error) {
+      console.error('Fehler beim löschen des Produkts: ', error);
+    }
+  }
+
+  /**
+   * Delete the User in Firebase.
+   * @param productId
+   */
+  async deleteUser(userId: string | null) {
+    try {
+      const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
+
+      if (isAnonymous) {
+        await deleteDoc(doc(this.db, 'guest_users', `${userId}`));
+        this.router.navigate(['guest/user']);
+      } else {
+        await deleteDoc(doc(this.db, 'users', `${userId}`));
+        this.router.navigate(['/user']);
+      }
+    } catch (error) {
+      console.error('Fehler beim löschen des Benutzers: ', error);
     }
   }
 }

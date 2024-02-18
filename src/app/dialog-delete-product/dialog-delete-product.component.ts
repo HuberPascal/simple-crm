@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import { Product } from '../../models/product.class';
 import { MatDialogRef } from '@angular/material/dialog';
-import { Firestore } from '@angular/fire/firestore';
-import { AuthService } from '../services/firebase-auth.service';
-import { deleteDoc, doc } from 'firebase/firestore';
+import { DatabaseService } from '../services/database.service';
 
 @Component({
   selector: 'app-dialog-delete-product',
@@ -16,29 +14,22 @@ export class DialogDeleteProductComponent {
 
   constructor(
     public dialogRef: MatDialogRef<DialogDeleteProductComponent>,
-    public db: Firestore,
-    private authService: AuthService
+    private database: DatabaseService
   ) {}
 
-  async deleteOrder() {
+  /**
+   * Delete Product Data in Firebase and close the dialog box.
+   */
+  async deleteProduct() {
     this.loading = true;
-    const productId = this.product['productId'];
-    const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
-    let firebaseData;
 
     try {
-      if (isAnonymous) {
-        firebaseData = doc(this.db, 'guest_products', `${productId}`);
-        await deleteDoc(firebaseData);
-        this.dialogRef.close();
-      } else {
-        firebaseData = doc(this.db, 'products', `${productId}`);
-        await deleteDoc(firebaseData);
-        this.dialogRef.close();
-      }
+      const productId = this.product['productId'];
+      this.database.deleteProduct(productId);
     } catch (error) {
-      console.error('Fehler beim Löschen des Produkts: ', error);
+      console.error('Fehler beim löschen des Produkts:', error);
     }
     this.loading = false;
+    this.dialogRef.close();
   }
 }
