@@ -3,10 +3,6 @@ import { Firestore } from '@angular/fire/firestore';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Order } from '../../models/order.class';
 import { Product } from '../../models/product.class';
-import { addDoc, collection, getDoc, onSnapshot } from 'firebase/firestore';
-import { UserService } from '../user.service';
-import { AuthService } from '../services/firebase-auth.service';
-import { user } from '@angular/fire/auth';
 import { DatabaseService } from '../services/database.service';
 
 interface OrderStatus {
@@ -39,11 +35,17 @@ export class DialogAddOrderComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<DialogAddOrderComponent>,
     public db: Firestore,
-    private authService: AuthService,
-    public database: DatabaseService
+    private database: DatabaseService
   ) {}
 
   ngOnInit(): void {
+    this.loadProductNameFromInputField();
+  }
+
+  /**
+   * Adds the product name into the input field.
+   */
+  loadProductNameFromInputField() {
     this.productName = this.allProducts.map((product) => ({
       value: product.productName,
       viewValue: `${product.productName} - ${product.price} CHF`, // Füge den Produktnamen und den Preis hinzu
@@ -51,74 +53,16 @@ export class DialogAddOrderComponent implements OnInit {
     }));
   }
 
-  // async saveOrder() {
-  //   this.loading = true;
-
-  //   try {
-  //     const userId = this.userId;
-  //     const userData = this.order.toJSON(); // Holen Sie sich das JSON-Objekt von der User-Klasse
-
-  //     // Holen Sie sich den ausgewählten Order Status
-  //     const selectedOrderStatus = this.selectedValue;
-  //     const selectedProduct = this.selectedProduct;
-
-  //     if (selectedProduct) {
-  //       userData.product = selectedProduct.name;
-  //       userData.price = selectedProduct.price;
-  //     }
-
-  //     // Fügen Sie die userId zum userData hinzu
-  //     userData.userId = userId;
-
-  //     userData.orderStatus = selectedOrderStatus;
-  //     // userData.product = selectedProduct;
-
-  //     const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
-
-  //     if (isAnonymous) {
-  //       const docRef = await addDoc(
-  //         collection(this.db, 'guest_orders'),
-  //         userData
-  //       );
-  //       console.log(
-  //         `Added JSON document with ID Guest Collection: ${docRef.id}`
-  //       );
-  //     } else {
-  //       const docRef = await addDoc(collection(this.db, 'orders'), userData);
-  //       console.log(`Added JSON document with ID: ${docRef.id}`);
-  //     }
-  //   } catch (error) {
-  //     console.error('Fehler beim Schreiben der Dokumente (JSON):', error);
-  //   }
-  //   this.loading = false;
-  //   this.dialogRef.close();
-  // }
-
-  orderStatus: OrderStatus[] = [
-    { value: 'Processing', viewValue: 'Processing' },
-    { value: 'Shipped', viewValue: 'Shipped' },
-    { value: 'Delivered', viewValue: 'Delivered' },
-  ];
-
-  productName: ProductName[] = [];
-
-  isSaveButtonDisabled(): boolean {
-    return (
-      !this.order.orderDate ||
-      // !this.order.price ||
-      // !this.order.product ||
-      !this.order.amount ||
-      !this.selectedValue ||
-      !this.selectedProduct
-    );
-  }
-
+  /**
+   * Save Data from the form to Firebase and close the dialog box.
+   */
   async saveOrder() {
+    this.loading = true;
     try {
-      const userId = this.userId; // Annahme: Methode, um die userId zu erhalten
-      const orderData = this.order.toJSON(); // Annahme: Methode, um die Bestelldaten zu erhalten
-      const selectedValue = this.selectedValue; // Annahme: Wert des ausgewählten Status
-      const selectedProduct = this.selectedProduct; // Annahme: Ausgewähltes Produkt
+      const userId = this.userId;
+      const orderData = this.order.toJSON();
+      const selectedValue = this.selectedValue; // Am Mat-Select Feld vorab einen Wert zuweisen
+      const selectedProduct = this.selectedProduct; // Im Mat-Select Feld den ausgewählten Produktename speichern
 
       await this.database.saveOrder(
         userId,
@@ -129,5 +73,34 @@ export class DialogAddOrderComponent implements OnInit {
     } catch (error) {
       console.error('Fehler beim Speichern der Bestellung:', error);
     }
+    this.loading = false;
+    this.dialogRef.close();
   }
+
+  /**
+   * Only releases the save button when all fields have been filled out
+   * @returns {boolean}
+   */
+  isSaveButtonDisabled(): boolean {
+    return (
+      !this.order.orderDate ||
+      !this.order.amount ||
+      !this.selectedValue ||
+      !this.selectedProduct
+    );
+  }
+
+  /**
+   * Provides the value for the Product Name input field
+   */
+  orderStatus: OrderStatus[] = [
+    { value: 'Processing', viewValue: 'Processing' },
+    { value: 'Shipped', viewValue: 'Shipped' },
+    { value: 'Delivered', viewValue: 'Delivered' },
+  ];
+
+  /**
+   * Provides the value for the Product Name input field. The field is filled by the loadProductNameFromInputField function
+   */
+  productName: ProductName[] = [];
 }
