@@ -3,6 +3,7 @@ import { AuthService } from './firebase-auth.service';
 import { collection, addDoc } from 'firebase/firestore';
 import { Firestore } from '@angular/fire/firestore';
 import { AnyAaaaRecord } from 'dns';
+import { user } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root',
@@ -93,6 +94,24 @@ export class DatabaseService implements OnInit {
       }
     } catch (error) {
       console.error('Fehler beim Speichern der Bestellung in Firebase:', error);
+    }
+  }
+
+  /**
+   * Saves the user data to Firebase.
+   * @param userData
+   */
+  async saveUser(userData: any) {
+    try {
+      const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
+
+      if (isAnonymous) {
+        await addDoc(collection(this.db, 'guest_users'), userData);
+      } else {
+        await addDoc(collection(this.db, 'users'), userData);
+      }
+    } catch (error) {
+      console.error('Fehler beim Speichern der Bestellung:', error);
     }
   }
 }

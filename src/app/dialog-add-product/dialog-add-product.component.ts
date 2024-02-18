@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Product } from '../../models/product.class';
 import { MatDialogRef } from '@angular/material/dialog';
-import { Firestore } from '@angular/fire/firestore';
 import { DatabaseService } from '../services/database.service';
 
 interface ProductType {
@@ -21,7 +20,6 @@ export class DialogAddProductComponent {
 
   constructor(
     public dialogRef: MatDialogRef<DialogAddProductComponent>,
-    public db: Firestore,
     private database: DatabaseService
   ) {}
 
@@ -44,7 +42,7 @@ export class DialogAddProductComponent {
 
   /**
    * Only releases the save button when all fields have been filled out
-   * @returns {boolean}
+   * @returns {boolean} Returns true if the email address is valid, otherwise false.
    */
   isSaveButtonDisabled(): boolean {
     return (

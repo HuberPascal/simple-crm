@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import { User } from '../../models/user.class';
-import { Firestore, collection, addDoc } from '@angular/fire/firestore';
 import { MatDialogRef } from '@angular/material/dialog';
-import { UserService } from '../user.service';
-import { AuthService } from '../services/firebase-auth.service';
+import { DatabaseService } from '../services/database.service';
 
 @Component({
   selector: 'app-dialog-add-user',
@@ -20,36 +18,18 @@ export class DialogAddUserComponent {
 
   constructor(
     public dialogRef: MatDialogRef<DialogAddUserComponent>,
-    public db: Firestore,
-    private userService: UserService,
-    private authService: AuthService
+    private database: DatabaseService
   ) {}
 
+  /**
+   * Save Data from the form to Firebase and close the dialog box.
+   */
   async saveUser() {
-    this.user.birthDate = this.birthDate.getTime();
-    console.log('current user is', this.user);
     this.loading = true;
-    let docRef: any;
-
-    const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
-    let firebaseData;
-
     try {
       const userData = this.user.toJSON();
-
-      if (isAnonymous) {
-        // Für Gastbenutzer in der "guest_users"-Sammlung speichern
-        firebaseData = collection(this.db, 'guest_users');
-        docRef = await addDoc(firebaseData, userData);
-        console.log(
-          `Added JSON document with ID in Guest Collection: ${docRef.id}`
-        );
-      } else {
-        // Für registrierte Benutzer in der "users"-Sammlung speichern
-        firebaseData = collection(this.db, 'users');
-        docRef = await addDoc(firebaseData, userData);
-        console.log(`Added JSON document with ID: ${docRef.id}`);
-      }
+      this.user.birthDate = this.birthDate.getTime();
+      this.database.saveUser(userData);
     } catch (error) {
       console.error('Fehler beim Schreiben der Dokumente (JSON):', error);
     }
@@ -57,6 +37,10 @@ export class DialogAddUserComponent {
     this.dialogRef.close();
   }
 
+  /**
+   * Only releases the save button when all fields have been filled out
+   * @returns {boolean}
+   */
   isSaveButtonDisabled(): boolean {
     return (
       !this.user.firstName ||
@@ -70,7 +54,11 @@ export class DialogAddUserComponent {
     );
   }
 
-  validateMail() {
+  /**
+   * Validates the user's email address.
+   * @returns {boolean} Returns true if the email address is valid, otherwise false.
+   */
+  validateMail(): boolean {
     // E-Mail-Validierung
     const emailPattern =
       /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(this.user.email);

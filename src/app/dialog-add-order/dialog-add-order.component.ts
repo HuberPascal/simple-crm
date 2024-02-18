@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Firestore } from '@angular/fire/firestore';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Order } from '../../models/order.class';
 import { Product } from '../../models/product.class';
@@ -34,7 +33,6 @@ export class DialogAddOrderComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<DialogAddOrderComponent>,
-    public db: Firestore,
     private database: DatabaseService
   ) {}
 
@@ -79,7 +77,7 @@ export class DialogAddOrderComponent implements OnInit {
 
   /**
    * Only releases the save button when all fields have been filled out
-   * @returns {boolean}
+   * @returns {boolean} Returns true if the email address is valid, otherwise false.
    */
   isSaveButtonDisabled(): boolean {
     return (
