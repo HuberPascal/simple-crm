@@ -123,6 +123,7 @@ export class UserDetailComponent {
     const dialog = this.dialog.open(DialogDeleteUserComponent);
     dialog.componentInstance.user = new User(this.user.toJSON());
     dialog.componentInstance.userId = this.userId;
+    dialog.componentInstance.allOrders = this.allOrders;
   }
 
   deleteOrder(order: string) {
@@ -198,10 +199,13 @@ export class UserDetailComponent {
   }
 
   calculateTotal(): number {
-    return this.allOrders.reduce(
+    const total = this.allOrders.reduce(
       (total, order) => total + order.amount * order.price,
       0
     );
+
+    // Ergebnis auf zwei Dezimalstellen runden
+    return parseFloat(total.toFixed(2));
   }
 
   sortOrders() {
