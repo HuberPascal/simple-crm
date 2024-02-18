@@ -1,8 +1,12 @@
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
+
 export class User {
   firstName: string;
   lastName: string;
   email: string;
-  birthDate: number;
+  birthDate: Date | null;
   street: string;
   zipCode: number;
   city: string;
@@ -18,11 +22,19 @@ export class User {
   }
 
   public toJSON() {
+    let birthdayDateTimestamp = null;
+
+    // überprüfen ob OrderDate das richtige Format hat
+    if (this.birthDate instanceof Date) {
+      birthdayDateTimestamp = firebase.firestore.Timestamp.fromDate(
+        this.birthDate
+      );
+    }
     return {
       firstName: this.firstName,
       lastName: this.lastName,
       email: this.email,
-      birthDate: this.birthDate,
+      birthDate: birthdayDateTimestamp,
       street: this.street,
       zipCode: this.zipCode,
       city: this.city,

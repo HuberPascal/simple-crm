@@ -1,49 +1,40 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { User } from '../../models/user.class';
-import { Firestore } from '@angular/fire/firestore';
-import { doc, updateDoc } from 'firebase/firestore';
-import { AuthService } from '../services/firebase-auth.service';
+import { DatabaseService } from '../services/database.service';
 
 @Component({
   selector: 'app-dialog-edit-user',
   templateUrl: './dialog-edit-user.component.html',
   styleUrl: './dialog-edit-user.component.scss',
 })
-export class DialogEditUserComponent {
+export class DialogEditUserComponent implements OnInit {
   user: User = new User();
   loading: boolean = false;
   userId: string | null = '';
-  birthDate!: Date;
+  userData: any;
 
   constructor(
     public dialogRef: MatDialogRef<DialogEditUserComponent>,
-    public db: Firestore,
-    private authService: AuthService
+    private database: DatabaseService
   ) {}
 
-  // Daten in Firebase aktualisieren
+  ngOnInit() {
+    this.user.birthDate = new Date(this.userData.birthDate);
+  }
+
+  /**
+   * Updates the user data in the database.
+   */
   async saveUser() {
     this.loading = true;
-    // this.user.birthDate = this.birthDate.getTime();
+    try {
+      const userData = this.user.toJSON();
 
-    const userData = this.user.toJSON();
-    const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
-
-    let firebaseData;
-
-    if (isAnonymous) {
-      firebaseData = doc(this.db, 'guest_users', `${this.userId}`);
-    } else {
-      firebaseData = doc(this.db, 'users', `${this.userId}`);
+      this.database.updateUser(userData, this.userId);
+    } catch (error) {
+      console.error('Fehler beim updaten des Users:', error);
     }
-
-    await updateDoc(firebaseData, {
-      firstName: userData.firstName,
-      lastName: userData.lastName,
-      email: userData.email,
-      birthDate: userData.birthDate,
-    });
     this.loading = false;
     this.dialogRef.close();
   }

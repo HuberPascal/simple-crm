@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Firestore } from '@angular/fire/firestore';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Order } from '../../models/order.class';
 import { Product } from '../../models/product.class';
-import { doc, updateDoc } from 'firebase/firestore';
-import { AuthService } from '../services/firebase-auth.service';
-import e from 'express';
+import { DatabaseService } from '../services/database.service';
 
 interface OrderStatus {
   value: string;
@@ -26,68 +23,40 @@ interface ProductName {
 export class DialogEditOrderComponent implements OnInit {
   order: Order = new Order();
   product = new Product();
-  userId: string | null = '';
   orderId: string | null = '';
   loading: boolean = false;
   selectedValue: string | undefined;
-  allProducts: any[] = [];
-  selectedProduct: string = '';
-  productValue: string | undefined;
 
   constructor(
     public dialogRef: MatDialogRef<DialogEditOrderComponent>,
-    public db: Firestore,
-    private authService: AuthService
+    private database: DatabaseService
   ) {}
 
   ngOnInit() {
     this.selectedValue = this.order.orderStatus;
-
-    this.productName = this.allProducts.map((product) => ({
-      value: product.productName,
-      viewValue: `${product.productName} - ${product.price} CHF`, // Füge den Produktnamen und den Preis hinzu
-      price: product.price,
-    }));
   }
 
+  /**
+   * Updates the order data in the database and close the dialog box.
+   */
   async saveOrder() {
     this.loading = true;
-    const orderData = this.order;
-    const orderId = this.order['orderId'];
-
-    // Holen Sie sich den ausgewählten Order Status
-    const selectedOrderStatus = this.selectedValue;
-    this.order.orderStatus = selectedOrderStatus;
-
-    let docRef: any;
-
-    const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
-
-    if (isAnonymous) {
-      docRef = doc(this.db, 'guest_orders', `${orderId}`);
-      console.log('Das Dokument hat die ID', orderId);
-    } else {
-      docRef = doc(this.db, 'orders', `${orderId}`);
-      console.log('Das Dokument hat die ID', orderId);
-    }
-
-    // Firestore Dokument aktualisieren
     try {
-      await updateDoc(docRef, {
-        amount: orderData.amount,
-        // price: orderData.price,
-        // product: orderData.product,
-        orderStatus: orderData.orderStatus,
-      });
+      const orderData = this.order;
+      const orderId = this.order['orderId'];
+      this.order.orderStatus = this.selectedValue;
 
-      console.log('Dokument erfolgreich aktualisiert');
-      this.dialogRef.close();
+      this.database.updateOrder(orderData, orderId);
     } catch (error) {
-      console.error('Fehler beim Aktualisieren des Dokuments:', error);
+      console.error('Fehler beim updaten der Bestellung:', error);
     }
     this.loading = false;
+    this.dialogRef.close();
   }
 
+  /**
+   * Provides the value for the OrderStatus input field
+   */
   orderStatus: OrderStatus[] = [
     { value: 'Processing', viewValue: 'Processing' },
     { value: 'Shipped', viewValue: 'Shipped' },
@@ -95,8 +64,10 @@ export class DialogEditOrderComponent implements OnInit {
     { value: 'Canceled', viewValue: 'Canceled' },
   ];
 
-  productName: ProductName[] = [];
-
+  /**
+   * Only releases the save button when all fields have been filled out
+   * @returns {boolean} Returns true if all is valid, otherwise false.
+   */
   isSaveButtonDisabled(): boolean {
     return !this.order.product || !this.order.amount || !this.selectedValue;
   }

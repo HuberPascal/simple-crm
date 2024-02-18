@@ -1,14 +1,24 @@
 import { Injectable, OnInit } from '@angular/core';
 import { AuthService } from './firebase-auth.service';
-import { collection, addDoc, doc, deleteDoc } from 'firebase/firestore';
+import {
+  collection,
+  addDoc,
+  doc,
+  deleteDoc,
+  updateDoc,
+} from 'firebase/firestore';
 import { Firestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
+import { User } from '../../models/user.class';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DatabaseService implements OnInit {
   isAnonymous: boolean = false;
+  userId!: string | null;
+  orderId!: string | null;
+  productId!: string | null;
 
   constructor(
     private authService: AuthService,
@@ -120,6 +130,169 @@ export class DatabaseService implements OnInit {
     }
   }
 
+  ////////// Update //////////
+
+  /**
+   * Provide the user data for firebase to update the document.
+   * @param userData
+   * @param userId
+   */
+  async updateUser(userData: any | null, userId: string | null) {
+    this.userId = userId;
+    let firebaseData: any;
+
+    try {
+      const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
+
+      if (isAnonymous) {
+        firebaseData = this.guestUserFirebaseData();
+      } else {
+        firebaseData = this.userFirebaseData();
+      }
+      await this.updateUserDataInFirebase(firebaseData, userData);
+    } catch (error) {
+      console.error('Fehler beim updaten des Users:', error);
+    }
+  }
+
+  /**
+   * Updates the user data in firebase.
+   * @param userData
+   */
+  async updateUserDataInFirebase(firebaseData: any, userData: any | null) {
+    await updateDoc(firebaseData, {
+      street: userData.street,
+      zipCode: userData.zipCode,
+      city: userData.city,
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      email: userData.email,
+      birthDate: userData.birthDate,
+    });
+  }
+
+  /**
+   * Returns the Firebase document reference for a guest user.
+   * @returns {Object} The Firebase document reference for the guest user.
+   */
+  guestUserFirebaseData(): object {
+    return doc(this.db, 'guest_users', `${this.userId}`);
+  }
+
+  /**
+   * Returns the Firebase document reference for a user.
+   * @returns {Object} The Firebase document reference for the user.
+   */
+  userFirebaseData(): object {
+    return doc(this.db, 'users', `${this.userId}`);
+  }
+
+  /**
+   * Provide the order data for firebase to update the document.
+   * @param orderData
+   * @param orderId
+   */
+  async updateOrder(orderData: any | undefined, orderId: string) {
+    let docRef: any;
+    this.orderId = orderId;
+
+    try {
+      const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
+
+      if (isAnonymous) {
+        docRef = this.guestOrderFirebaseData();
+      } else {
+        docRef = this.userOrderFirebaseData();
+      }
+      await this.updateOrderDataInFirebase(docRef, orderData);
+    } catch (error) {
+      console.error('Fehler beim Aktualisieren des Dokuments:', error);
+    }
+  }
+
+  /**
+   * Updates the order data in firebase.
+   * @param docRef
+   * @param orderData
+   */
+  async updateOrderDataInFirebase(docRef: any, orderData: any | undefined) {
+    await updateDoc(docRef, {
+      amount: orderData.amount,
+      orderStatus: orderData.orderStatus,
+    });
+  }
+
+  /**
+   * Returns the Firebase document reference for a guets order.
+   * @returns {Object} The Firebase document reference for the guest order.
+   */
+  guestOrderFirebaseData(): object {
+    return doc(this.db, 'guest_orders', `${this.orderId}`);
+  }
+
+  /**
+   * Returns the Firebase document reference for a order.
+   * @returns {Object} The Firebase document reference for the order.
+   */
+  userOrderFirebaseData(): object {
+    return doc(this.db, 'orders', `${this.orderId}`);
+  }
+
+  /**
+   * Provide the product data for firebase to update the document.
+   * @param productData
+   * @param productId
+   */
+  async updateProduct(productData: any | null, productId: string) {
+    let docRef: any;
+    this.productId = productId;
+
+    try {
+      const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
+
+      if (isAnonymous) {
+        docRef = this.guestUserProductFirebaseData();
+      } else {
+        docRef = this.userProductFirebaseData();
+      }
+      await this.updateProductDataInFirebase(docRef, productData);
+    } catch (error) {
+      console.error('Fehler beim Aktualisieren des Dokuments:', error);
+    }
+  }
+
+  /**
+   * Updates the order data in firebase.
+   * @param docRef
+   * @param productData
+   */
+  async updateProductDataInFirebase(docRef: any, productData: any) {
+    try {
+      await updateDoc(docRef, {
+        productName: productData.productName,
+        price: productData.price,
+        orderType: productData.orderType,
+      });
+    } catch (error) {
+      console.error('Fehler beim updaten der Produkte in Firebase:', error);
+    }
+  }
+
+  /**
+   * Returns the Firebase document reference for a product.
+   * @returns {Object} The Firebase document reference for the guest product.
+   */
+  guestUserProductFirebaseData(): object {
+    return doc(this.db, 'guest_products', `${this.productId}`);
+  }
+
+  /**
+   * Returns the Firebase document reference for a product.
+   * @returns {Object} The Firebase document reference for the product.
+   */
+  userProductFirebaseData(): object {
+    return doc(this.db, 'products', `${this.productId}`);
+  }
   ////////// Delete //////////
 
   /**

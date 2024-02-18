@@ -52,7 +52,7 @@ export class DialogAddOrderComponent implements OnInit {
   }
 
   /**
-   * Save Data from the form to Firebase and close the dialog box.
+   * Save Data from the form in Firebase and close the dialog box.
    */
   async saveOrder() {
     this.loading = true;

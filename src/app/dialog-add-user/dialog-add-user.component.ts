@@ -22,14 +22,14 @@ export class DialogAddUserComponent {
   ) {}
 
   /**
-   * Save Data from the form to Firebase and close the dialog box.
+   * Save Data from the form in Firebase and close the dialog box.
    */
   async saveUser() {
     this.loading = true;
     try {
       const userData = this.user.toJSON();
-      this.user.birthDate = this.birthDate.getTime();
-      this.database.saveUser(userData);
+      // this.user.birthDate = this.birthDate.getTime();
+      await this.database.saveUser(userData);
     } catch (error) {
       console.error('Fehler beim Schreiben der Dokumente (JSON):', error);
     }
@@ -46,7 +46,7 @@ export class DialogAddUserComponent {
       !this.user.firstName ||
       !this.user.lastName ||
       !this.user.email ||
-      !this.birthDate ||
+      !this.user.birthDate ||
       !this.user.street ||
       !this.user.zipCode ||
       !this.user.city ||

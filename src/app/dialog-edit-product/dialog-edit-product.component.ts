@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from '../../models/product.class';
 import { MatDialogRef } from '@angular/material/dialog';
-import { AuthService } from '../services/firebase-auth.service';
-import { Firestore } from '@angular/fire/firestore';
-import { doc, updateDoc } from 'firebase/firestore';
+import { DatabaseService } from '../services/database.service';
 
 interface ProductType {
   value: string;
@@ -22,56 +20,42 @@ export class DialogEditProductComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<DialogEditProductComponent>,
-    public db: Firestore,
-    private authService: AuthService
+    private database: DatabaseService
   ) {}
-
-  // productId: any;
 
   ngOnInit() {
     this.selectedValue = this.product.orderType;
   }
 
+  /**
+   * Updates the product data in the database.
+   */
   async saveProduct() {
     this.loading = true;
-    const productData = this.product;
-    const productId = this.product['productId'];
-
-    // Holen Sie sich den ausgewählten Order Status
-    const selectedProductType = this.selectedValue;
-
-    this.product.orderType = selectedProductType;
-
-    let docRef: any;
-
-    const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
-
-    if (isAnonymous) {
-      docRef = doc(this.db, 'guest_products', `${productId}`);
-      console.log('Das Dokument hat die ID', productId);
-    } else {
-      docRef = doc(this.db, 'products', `${productId}`);
-      console.log('Das Dokument hat die ID', productId);
-    }
-
-    // Firestore Dokument aktualisieren
     try {
-      await updateDoc(docRef, {
-        productName: productData.productName,
-        price: productData.price,
-        orderType: productData.orderType,
-      });
-
-      console.log('Dokument erfolgreich aktualisiert');
-      this.dialogRef.close();
+      const productData = this.product;
+      const productId = this.product['productId'];
+      const selectedProductType = this.selectedValue;
+      this.product.orderType = selectedProductType;
+      this.database.updateProduct(productData, productId);
     } catch (error) {
-      console.error('Fehler beim Aktualisieren des Dokuments:', error);
+      console.error('Fehler beim updaten des Produkts:', error);
     }
     this.loading = false;
+    this.dialogRef.close();
   }
 
-  isSaveButtonDisabled() {}
+  /**
+   * Only releases the save button when all fields have been filled out
+   * @returns {boolean} Returns true if all is valid, otherwise false.
+   */
+  isSaveButtonDisabled(): boolean {
+    return !this.product.productName || !this.product.price;
+  }
 
+  /**
+   * Provides the value for the productType input field
+   */
   productType: ProductType[] = [
     { value: 'Product', viewValue: 'Product' },
     { value: 'Service', viewValue: 'Service' },

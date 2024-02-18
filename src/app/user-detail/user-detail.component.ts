@@ -102,6 +102,7 @@ export class UserDetailComponent {
   editUserDetail() {
     const dialog = this.dialog.open(DialogEditUserComponent);
     dialog.componentInstance.user = new User(this.user.toJSON());
+    dialog.componentInstance.userData = this.user;
     dialog.componentInstance.userId = this.userId;
   }
 
@@ -116,8 +117,6 @@ export class UserDetailComponent {
 
     // Die Richtige Order aufrufen --> orderId
     dialog.componentInstance.order = new Order(order);
-    dialog.componentInstance.productValue = this.product.productName;
-    dialog.componentInstance.allProducts = this.allProducts;
   }
 
   deleteUser() {

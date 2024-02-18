@@ -24,7 +24,7 @@ export class DialogAddProductComponent {
   ) {}
 
   /**
-   * Save Data from the form to Firebase and close the dialog box.
+   * Save Data from the form in Firebase and close the dialog box.
    */
   async saveProduct() {
     this.loading = true;
@@ -42,7 +42,7 @@ export class DialogAddProductComponent {
 
   /**
    * Only releases the save button when all fields have been filled out
-   * @returns {boolean} Returns true if the email address is valid, otherwise false.
+   * @returns {boolean} Returns true if all is valid, otherwise false.
    */
   isSaveButtonDisabled(): boolean {
     return (

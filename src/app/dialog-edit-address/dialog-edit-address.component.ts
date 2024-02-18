@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import { User } from '../../models/user.class';
 import { MatDialogRef } from '@angular/material/dialog';
-import { doc, updateDoc } from 'firebase/firestore';
-import { Firestore } from '@angular/fire/firestore';
-import { AuthService } from '../services/firebase-auth.service';
+import { DatabaseService } from '../services/database.service';
 
 @Component({
   selector: 'app-dialog-edit-address',
@@ -17,29 +15,20 @@ export class DialogEditAddressComponent {
 
   constructor(
     public dialogRef: MatDialogRef<DialogEditAddressComponent>,
-    public db: Firestore,
-    private authService: AuthService
+    private database: DatabaseService
   ) {}
 
-  // Daten in Firebase aktualisieren
+  /**
+   * Updates the user data in the database and close the dialog box.
+   */
   async saveUser() {
     this.loading = true;
-    const userData = this.user.toJSON();
-    const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
-
-    let firebaseData;
-
-    if (isAnonymous) {
-      firebaseData = doc(this.db, 'guest_users', `${this.userId}`);
-    } else {
-      firebaseData = doc(this.db, 'users', `${this.userId}`);
+    try {
+      const userData = this.user.toJSON();
+      await this.database.updateUser(userData, this.userId);
+    } catch (error) {
+      console.error('Fehler beim updaten der Adresse:', error);
     }
-
-    await updateDoc(firebaseData, {
-      street: userData.street,
-      zipCode: userData.zipCode,
-      city: userData.city,
-    });
     this.loading = false;
     this.dialogRef.close();
   }
