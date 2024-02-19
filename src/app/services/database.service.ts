@@ -1,4 +1,4 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { AuthService } from './firebase-auth.service';
 import {
   collection,
@@ -14,7 +14,7 @@ import { User } from '../../models/user.class';
 @Injectable({
   providedIn: 'root',
 })
-export class DatabaseService implements OnInit {
+export class DatabaseService {
   isAnonymous: boolean = false;
   userId!: string | null;
   orderId!: string | null;
@@ -25,8 +25,6 @@ export class DatabaseService implements OnInit {
     public db: Firestore,
     private router: Router
   ) {}
-
-  async ngOnInit() {}
 
   ////////// Save //////////
 
@@ -52,7 +50,7 @@ export class DatabaseService implements OnInit {
       }
       orderData.orderStatus = selectedValue;
 
-      this.saveOrderToFirebase(orderData);
+      this.saveOrderInFirebase(orderData);
     } catch (error) {
       console.error('Fehler beim Schreiben der Bestellung:', error);
     }
@@ -62,7 +60,7 @@ export class DatabaseService implements OnInit {
    * Saves the order data to Firebase.
    * @param orderData
    */
-  async saveOrderToFirebase(orderData: any) {
+  async saveOrderInFirebase(orderData: any) {
     try {
       const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
 
@@ -87,7 +85,7 @@ export class DatabaseService implements OnInit {
   ) {
     try {
       productData.orderType = selectedTypeStatus;
-      this.saveProductToFirebase(productData);
+      this.saveProductInFirebase(productData);
     } catch (error) {
       console.error('Fehler beim Schreiben der Produkte Bestellung:', error);
     }
@@ -98,7 +96,7 @@ export class DatabaseService implements OnInit {
    *
    * @param productData
    */
-  async saveProductToFirebase(productData: any) {
+  async saveProductInFirebase(productData: any) {
     try {
       const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
 

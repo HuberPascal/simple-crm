@@ -31,8 +31,8 @@ export class DashboardComponent implements OnInit {
 
   constructor(private authService: AuthService, public db: Firestore) {}
 
-  ngOnInit(): void {
-    this.getUserByName();
+  async ngOnInit(): Promise<void> {
+    await this.getUserByName();
     this.getNumberOfUsers();
     this.getNumberOfProducts();
     this.calculateTotalOfAllOrders();
@@ -99,6 +99,7 @@ export class DashboardComponent implements OnInit {
         const orderData = doc.data();
         const orderTotal = await this.calculateOrderTotal(orderData);
         this.totalAmount += orderTotal;
+        this.totalAmount = parseFloat(this.totalAmount.toFixed(2));
       });
     } catch (error) {
       console.error('Fehler beim Abrufen der Produkte:', error);

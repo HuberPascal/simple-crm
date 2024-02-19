@@ -45,7 +45,7 @@
           Please provide a valid email address.
         </div>
 
-        <div *ngIf="!isEmailExists" class="error-message">
+        <div *ngIf="isEmailExists" class="error-message">
           This email address is already registered.
         </div>
 
@@ -65,6 +65,11 @@
         <div *ngIf="!isPasswordValid" class="error-message">
           Password must have at least 8 characters, including one number, one
           uppercase letter, and one lowercase letter.
+        </div>
+
+        <div *ngIf="registerError" class="error-message">
+          It appears there was an error during registration. Please try again
+          later.
         </div>
 
         <button

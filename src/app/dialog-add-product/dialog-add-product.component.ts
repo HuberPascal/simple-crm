@@ -46,7 +46,10 @@ export class DialogAddProductComponent {
    */
   isSaveButtonDisabled(): boolean {
     return (
-      !this.product.price || !this.product.productName || !this.selectedValue
+      !this.product.price ||
+      this.product.price < 0 ||
+      !this.product.productName ||
+      !this.selectedValue
     );
   }
 

@@ -5,6 +5,7 @@ import { Firestore } from '@angular/fire/firestore';
 import { addDoc, collection } from 'firebase/firestore';
 import { updateProfile } from 'firebase/auth';
 import { DashboardComponent } from '../dashboard/dashboard.component';
+import { AuthenticationDatabaseService } from '../services/authentication-database.service';
 
 @Component({
   selector: 'app-register',
@@ -22,14 +23,16 @@ export class RegisterComponent {
   loading: boolean = false;
   isEmailValid: boolean = true;
   isPasswordValid: boolean = true;
-  isEmailExists: boolean = true;
+  isEmailExists: boolean = false;
   ispassword: boolean = false;
   ismail: boolean = false;
+  registerError: boolean = false;
 
   constructor(
     private authService: AuthService,
     private router: Router,
-    public db: Firestore
+    public db: Firestore,
+    private authDatabase: AuthenticationDatabaseService
   ) {}
 
   validateMail() {
@@ -65,43 +68,39 @@ export class RegisterComponent {
     }
   }
 
-  // register(email: string, password: string) {
   onSubmit(email: string, password: string, name: string) {
     this.loading = true;
 
-    // Überprüfen, ob die E-Mail-Adresse bereits registriert ist
-    this.authService
-      .login(email, password)
-      .then(() => {
-        // Die Anmeldung war erfolgreich, was bedeutet, dass die E-Mail-Adresse bereits existiert
-        this.isEmailExists = false; // isEmailValid auf false setzen, um anzuzeigen, dass die E-Mail-Adresse bereits existiert
-        this.loading = false;
-      })
-      .catch((error) => {
-        // Fehlerbehandlung
-        if (error) {
-          this.authService
-            .register(email, password, name)
-            .then(() => {
-              // Erfolgreich registriert
-              this.authService.saveUserName(name);
-              this.isUserRegister = true;
-              this.userEmail = this.email;
-              this.userPassword = this.password;
-              console.log('Erfolgreich registriert');
-              this.router.navigate(['/dashboard']);
-            })
-            .catch((registrationError) => {
-              // Fehlerbehandlung bei der Registrierung
-              this.loading = false;
-              this.isEmailExists = false;
-              console.error('Fehler beim registrieren', registrationError);
-            });
-        } else {
-          // Ein anderer Fehler ist aufgetreten
-          this.loading = false;
-          console.error('Fehler beim Anmelden', error);
-        }
-      });
+    this.checkIfEmailExists(email, password, name);
+  }
+
+  async checkIfEmailExists(email: string, password: string, name: string) {
+    try {
+      await this.authService.login(email, password);
+      console.error('Die Email Adresse ist bereits vorhanden');
+      this.isEmailExists = true;
+      this.loading = false;
+    } catch {
+      this.registerUser(email, password, name);
+    }
+  }
+
+  async registerUser(email: string, password: string, name: string) {
+    try {
+      await this.authService.register(email, password, name);
+      await this.authService.saveUserName(name);
+      this.handleSuccessfulRegistration(email, password);
+    } catch (error) {
+      console.error('Fehler beim Registrieren', error);
+      this.registerError = true;
+      this.loading = false;
+    }
+  }
+
+  handleSuccessfulRegistration(email: string, password: string) {
+    this.isUserRegister = true;
+    this.userEmail = email;
+    this.userPassword = password;
+    this.router.navigate(['/dashboard']);
   }
 }
