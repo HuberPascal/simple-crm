@@ -10,44 +10,81 @@ import { Router } from '@angular/router';
 export class ForgotPasswordComponent {
   email: string = '';
   emailFormInputField: string | undefined;
-  isEmailValid: boolean | undefined = false;
+  isEmailExists: boolean | undefined = false;
   sendMail: boolean | undefined = false;
   fadeOutBtn: boolean | undefined = false;
   loading: boolean = false;
+  registerError: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  resetPassword(email: string) {
+  /**
+   * Handles form submission by checking if the email is already registered.
+   * @param email - The email address to be checked.
+   */
+  async onSubmit(email: string) {
     this.loading = true;
-    this.authService
-      .resetPassword(email)
-      .then(() => {
-        // Erfolgsmeldung anzeigen
-        this.emailFormInputField = this.email;
-        this.email = '';
-        this.sendMail = true;
-        console.log(this.emailFormInputField);
-        console.log('Email um das Passwort zurück zu setzen wurde verand');
 
-        setTimeout(() => {
-          // this.sendMail = true;
-          this.fadeOutBtn = true;
+    this.checkIfEmailExists(email);
+  }
 
-          setTimeout(() => {
-            // this.sendMail = false;
-            this.fadeOutBtn = false;
-          }, 1000);
-          this.router.navigate(['/sign-in']);
-        }, 3000);
-      })
-      .catch((error) => {
-        // Fehlerbehandlung
-        this.loading = false;
-        this.isEmailValid = true;
-        console.error('Fehler beim Zurücksetzen des Passworts', error);
-        console.log(
-          'Das Mail "Passwort zurücksetzen" kann nicht versendet werden'
-        );
-      });
+  /**
+   * Checks whether the email has already been registered. If the email address does not exist, an error message will be displayed.
+   * @param email - The email address to be checked.
+   */
+  async checkIfEmailExists(email: string): Promise<void> {
+    try {
+      const signInMethods = await this.authService.checkEmailExistence(email);
+
+      if (signInMethods.length > 0) {
+        this.resetPassword(email);
+      } else {
+        this.isEmailExists = true;
+      }
+    } catch (error) {
+      console.error('Fehler beim Überprüfen der E-Mail:', error);
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  /**
+   * Sends an email to the email address to reset the password
+   * @param email
+   */
+  async resetPassword(email: string) {
+    try {
+      await this.authService.resetPassword(email);
+
+      this.handleSuccessfulResetPassword();
+      this.handleSendEmailMessageAnimation();
+    } catch (error) {
+      console.error('Fehler beim Zurücksetzen des Passworts', error);
+      this.loading = false;
+      this.registerError = true;
+    }
+  }
+
+  /**
+   * Handles successful password reset request.
+   */
+  handleSuccessfulResetPassword() {
+    this.emailFormInputField = this.email;
+    this.email = '';
+    this.sendMail = true;
+  }
+
+  /**
+   * Handles the animation for displaying a message after sending an email.
+   */
+  handleSendEmailMessageAnimation() {
+    setTimeout(() => {
+      this.fadeOutBtn = true;
+
+      setTimeout(() => {
+        this.fadeOutBtn = false;
+      }, 1000);
+      this.router.navigate(['/sign-in']);
+    }, 3000);
   }
 }

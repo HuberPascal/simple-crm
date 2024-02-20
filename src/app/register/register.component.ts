@@ -88,7 +88,7 @@ export class RegisterComponent {
     name: string
   ): Promise<void> {
     try {
-      const signInMethods = await this.authService.checkMail(email);
+      const signInMethods = await this.authService.checkEmailExistence(email);
 
       if (signInMethods.length > 0) {
         this.isEmailExists = true;
