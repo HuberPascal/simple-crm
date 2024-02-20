@@ -1,11 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../services/firebase-auth.service';
 import { Router } from '@angular/router';
-import { Firestore } from '@angular/fire/firestore';
-import { addDoc, collection } from 'firebase/firestore';
-import { updateProfile } from 'firebase/auth';
-import { DashboardComponent } from '../dashboard/dashboard.component';
-import { AuthenticationDatabaseService } from '../services/authentication-database.service';
 
 @Component({
   selector: 'app-register',
@@ -28,15 +23,12 @@ export class RegisterComponent {
   ismail: boolean = false;
   registerError: boolean = false;
 
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-    public db: Firestore,
-    private authDatabase: AuthenticationDatabaseService
-  ) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
+  /**
+   * Checks whether the email address is valid according to a specific pattern.
+   */
   validateMail() {
-    // E-Mail-Validierung
     const emailPattern =
       /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(this.email);
     this.isEmailValid = emailPattern;
@@ -48,12 +40,14 @@ export class RegisterComponent {
     }
   }
 
+  /**
+   * Checks whether the password is valid according to a specific pattern.
+   */
   validatePassword() {
-    // Passwortvalidierung
-    const minLength = 8;
-    const hasNumber = /\d/.test(this.password);
-    const hasUppercase = /[A-Z]/.test(this.password);
-    const hasLowercase = /[a-z]/.test(this.password);
+    const minLength = 8; // Mindestlänge von 8 Zeichen
+    const hasNumber = /\d/.test(this.password); // Enthält mindestens eine Zahl
+    const hasUppercase = /[A-Z]/.test(this.password); // Enthält mindestens einen Großbuchstaben
+    const hasLowercase = /[a-z]/.test(this.password); // Enthält mindestens einen Kleinbuchstaben
 
     this.isPasswordValid =
       this.password.length >= minLength &&
@@ -68,24 +62,59 @@ export class RegisterComponent {
     }
   }
 
+  /**
+   * Handles form submission by checking if the email is already registered.
+   * If the email is not registered, registers the user with the provided credentials.
+   * @param {string} email - The email address provided in the form.
+   * @param {string} password - The password provided in the form.
+   * @param {string} name - The name provided in the form.
+   */
   onSubmit(email: string, password: string, name: string) {
     this.loading = true;
 
     this.checkIfEmailExists(email, password, name);
   }
 
-  async checkIfEmailExists(email: string, password: string, name: string) {
+  /**
+   * Checks whether the email has already been registered. If the email address does not exist, the user will be redirected to the registration process.
+   * @param {string} email - The email address to be checked.
+   * @param {string} password - The user's password.
+   * @param {string} name - The user's name.
+   * @returns {Promise<void>} - This function returns nothing (void), but waits for the asynchronous operation to complete.
+   */
+  async checkIfEmailExists(
+    email: string,
+    password: string,
+    name: string
+  ): Promise<void> {
     try {
-      await this.authService.login(email, password);
-      console.error('Die Email Adresse ist bereits vorhanden');
-      this.isEmailExists = true;
+      const signInMethods = await this.authService.checkMail(email);
+
+      if (signInMethods.length > 0) {
+        this.isEmailExists = true;
+      } else {
+        this.registerUser(email, password, name);
+        this.isEmailExists = false;
+      }
+    } catch (error) {
+      console.error('Fehler beim Überprüfen der E-Mail:', error);
+    } finally {
       this.loading = false;
-    } catch {
-      this.registerUser(email, password, name);
     }
   }
 
-  async registerUser(email: string, password: string, name: string) {
+  /**
+   * Saves and registers the user.
+   * @param {string} email - The email address of the user.
+   * @param {string} password - The password chosen by the user.
+   * @param {string} name - The name of the user.
+   * @returns {Promise<void>}
+   */
+  async registerUser(
+    email: string,
+    password: string,
+    name: string
+  ): Promise<void> {
     try {
       await this.authService.register(email, password, name);
       await this.authService.saveUserName(name);
@@ -97,6 +126,11 @@ export class RegisterComponent {
     }
   }
 
+  /**
+   * Handles successful user registration by updating relevant properties and navigating to the dashboard.
+   * @param {string} email
+   * @param {string} password
+   */
   handleSuccessfulRegistration(email: string, password: string) {
     this.isUserRegister = true;
     this.userEmail = email;

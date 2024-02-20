@@ -19,69 +19,67 @@ export class SignInComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private SidenavComponent: SidenavComponent,
-    private userService: UserService
+    private SidenavComponent: SidenavComponent
   ) {}
 
-  login(email: string, password: string) {
+  /**
+   * Handles user login using the provided email and password.
+   * @param {string} email - The user's email address.
+   * @param {string} password - The user's password.
+   */
+  async login(email: string, password: string) {
     this.loading = true;
-    this.authService
-      .login(email, password)
-      .then(() => {
-        this.authService.getUserName();
-        this.SidenavComponent.loggedIn = true;
-        this.SidenavComponent.isDrawerOpened = true;
-        console.log('Login erfolgreich');
-        this.SidenavComponent.isUserLoggedIn = true;
-
-        // Erfolgreich angemeldet, Benutzer weiterleiten
-        this.router.navigate(['dashboard']);
-      })
-      .catch((error) => {
-        // Fehlerbehandlung
-        // this.isUserLoggedIn = true;
-        this.loading = false;
-        this.errorMessage = true;
-        console.error('Login fehlgeschlagen', error);
-        console.log('Login nicht erfolgreich');
-      });
+    try {
+      await this.authService.login(email, password);
+      this.handleSuccessfulLogin();
+    } catch (error) {
+      console.error('Login fehlgeschlagen', error);
+      this.loading = false;
+      this.errorMessage = true;
+    }
   }
 
-  googleLogin() {
-    this.loading = true;
-    this.authService
-      .googleLogin()
-      .then(() => {
-        this.SidenavComponent.isDrawerOpened = true;
-        // Erfolgreich eingeloggt, Benutzer weiterleiten
-        console.log('Erfolgreich über Google eingeloggt');
-
-        this.router.navigate(['dashboard']);
-      })
-      .catch((error) => {
-        // Fehlerbehandlung
-        this.loading = false;
-        console.error('Google-Login fehlgeschlagen', error);
-      });
+  /**
+   * Handles successful user login by updating relevant properties and navigating to the dashboard.
+   */
+  handleSuccessfulLogin() {
+    this.authService.getUserName();
+    this.SidenavComponent.loggedIn = true;
+    this.SidenavComponent.isDrawerOpened = true;
+    this.SidenavComponent.isUserLoggedIn = true;
+    this.router.navigate(['dashboard']);
   }
 
-  guestLogin() {
+  /**
+   * Initiates a Google login process for the user. If the login is successful,
+   * the user is redirected to the dashboard page.
+   */
+  async googleLogin() {
     this.loading = true;
-    this.authService
-      .guestLogin()
-      .then(() => {
-        this.SidenavComponent.loggedIn = true;
-        this.SidenavComponent.isDrawerOpened = true;
-        console.log('Gast Login erfolgreich');
-        // this.userService.isGuestUser = true;
+    try {
+      await this.authService.googleLogin();
+      this.SidenavComponent.isDrawerOpened = true;
+      this.router.navigate(['dashboard']);
+    } catch (error) {
+      console.error('Google-Login fehlgeschlagen', error);
+      this.loading = false;
+    }
+  }
 
-        // Erfolgreich als Gast angemeldet, Benutzer weiterleiten
-        this.router.navigate(['guest/dashboard']);
-      })
-      .catch((error) => {
-        // Fehlerbehandlung
-        this.loading = false;
-        console.error('Gast-Login fehlgeschlagen', error);
-      });
+  /**
+   * Initiates a Guest login process for the user. If the login is successful,
+   * the user is redirected to the dashboard page.
+   */
+  async guestLogin() {
+    this.loading = true;
+    try {
+      await this.authService.guestLogin();
+      this.SidenavComponent.loggedIn = true;
+      this.SidenavComponent.isDrawerOpened = true;
+      this.router.navigate(['guest/dashboard']);
+    } catch (error) {
+      this.loading = false;
+      console.error('Gast-Login fehlgeschlagen', error);
+    }
   }
 }

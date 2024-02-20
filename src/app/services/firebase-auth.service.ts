@@ -62,9 +62,9 @@ export class AuthService implements OnInit {
     return signInWithEmailAndPassword(this.auth, email, password);
   }
 
-  // async checkMail(email: string) {
-  //   return fetchSignInMethodsForEmail(this.auth, email);
-  // }
+  async checkMail(email: string) {
+    return fetchSignInMethodsForEmail(this.auth, email);
+  }
 
   resetPassword(email: string) {
     return sendPasswordResetEmail(this.auth, email);
