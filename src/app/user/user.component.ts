@@ -6,6 +6,7 @@ import { Firestore } from '@angular/fire/firestore';
 import { collection, doc, onSnapshot } from 'firebase/firestore';
 import { UserService } from '../user.service';
 import { AuthService } from '../services/firebase-auth.service';
+import { SidenavComponent } from '../sidenav/sidenav.component';
 
 @Component({
   selector: 'app-user',
@@ -22,8 +23,8 @@ export class UserComponent {
   constructor(
     public db: Firestore,
     public dialog: MatDialog,
-    private userService: UserService,
-    private authService: AuthService
+    private authService: AuthService,
+    public sidenav: SidenavComponent
   ) {
     this.filteredUsers = this.allUsers;
   }
@@ -36,12 +37,10 @@ export class UserComponent {
       // Der Benutzer ist anonym (Gast)
       await this.getUserData('guest_users'); // Methode, um Musterdaten für Gastbenutzer abzurufen
       console.log('Der Benutzer ist anonym (Gast).');
-      console.log('so viele Users gibt es', this.filteredUsers.length);
     } else {
       // Der Benutzer ist nicht anonym (registriert)
       await this.getUserData('users');
       console.log('Der Benutzer ist nicht anonym (registriert).');
-      console.log('so viele Users gibt es', this.filteredUsers.length);
     }
   }
 
@@ -59,11 +58,9 @@ export class UserComponent {
             city: userData['city'],
           };
         });
-        console.log('Aktuelle Benutzerdaten:', this.allUsers);
 
         // filterUsers() aufrufen, nachdem die Daten geladen wurden
         this.filterUsers();
-        console.log('so viele Users gibt es', this.allUsers.length);
       });
     } catch (error) {
       console.error('Fehler beim Aktualisieren der Daten:', error);
@@ -98,5 +95,8 @@ export class UserComponent {
     }
   }
 
-  getNumberOfUsers() {}
+  userName() {
+    // this.sidenav.isUserDeatailsOpen = true;
+    // this.sidenav.currentUserId = this.user
+  }
 }

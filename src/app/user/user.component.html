@@ -39,6 +39,7 @@
       [routerLink]="
         isUserLoggedIn ? ['/user', user.id] : ['/guest/user', user.id]
       "
+      (click)="this.sidenav.getUserDataToSidenav(user)"
     >
       <td>{{ user.firstName }}</td>
       <td>{{ user.lastName }}</td>

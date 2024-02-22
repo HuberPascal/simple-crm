@@ -51,15 +51,20 @@ mat-toolbar-row {
 
   li {
     padding-left: 40px;
-    padding-right: 40px;
     height: 48px;
     display: flex;
     align-items: center;
     cursor: pointer;
     border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 200px;
+    box-sizing: border-box;
 
-    mat-icon {
-      margin-right: 16px;
+    .user-name {
+      word-wrap: break-word;
+      margin: 0;
     }
 
     &:hover {
@@ -101,4 +106,16 @@ mat-toolbar-row {
 
 .hide-drawer {
   display: none !important;
+}
+
+.dNone {
+  display: none !important;
+}
+
+.dBlock {
+  display: flex !important;
+}
+
+.turn-right {
+  transform: scaleY(-1);
 }

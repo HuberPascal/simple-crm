@@ -52,8 +52,6 @@ export class UserDetailComponent {
     // Die ID aus der URL holen
     this.route.paramMap.subscribe(async (paramMap) => {
       this.userId = paramMap.get('id');
-      // this.orderId = paramMap.get('id');
-      console.log('user id', this.userId);
 
       const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
 
@@ -76,7 +74,6 @@ export class UserDetailComponent {
   // User anhand der ID speichern in new User
   getUser(userId: any, user: string) {
     onSnapshot(doc(this.db, user, userId), (doc) => {
-      console.log('Abgerufene Daten', doc.data());
       if (doc.exists()) {
         const userData = doc.data();
         // userData.birthDate ist ein Firebase Timestamp
@@ -85,11 +82,9 @@ export class UserDetailComponent {
           userData['birthDate'] = this.formatDateBirthday(userObj);
         }
         this.user = new User(userData);
-        // this.user = new User(doc.data());
       } else {
         console.log('Keine Daten gefunden!');
       }
-      console.log('Abgerufener User', this.user);
     });
   }
 
@@ -143,8 +138,6 @@ export class UserDetailComponent {
         this.allOrders = []; // Array leeren, um Duplikate bei erneuten Abfragen zu verhindern
         querySnapshot.forEach((doc) => {
           const orderId = doc.id; // Hier erhalten Sie die doc-ID
-          // console.log('order', orderId);
-          console.log('Bestellung:', doc.data());
           const orderData = doc.data();
           orderData['orderId'] = orderId; // Fügen Sie die ID als separates Attribut hinzu
 
@@ -246,7 +239,6 @@ export class UserDetailComponent {
         snapshot.forEach((doc) => {
           const productData = doc.data();
           this.allProducts.push(productData);
-          console.log('in user-detail sind all products', this.allProducts);
         });
       });
     } catch (error) {

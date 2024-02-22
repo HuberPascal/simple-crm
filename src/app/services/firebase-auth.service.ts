@@ -1,4 +1,4 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
   Auth,
   createUserWithEmailAndPassword,
@@ -19,13 +19,11 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService implements OnInit {
+export class AuthService {
   isLoggedIn: any;
   displayName: string = '';
 
   constructor(private auth: Auth) {}
-
-  ngOnInit(): void {}
 
   async saveUserName(name: string): Promise<void> {
     const user_auth: any = this.auth.currentUser;
