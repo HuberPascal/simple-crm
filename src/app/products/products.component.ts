@@ -20,9 +20,8 @@ export class ProductsComponent implements OnInit {
   product: Product = new Product();
   selectedFilter: string = 'Product Name'; // Standardmäßig nach 'Product Name' filtern
   filteredProducts: any[] = []; // Gefilterte Benutzerdaten
-  // allProducts: any[] = []; // Ihre vollständigen Benutzerdaten
-
-  // productId: any;
+  filteredProductsInputField: any[] = [];
+  filter: any;
 
   constructor(
     private authService: AuthService,
@@ -98,6 +97,24 @@ export class ProductsComponent implements OnInit {
       default:
         this.filteredProducts = this.allProducts;
         break;
+    }
+  }
+
+  filterProduct(): void {
+    console.log(this.allProducts);
+    if (this.selectedFilter === 'Product Name') {
+      this.filteredProductsInputField = this.allProducts.filter((product) =>
+        product.productName.toLowerCase().startsWith(this.filter.toLowerCase())
+      );
+      this.filteredProductsInputField;
+    } else if (this.selectedFilter === 'Price per Unit') {
+      this.filteredProductsInputField = this.allProducts.filter((product) =>
+        product.price.toString().startsWith(this.filter)
+      );
+    } else if (this.selectedFilter === 'Type') {
+      this.filteredProductsInputField = this.allProducts.filter((product) =>
+        product.orderType.toLowerCase().includes(this.filter.toLowerCase())
+      );
     }
   }
 }

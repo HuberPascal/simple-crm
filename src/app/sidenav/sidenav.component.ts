@@ -1,9 +1,8 @@
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, ViewChild, inject } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from '../services/firebase-auth.service';
 import { MatDrawer } from '@angular/material/sidenav';
-import { user } from '@angular/fire/auth';
 import { User } from '../../models/user.class';
 
 @Component({
@@ -21,31 +20,39 @@ export class SidenavComponent {
   user: any;
   isVisible: boolean = true;
 
-  constructor(
-    private authService: AuthService,
-    private route: ActivatedRoute,
-    private router: Router
-  ) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   async ngOnInit(): Promise<void> {
     this.isUserLoggedIn = await this.authService.checkAuthLoggedInAsUser();
     this.loggedIn = await this.authService.checkAuth();
   }
 
-  logout() {
-    this.authService
-      .logout()
-      .then(() => {
-        this.isUserLoggedIn = false;
-        this.loggedIn = false;
-        this.isDrawerOpened = false;
-        this.router.navigate(['/']);
-      })
-      .catch((error) => {
-        console.error('Fehler beim Ausloggen', error);
-      });
+  /**
+   * Handle user logout
+   */
+  async logout() {
+    try {
+      await this.authService.logout();
+
+      this.handleSuccessfulLogout();
+    } catch (error) {
+      console.error('Fehler beim Ausloggen', error);
+    }
   }
 
+  /**
+   * Handles successful user logout by updating relevant properties and navigating to sign-in.
+   */
+  handleSuccessfulLogout() {
+    this.isUserLoggedIn = false;
+    this.loggedIn = false;
+    this.isDrawerOpened = false;
+    this.router.navigate(['/']);
+  }
+
+  /**
+   * Toggles the drawer (opens or closes it) if a drawer exists.
+   */
   toggleDrawer() {
     if (this.drawer) {
       this.isDrawerOpened = !this.isDrawerOpened;
@@ -53,7 +60,11 @@ export class SidenavComponent {
     }
   }
 
-  checkIfEntryRoutes() {
+  /**
+   * Checks if the current route is one of the entry routes.
+   * @returns {boolean} True if the current route is one of the entry routes, otherwise false.
+   */
+  checkIfEntryRoutes(): boolean {
     const currentRoute = this.router.url;
     return (
       currentRoute.includes('/sign-in') || currentRoute.includes('/register'),
@@ -61,16 +72,27 @@ export class SidenavComponent {
     );
   }
 
+  /**
+   *  Retrieves user data for the sidenav based on the current user.
+   * @param currentUser
+   */
   getUserDataToSidenav(currentUser: string) {
     this.user = new User(currentUser);
   }
 
-  shouldActivate(first: string): boolean {
+  /**
+   * Determines whether to activate the specified route segment based on the current URL.
+   * If the route segment matches the first segment of the URL, it activates the segment.
+   * If an ID follows the route segment, it deactivates the segment.
+   * @param {string} first - The route segment to check for activation.
+   * @returns {boolean} True if the route segment should be activated, otherwise false.
+   */
+  shouldActivate(segmentName: string): boolean {
     const currentUrl = this.router.url;
     const segments = currentUrl.split('/');
     if (
-      (segments[1] === 'guest' && segments[2] === first) ||
-      segments[1] === first
+      (segments[1] === 'guest' && segments[2] === segmentName) ||
+      segments[1] === segmentName
     ) {
       if (segments.length === 3 || segments[3].length === 0) {
         this.isVisible = false;

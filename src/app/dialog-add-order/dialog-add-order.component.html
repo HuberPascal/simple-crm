@@ -47,6 +47,7 @@
           placeholder="Amount Sold"
           type="number"
           name="amount"
+          min="0"
           required
         />
       </mat-form-field>
@@ -72,7 +73,6 @@
       [disabled]="loading || isSaveButtonDisabled()"
       mat-button
       (click)="saveOrder()"
-      cdkFocusInitial
     >
       Add
     </button>

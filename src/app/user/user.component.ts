@@ -94,9 +94,4 @@ export class UserComponent {
         break;
     }
   }
-
-  userName() {
-    // this.sidenav.isUserDeatailsOpen = true;
-    // this.sidenav.currentUserId = this.user
-  }
 }

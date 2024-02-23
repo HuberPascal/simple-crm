@@ -82,7 +82,7 @@ export class DialogAddOrderComponent implements OnInit {
   isSaveButtonDisabled(): boolean {
     return (
       !this.order.orderDate ||
-      !this.order.amount ||
+      this.order.amount <= 0 ||
       !this.selectedValue ||
       !this.selectedProduct
     );
