@@ -1,11 +1,14 @@
 <div class="products-header">
   <h1><mat-icon>inventory_2</mat-icon> Products</h1>
-  <input
-    type="text"
-    placeholder="{{ selectedFilter }}"
-    (input)="filterProduct()"
-    [(ngModel)]="filter"
-  />
+  <div class="filter-container">
+    <input
+      type="text"
+      placeholder="{{ selectedFilter }}"
+      (input)="filterProductFromInput()"
+      [(ngModel)]="filterInputValue"
+    />
+    <mat-icon>search</mat-icon>
+  </div>
 </div>
 
 <div class="product-filter">
@@ -42,7 +45,7 @@
         <th>Action</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody [ngClass]="{ dNone: filterNotFound }">
       <ng-container
         *ngIf="filteredProductsInputField.length > 0; else allProductsBlock"
       >

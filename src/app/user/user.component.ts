@@ -19,6 +19,9 @@ export class UserComponent {
   filteredUsers: any[] = []; // Gefilterte Benutzerdaten
   selectedFilter: string = 'First Name'; // Standardmäßig nach 'First Name' filtern
   isUserLoggedIn: boolean = false;
+  filteredUsersInputField: any[] = []; // Gefilterte Benutzerdaten vom Suchfeld
+  filterInputValue: any; // Eingabe vom Suchfeld
+  filterNotFound: boolean = false;
 
   constructor(
     public db: Firestore,
@@ -92,6 +95,72 @@ export class UserComponent {
       default:
         this.filteredUsers = this.allUsers;
         break;
+    }
+  }
+
+  /**
+   * Filters the products based on the selected filter.
+   */
+  filterUserFromInput(): void {
+    console.log('filter User geht');
+    if (this.selectedFilter === 'First Name') {
+      this.filterFirstName();
+    } else if (this.selectedFilter === 'Last Name') {
+      this.filterLastName();
+    } else if (this.selectedFilter === 'City') {
+      this.filterCity();
+    }
+    this.checkFilterNotFound();
+  }
+
+  /**
+   * Filters the products based on the product name and updates the array of filtered products.
+   *
+   * @returns {Array} An array of filtered products.
+   */
+  filterFirstName(): Array<any> {
+    return (this.filteredUsersInputField = this.filteredUsers.filter((user) =>
+      user.firstName
+        .toLowerCase()
+        .startsWith(this.filterInputValue.toLowerCase())
+    ));
+  }
+
+  /**
+   * Filters the products based on the price and updates the array of filtered products.
+   *
+   * @returns {Array} An array of filtered products.
+   */
+  filterLastName(): Array<any> {
+    return (this.filteredUsersInputField = this.filteredUsers.filter((user) =>
+      user.lastName.toString().startsWith(this.filterInputValue)
+    ));
+  }
+
+  /**
+   * Filters the products based on the product type and updates the array of filtered products.
+   *
+   * @returns {Array} An array of filtered products.
+   */
+  filterCity(): Array<any> {
+    return (this.filteredUsersInputField = this.filteredUsers.filter((user) =>
+      user.city.toLowerCase().includes(this.filterInputValue.toLowerCase())
+    ));
+  }
+
+  /**
+   * Checks if the filter input value is not empty and if the filtered products array is empty.
+   *
+   * @returns {void}
+   */
+  checkFilterNotFound(): void {
+    if (
+      this.filterInputValue !== '' &&
+      this.filteredUsersInputField.length == 0
+    ) {
+      this.filterNotFound = true;
+    } else {
+      this.filterNotFound = false;
     }
   }
 }

@@ -14,33 +14,40 @@ mat-card {
 .user-table {
   width: 100%;
   border-collapse: collapse;
+  margin-bottom: 30px;
+
+  table {
+    display: flex;
+    flex-direction: column;
+  }
+
+  thead {
+    tr {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+      cursor: unset;
+      background-color: initial;
+      display: flex;
+
+      th {
+        flex: 1;
+      }
+    }
+  }
 
   tr {
     border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    display: flex;
 
     &:hover {
       background-color: #3f51b5;
       cursor: pointer;
     }
 
-    &:first-child {
-      cursor: unset;
-      &:hover {
-        background-color: unset;
-      }
-    }
-
-    &:first-child {
-      background-color: initial;
-    }
-
-    &:last-child {
-      border-bottom: 0;
-    }
-    cursor: pointer;
-
     td {
       height: 48px;
+      display: flex;
+      flex: 1;
+      align-items: center;
 
       &:first-child {
         padding-left: 16px;
@@ -48,6 +55,7 @@ mat-card {
     }
 
     th {
+      text-align: start;
       color: #3151ff;
       font-weight: 600;
 
@@ -71,6 +79,7 @@ mat-card {
   color: #fff;
   padding: 0 30px;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   margin-bottom: 30px;
   border-radius: 5px;
@@ -80,6 +89,19 @@ mat-card {
     display: flex;
     align-items: center;
     gap: 10px;
+  }
+
+  .filter-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  input {
+    border-radius: 5px;
+    border-style: none;
+    padding: 5px;
+    outline: none;
   }
 }
 
@@ -108,4 +130,8 @@ mat-card {
       background-color: var(--primary-color);
     }
   }
+}
+
+.dNone {
+  display: none !important;
 }

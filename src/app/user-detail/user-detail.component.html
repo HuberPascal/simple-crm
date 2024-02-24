@@ -110,15 +110,17 @@
 
 <mat-card class="mt-32">
   <table class="detail-table">
-    <tr>
-      <th>Order Date</th>
-      <th>Amount Sold</th>
-      <th>Product Name</th>
-      <th>Order Status</th>
-      <th>Price per Unit</th>
-      <th>Total Value</th>
-      <th>Action</th>
-    </tr>
+    <thead>
+      <tr>
+        <th>Order Date</th>
+        <th>Amount Sold</th>
+        <th>Product Name</th>
+        <th>Order Status</th>
+        <th>Price per Unit</th>
+        <th>Total Value</th>
+        <th>Action</th>
+      </tr>
+    </thead>
     <tr *ngFor="let order of allOrders">
       <td>{{ order.orderDate }}</td>
       <td>{{ order.amount }}</td>
