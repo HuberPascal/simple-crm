@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { AuthService } from '../services/firebase-auth.service';
 import { Router } from '@angular/router';
 import { SidenavComponent } from '../sidenav/sidenav.component';
+import { MatDrawer } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-sign-in',
@@ -14,6 +15,7 @@ export class SignInComponent {
   isUserLoggedIn: boolean = false;
   errorMessage: boolean = false;
   loading: boolean = false;
+  @ViewChild('drawer') drawer: MatDrawer | undefined;
 
   constructor(
     private authService: AuthService,

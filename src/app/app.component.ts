@@ -8,6 +8,4 @@ import { AuthService } from './services/firebase-auth.service';
 })
 export class AppComponent {
   title = 'simple-crm';
-
-  constructor(public authService: AuthService) {}
 }

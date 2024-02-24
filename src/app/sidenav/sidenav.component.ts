@@ -47,6 +47,9 @@ export class SidenavComponent {
     this.isUserLoggedIn = false;
     this.loggedIn = false;
     this.isDrawerOpened = false;
+    if (this.drawer) {
+      this.drawer.close();
+    }
     this.router.navigate(['/']);
   }
 
@@ -55,7 +58,6 @@ export class SidenavComponent {
    */
   toggleDrawer() {
     if (this.drawer) {
-      this.isDrawerOpened = !this.isDrawerOpened;
       this.drawer.toggle();
     }
   }

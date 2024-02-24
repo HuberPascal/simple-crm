@@ -5,7 +5,6 @@ import { Firestore } from '@angular/fire/firestore';
   providedIn: 'root',
 })
 export class UserService {
-  isGuestUser: boolean = false;
-
-  constructor(public db: Firestore) {}
+  // isGuestUser: boolean = false;
+  // constructor(public db: Firestore) {}
 }
