@@ -34,28 +34,43 @@ export class ProductsComponent implements OnInit {
     const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
 
     if (isAnonymous) {
-      await this.getOrderData('guest_products'); // Methode, um Musterdaten für Gastbenutzer abzurufen
+      await this.getOrderData('guest_products');
     } else {
       await this.getOrderData('products');
     }
   }
 
+  /**
+   * Fetches order data from the specified collection in the Firestore database.
+   *
+   * @param {string} product - The name of the collection from which to fetch user data.
+   */
   async getOrderData(product: string) {
     try {
       const productCollectionRef = collection(this.db, product);
-      onSnapshot(productCollectionRef, (snapshot) => {
-        this.allProducts = [];
-        snapshot.docs.forEach((doc) => {
-          const productData = doc.data();
-          const productId = doc.id;
-          productData['productId'] = productId;
-          this.allProducts.push(productData);
-        });
-        this.filterProducts();
-      });
+      this.getOrderDataSnapShot(productCollectionRef);
     } catch (error) {
       console.error('Fehler beim Aktualisieren der Produkte-Daten:', error);
     }
+  }
+
+  /**
+   * Listens for changes in the specified collection and updates the `allProducts` array accordingly.
+   * Additionally, it triggers the `filterProducts()` method to filter the order data.
+   *
+   * @param {any} productCollectionRef - The reference to the collection in Firestore.
+   */
+  getOrderDataSnapShot(productCollectionRef: any) {
+    onSnapshot(productCollectionRef, (snapshot: { docs: any[] }) => {
+      this.allProducts = [];
+      snapshot.docs.forEach((doc) => {
+        const productData = doc.data();
+        const productId = doc.id;
+        productData['productId'] = productId;
+        this.allProducts.push(productData);
+      });
+      this.filterProducts();
+    });
   }
 
   /**

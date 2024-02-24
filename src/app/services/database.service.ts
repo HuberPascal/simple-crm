@@ -9,7 +9,6 @@ import {
 } from 'firebase/firestore';
 import { Firestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
-import { User } from '../../models/user.class';
 
 @Injectable({
   providedIn: 'root',

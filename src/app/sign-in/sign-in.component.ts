@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { AuthService } from '../services/firebase-auth.service';
 import { Router } from '@angular/router';
 import { SidenavComponent } from '../sidenav/sidenav.component';
-import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-sign-in',

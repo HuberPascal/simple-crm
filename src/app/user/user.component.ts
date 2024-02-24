@@ -7,6 +7,7 @@ import { collection, doc, onSnapshot } from 'firebase/firestore';
 import { UserService } from '../user.service';
 import { AuthService } from '../services/firebase-auth.service';
 import { SidenavComponent } from '../sidenav/sidenav.component';
+import { DatabaseService } from '../services/database.service';
 
 @Component({
   selector: 'app-user',
@@ -18,7 +19,7 @@ export class UserComponent {
   allUsers: any[] = []; // Ihre vollständigen Benutzerdaten
   filteredUsers: any[] = []; // Gefilterte Benutzerdaten
   selectedFilter: string = 'First Name'; // Standardmäßig nach 'First Name' filtern
-  isUserLoggedIn: boolean = false;
+  isAnonymous: boolean = false;
   filteredUsersInputField: any[] = []; // Gefilterte Benutzerdaten vom Suchfeld
   filterInputValue: any; // Eingabe vom Suchfeld
   filterNotFound: boolean = false;
@@ -27,75 +28,113 @@ export class UserComponent {
     public db: Firestore,
     public dialog: MatDialog,
     private authService: AuthService,
-    public sidenav: SidenavComponent
+    public sidenav: SidenavComponent,
+    public database: DatabaseService
   ) {
     this.filteredUsers = this.allUsers;
   }
 
   async ngOnInit(): Promise<void> {
-    this.isUserLoggedIn = await this.authService.checkAuthLoggedInAsUser();
-    const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
+    this.isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
 
-    if (isAnonymous) {
-      // Der Benutzer ist anonym (Gast)
-      await this.getUserData('guest_users'); // Methode, um Musterdaten für Gastbenutzer abzurufen
-      console.log('Der Benutzer ist anonym (Gast).');
+    if (this.isAnonymous) {
+      await this.getUserData('guest_users');
     } else {
-      // Der Benutzer ist nicht anonym (registriert)
       await this.getUserData('users');
-      console.log('Der Benutzer ist nicht anonym (registriert).');
     }
   }
 
+  /**
+   * Fetches user data from the specified collection in the Firestore database.
+   *
+   * @param {string} user - The name of the collection from which to fetch user data.
+   */
   async getUserData(user: string) {
     try {
       const usersCollectionRef = collection(this.db, user);
-      onSnapshot(usersCollectionRef, (snapshot) => {
-        this.allUsers = snapshot.docs.map((doc) => {
-          const userData = doc.data();
-          return {
-            id: doc.id,
-            firstName: userData['firstName'],
-            lastName: userData['lastName'],
-            email: userData['email'],
-            city: userData['city'],
-          };
-        });
-
-        // filterUsers() aufrufen, nachdem die Daten geladen wurden
-        this.filterUsers();
-      });
+      this.getUserDataOnSnapshot(usersCollectionRef);
     } catch (error) {
       console.error('Fehler beim Aktualisieren der Daten:', error);
     }
   }
 
+  /**
+   * Listens for changes in the specified collection and updates the `allUsers` array accordingly.
+   * Additionally, it triggers the `filterUsers()` method to filter the user data.
+   *
+   * @param {any} usersCollectionRef - The reference to the collection in Firestore.
+   */
+  getUserDataOnSnapshot(usersCollectionRef: any) {
+    onSnapshot(usersCollectionRef, (snapshot: { docs: any[] }) => {
+      this.allUsers = snapshot.docs.map((doc) => {
+        const userData = doc.data();
+        return {
+          id: doc.id,
+          firstName: userData['firstName'],
+          lastName: userData['lastName'],
+          email: userData['email'],
+          city: userData['city'],
+        };
+      });
+      this.filterUsers();
+    });
+  }
+
+  /**
+   * Opens the dialog for adding a new user.
+   */
   openDialog() {
     this.dialog.open(DialogAddUserComponent);
   }
 
-  // User Filtern
+  /**
+   * Filters the user based on the selected filter.
+   */
   filterUsers() {
     switch (this.selectedFilter) {
       case 'First Name':
-        this.filteredUsers = this.allUsers.sort((a, b) =>
-          a.firstName.localeCompare(b.firstName)
-        );
+        this.filterByFirstName();
         break;
       case 'Last Name':
-        this.filteredUsers = this.allUsers.sort((a, b) =>
-          a.lastName.localeCompare(b.lastName)
-        );
+        this.filterByLastName();
         break;
       case 'City':
-        this.filteredUsers = this.allUsers.sort((a, b) =>
-          a.city.localeCompare(b.city)
-        );
+        this.filterByCity();
         break;
       default:
         this.filteredUsers = this.allUsers;
         break;
     }
+  }
+
+  /**
+   * Filters the user by first name.
+   * Sorts the users alphabetically based on the first name.
+   */
+  filterByFirstName() {
+    this.filteredUsers = this.allUsers.sort((a, b) =>
+      a.firstName.localeCompare(b.firstName)
+    );
+  }
+
+  /**
+   * Filters the user by last name.
+   * Sorts the users alphabetically based on the last name.
+   */
+  filterByLastName() {
+    this.filteredUsers = this.allUsers.sort((a, b) =>
+      a.lastName.localeCompare(b.lastName)
+    );
+  }
+
+  /**
+   * Filters the user by city.
+   * Sorts the users alphabetically based on the city.
+   */
+  filterByCity() {
+    this.filteredUsers = this.allUsers.sort((a, b) =>
+      a.city.localeCompare(b.city)
+    );
   }
 
   /**
