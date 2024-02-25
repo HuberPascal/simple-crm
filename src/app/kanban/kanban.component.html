@@ -1,0 +1,28 @@
+<div class="kanban-header">
+  <h1><mat-icon>inventory_2</mat-icon> Products</h1>
+  <div class="filter-container">
+    <input type="text" />
+    <mat-icon>search</mat-icon>
+  </div>
+</div>
+
+<div class="kanban">
+  <div class="kanban-container">
+    <mat-card>Pending</mat-card>
+    <div *ngFor="let kanban of allNodes" class="kanban-list">
+      <div class="task-titel">
+        {{ kanban.firstName + " " + kanban.lastName }}
+      </div>
+      <div>
+        <div>{{ kanban.node }}</div>
+        <p>{{ kanban.price }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="kanban-container">
+    <mat-card>In progress</mat-card>
+  </div>
+  <div class="kanban-container">
+    <mat-card>Done</mat-card>
+  </div>
+</div>

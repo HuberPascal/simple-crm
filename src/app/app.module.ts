@@ -50,6 +50,8 @@ import { DialogAddProductComponent } from './dialog-add-product/dialog-add-produ
 import { DialogEditProductComponent } from './dialog-edit-product/dialog-edit-product.component';
 import { DialogDeleteProductComponent } from './dialog-delete-product/dialog-delete-product.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
+import { HttpClientModule } from '@angular/common/http';
+import { KanbanComponent } from './kanban/kanban.component';
 
 @NgModule({
   declarations: [
@@ -76,6 +78,7 @@ import { SidenavComponent } from './sidenav/sidenav.component';
     DialogEditProductComponent,
     DialogDeleteProductComponent,
     SidenavComponent,
+    KanbanComponent,
   ],
   imports: [
     BrowserModule,
@@ -96,6 +99,7 @@ import { SidenavComponent } from './sidenav/sidenav.component';
     MatCardModule,
     MatMenuModule,
     MatSelectModule,
+    HttpClientModule,
     // AngularFireModule,
     // provideFirebaseApp(() => initializeApp(environment.firebase)),
 

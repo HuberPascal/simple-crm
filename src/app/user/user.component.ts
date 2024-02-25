@@ -1,10 +1,9 @@
-import { Component, OnInit, booleanAttribute } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogAddUserComponent } from '../dialog-add-user/dialog-add-user.component';
 import { User } from '../../models/user.class';
 import { Firestore } from '@angular/fire/firestore';
 import { collection, doc, onSnapshot } from 'firebase/firestore';
-import { UserService } from '../user.service';
 import { AuthService } from '../services/firebase-auth.service';
 import { SidenavComponent } from '../sidenav/sidenav.component';
 import { DatabaseService } from '../services/database.service';

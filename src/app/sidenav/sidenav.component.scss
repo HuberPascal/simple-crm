@@ -3,6 +3,13 @@
   background-color: #16103a;
 }
 
+mat-drawer {
+  border: none;
+  box-shadow: 5px 0 10px rgba(0, 0, 0, 0.3);
+  background-color: #282953;
+  color: white;
+}
+
 .menu-icon {
   cursor: pointer;
 }

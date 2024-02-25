@@ -3,7 +3,6 @@ import { AuthService } from '../services/firebase-auth.service';
 import { Router } from '@angular/router';
 import { SidenavComponent } from '../sidenav/sidenav.component';
 import { MatDrawer } from '@angular/material/sidenav';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-sign-in',
@@ -24,8 +23,7 @@ export class SignInComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private SidenavComponent: SidenavComponent,
-    private _snackBar: MatSnackBar
+    private SidenavComponent: SidenavComponent
   ) {}
 
   /**

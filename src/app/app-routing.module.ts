@@ -12,6 +12,7 @@ import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.componen
 import { GuestUserComponent } from './guest-user/guest-user.component';
 import { GuestDashboardComponent } from './guest-dashboard/guest-dashboard.component';
 import { ProductsComponent } from './products/products.component';
+import { KanbanComponent } from './kanban/kanban.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/sign-in', pathMatch: 'full' },
@@ -47,6 +48,15 @@ const routes: Routes = [
   {
     path: 'guest/products',
     component: ProductsComponent,
+  },
+  {
+    path: 'kanban',
+    component: KanbanComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'guest/kanban',
+    component: KanbanComponent,
   },
   { path: 'register', component: RegisterComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },

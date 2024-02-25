@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import Chart, { BarController } from 'chart.js/auto';
+import Chart from 'chart.js/auto';
 import { AuthService } from '../services/firebase-auth.service';
-import { UserComponent } from '../user/user.component';
-import { Firestore, docSnapshots } from '@angular/fire/firestore';
-import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
-import { UserService } from '../user.service';
-import { User } from '../../models/user.class';
+import { Firestore } from '@angular/fire/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 
 @Component({
   selector: 'app-dashboard',

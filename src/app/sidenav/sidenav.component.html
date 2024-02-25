@@ -40,6 +40,12 @@
           >
             <mat-icon>inventory_2</mat-icon>Products
           </li>
+          <li
+            [ngClass]="{ active: shouldActivate('kanban') }"
+            [routerLink]="isUserLoggedIn ? '/kanban' : '/guest/kanban'"
+          >
+            <mat-icon>task</mat-icon>Kanban
+          </li>
         </div>
       </ul>
 

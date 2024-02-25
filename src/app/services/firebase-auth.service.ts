@@ -155,7 +155,5 @@ export class AuthService {
         verticalPosition: 'top',
       }
     );
-
-    // Fügen Sie hier optionalen Code hinzu, um mit der Snackbar-Referenz zu arbeiten, z. B. das Schließen bei einem Klick
   }
 }
