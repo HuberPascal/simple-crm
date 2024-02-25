@@ -57,7 +57,7 @@ export class ForgotPasswordComponent {
       await this.authService.resetPassword(email);
 
       this.handleSuccessfulResetPassword();
-      this.handleSendEmailMessageAnimation();
+      this.authService.openSnackBar('The email has been sent');
     } catch (error) {
       console.error('Fehler beim Zurücksetzen des Passworts', error);
       this.loading = false;
@@ -72,19 +72,5 @@ export class ForgotPasswordComponent {
     this.emailFormInputField = this.email;
     this.email = '';
     this.sendMail = true;
-  }
-
-  /**
-   * Handles the animation for displaying a message after sending an email.
-   */
-  handleSendEmailMessageAnimation() {
-    setTimeout(() => {
-      this.fadeOutBtn = true;
-
-      setTimeout(() => {
-        this.fadeOutBtn = false;
-      }, 1000);
-      this.router.navigate(['/sign-in']);
-    }, 3000);
   }
 }

@@ -125,9 +125,13 @@ export class ProductsComponent implements OnInit {
    * Sorts the products alphabetically based on the product name.
    */
   filterByProductName() {
-    this.filteredProducts = this.allProducts.sort((a, b) =>
-      a.productName.localeCompare(b.productName)
-    );
+    if (this.allProducts.length > 1) {
+      this.filteredProducts = this.allProducts.sort((a, b) =>
+        a.productName.localeCompare(b.productName)
+      );
+    } else {
+      this.filteredProducts = this.allProducts;
+    }
   }
 
   /**

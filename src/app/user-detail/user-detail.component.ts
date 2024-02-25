@@ -83,7 +83,7 @@ export class UserDetailComponent {
         }
         this.user = new User(userData);
       } else {
-        console.log('Keine Daten gefunden!');
+        console.error('Keine Daten gefunden!');
       }
     });
   }

@@ -15,6 +15,7 @@ import {
   signOut,
   updateProfile,
 } from 'firebase/auth';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root',
@@ -22,8 +23,9 @@ import {
 export class AuthService {
   isLoggedIn: any;
   displayName: string = '';
+  durationInSeconds = 4;
 
-  constructor(private auth: Auth) {}
+  constructor(private auth: Auth, private _snackBar: MatSnackBar) {}
 
   async saveUserName(name: string): Promise<void> {
     const user_auth: any = this.auth.currentUser;
@@ -125,5 +127,35 @@ export class AuthService {
         }
       });
     });
+  }
+
+  /**
+   * Opens the snack bar.
+   */
+  openSnackBar(message: string) {
+    this._snackBar.open(message, 'Close', {
+      panelClass: ['custom-snackbar'],
+      duration: this.durationInSeconds * 1000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+    });
+  }
+
+  /**
+   * Opens the snack bar.
+   */
+  openSnackBarLogin(message: string, displayName: string) {
+    const snackBarRef = this._snackBar.open(
+      `${message} ${displayName}`,
+      'Close',
+      {
+        panelClass: ['custom-snackbar'],
+        duration: this.durationInSeconds * 1000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      }
+    );
+
+    // Fügen Sie hier optionalen Code hinzu, um mit der Snackbar-Referenz zu arbeiten, z. B. das Schließen bei einem Klick
   }
 }

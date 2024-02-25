@@ -3,6 +3,7 @@ import { AuthService } from '../services/firebase-auth.service';
 import { Router } from '@angular/router';
 import { SidenavComponent } from '../sidenav/sidenav.component';
 import { MatDrawer } from '@angular/material/sidenav';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-sign-in',
@@ -15,12 +16,16 @@ export class SignInComponent {
   isUserLoggedIn: boolean = false;
   errorMessage: boolean = false;
   loading: boolean = false;
+  durationInSeconds = 5;
+  displayName: string = '';
+
   @ViewChild('drawer') drawer: MatDrawer | undefined;
 
   constructor(
     private authService: AuthService,
     private router: Router,
-    private SidenavComponent: SidenavComponent
+    private SidenavComponent: SidenavComponent,
+    private _snackBar: MatSnackBar
   ) {}
 
   /**
@@ -43,12 +48,14 @@ export class SignInComponent {
   /**
    * Handles successful user login by updating relevant properties and navigating to the dashboard.
    */
-  handleSuccessfulLogin() {
+  async handleSuccessfulLogin() {
     this.authService.getUserName();
     this.SidenavComponent.loggedIn = true;
     this.SidenavComponent.isDrawerOpened = true;
     this.SidenavComponent.isUserLoggedIn = true;
+    await this.getUserByName();
     this.router.navigate(['dashboard']);
+    this.authService.openSnackBarLogin('Logged in as', this.displayName);
   }
 
   /**
@@ -60,7 +67,9 @@ export class SignInComponent {
     try {
       await this.authService.googleLogin();
       this.SidenavComponent.isDrawerOpened = true;
+      await this.getUserByName();
       this.router.navigate(['dashboard']);
+      this.authService.openSnackBarLogin('Logged in as', this.displayName);
     } catch (error) {
       console.error('Google-Login fehlgeschlagen', error);
       this.loading = false;
@@ -78,9 +87,15 @@ export class SignInComponent {
       this.SidenavComponent.loggedIn = true;
       this.SidenavComponent.isDrawerOpened = true;
       this.router.navigate(['guest/dashboard']);
+      this.authService.openSnackBar('Logged in as Guest!');
     } catch (error) {
       this.loading = false;
       console.error('Gast-Login fehlgeschlagen', error);
     }
+  }
+
+  async getUserByName() {
+    await this.authService.getUserName(); // displayName-Wert aktualisieren
+    this.displayName = this.authService.displayName;
   }
 }

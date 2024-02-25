@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../services/firebase-auth.service';
 import { MatDrawer } from '@angular/material/sidenav';
 import { User } from '../../models/user.class';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-sidenav',
@@ -19,6 +20,7 @@ export class SidenavComponent {
   currentUser!: any;
   user: any;
   isVisible: boolean = true;
+  durationInSeconds = 5;
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -51,6 +53,7 @@ export class SidenavComponent {
       this.drawer.close();
     }
     this.router.navigate(['/']);
+    this.authService.openSnackBar('Successfully logged out!');
   }
 
   /**
@@ -96,7 +99,11 @@ export class SidenavComponent {
       (segments[1] === 'guest' && segments[2] === segmentName) ||
       segments[1] === segmentName
     ) {
-      if (segments.length === 3 || segments[3].length === 0) {
+      if (
+        segments.length === 3 ||
+        segments.length === 2 ||
+        segments[3].length === 0
+      ) {
         this.isVisible = false;
         return true; // 'active' Klasse zuweisen, wenn keine ID folgt
       } else {
