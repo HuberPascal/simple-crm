@@ -1,5 +1,5 @@
 <div class="kanban-header">
-  <h1><mat-icon>inventory_2</mat-icon> Products</h1>
+  <h1><mat-icon>inventory_2</mat-icon> Kanban</h1>
   <div class="filter-container">
     <input type="text" />
     <mat-icon>search</mat-icon>
@@ -26,3 +26,14 @@
     <mat-card>Done</mat-card>
   </div>
 </div>
+
+<button
+  (click)="openDialog()"
+  class="add-task-btn"
+  mat-fab
+  color="primary"
+  matTooltip="Add user"
+  matTooltipPosition="above"
+>
+  <mat-icon>add</mat-icon>
+</button>

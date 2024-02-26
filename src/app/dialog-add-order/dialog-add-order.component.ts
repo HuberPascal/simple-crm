@@ -37,13 +37,13 @@ export class DialogAddOrderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadProductNameFromInputField();
+    this.loadProductNameInInputField();
   }
 
   /**
    * Adds the product name into the input field.
    */
-  loadProductNameFromInputField() {
+  loadProductNameInInputField() {
     this.productName = this.allProducts.map((product) => ({
       value: product.productName,
       viewValue: `${product.productName} - ${product.price} CHF`, // Füge den Produktnamen und den Preis hinzu

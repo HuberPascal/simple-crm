@@ -52,6 +52,7 @@ import { DialogDeleteProductComponent } from './dialog-delete-product/dialog-del
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { HttpClientModule } from '@angular/common/http';
 import { KanbanComponent } from './kanban/kanban.component';
+import { AddTaskDialogComponent } from './add-task-dialog/add-task-dialog.component';
 
 @NgModule({
   declarations: [
@@ -79,6 +80,7 @@ import { KanbanComponent } from './kanban/kanban.component';
     DialogDeleteProductComponent,
     SidenavComponent,
     KanbanComponent,
+    AddTaskDialogComponent,
   ],
   imports: [
     BrowserModule,

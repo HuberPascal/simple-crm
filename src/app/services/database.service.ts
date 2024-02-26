@@ -127,6 +127,35 @@ export class DatabaseService {
     }
   }
 
+  async saveNote(
+    note: string,
+    kanbanData: any,
+    selectedStatus: string,
+    selectedUserFirstName: string,
+    selectedUserLastName: string
+  ) {
+    kanbanData.note = note;
+    kanbanData.kanbanStatus = selectedStatus;
+
+    if (selectedUserFirstName) {
+      kanbanData.firstName = selectedUserFirstName;
+      kanbanData.lastName = selectedUserLastName;
+    }
+
+    this.saveNoteInFirebase(kanbanData);
+  }
+
+  async saveNoteInFirebase(kanbanData: any) {
+    const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
+    try {
+      if (isAnonymous) {
+        await addDoc(collection(this.db, 'guest_kanban'), kanbanData);
+      } else {
+        await addDoc(collection(this.db, 'kanban'), kanbanData);
+      }
+    } catch {}
+  }
+
   ////////// Update //////////
 
   /**
