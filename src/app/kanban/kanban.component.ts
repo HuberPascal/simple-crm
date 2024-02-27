@@ -11,6 +11,7 @@ import {
 import { Firestore } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
 import { AddTaskDialogComponent } from '../add-task-dialog/add-task-dialog.component';
+import { DialogEditNoteComponent } from '../dialog-edit-note/dialog-edit-note.component';
 import { User } from '../../models/user.class';
 
 @Component({
@@ -24,6 +25,7 @@ export class KanbanComponent implements OnInit {
   isAnonymous: boolean = false;
   allNodes: any[] = [];
   allUsers: any[] = [];
+  currentNote: any;
 
   constructor(
     private authService: AuthService,
@@ -59,7 +61,7 @@ export class KanbanComponent implements OnInit {
         const kanbanData = doc.data();
         console.log('kanbanData ist', kanbanData);
         return {
-          node: kanbanData['node'],
+          note: kanbanData['note'],
           firstName: kanbanData['firstName'],
           lastName: kanbanData['lastName'],
           price: kanbanData['price'],
@@ -88,5 +90,13 @@ export class KanbanComponent implements OnInit {
       });
       console.log('allUser ist', this.allUsers);
     });
+  }
+
+  editNote(currentNote: any) {
+    const dialog = this.dialog.open(DialogEditNoteComponent);
+    dialog.componentInstance.kanban = new Kanban(this.kanban.toJSON());
+    dialog.componentInstance.user = new User(this.user.toJSON());
+    dialog.componentInstance.allUsers = this.allUsers;
+    dialog.componentInstance.currentNote = currentNote;
   }
 }

@@ -7,10 +7,7 @@
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>User Name</mat-label>
         <mat-select [(ngModel)]="selectedUser" name="userName" required>
-          <mat-option
-            *ngFor="let user of userName"
-            [value]="{ firstName: user.firstName, lastName: user.lastName }"
-          >
+          <mat-option *ngFor="let user of userName" [value]="user">
             {{ user.viewValue }}
           </mat-option>
         </mat-select>

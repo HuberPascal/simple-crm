@@ -32,7 +32,6 @@ export class AddTaskDialogComponent implements OnInit {
   kanbanData: any[] = [];
   allUsers: any[] = [];
   selectedValue: any;
-  nodeStatus: any;
   note: string = '';
 
   constructor(
@@ -45,7 +44,7 @@ export class AddTaskDialogComponent implements OnInit {
   ngOnInit(): void {
     console.log('die übergebenen User daten sind', this.allUsers);
     this.loadUserNameInInputField();
-    console.log('der  Status ist', this.nodeStatus);
+    console.log('der  Status ist', this.noteStatus);
   }
 
   loadUserNameInInputField() {
@@ -56,7 +55,7 @@ export class AddTaskDialogComponent implements OnInit {
     }));
   }
 
-  async saveNode() {
+  async saveNote() {
     try {
       console.log('note ist', this.note);
       const note = this.note;

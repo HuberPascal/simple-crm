@@ -53,6 +53,7 @@ import { SidenavComponent } from './sidenav/sidenav.component';
 import { HttpClientModule } from '@angular/common/http';
 import { KanbanComponent } from './kanban/kanban.component';
 import { AddTaskDialogComponent } from './add-task-dialog/add-task-dialog.component';
+import { DialogEditNoteComponent } from './dialog-edit-note/dialog-edit-note.component';
 
 @NgModule({
   declarations: [
@@ -81,6 +82,7 @@ import { AddTaskDialogComponent } from './add-task-dialog/add-task-dialog.compon
     SidenavComponent,
     KanbanComponent,
     AddTaskDialogComponent,
+    DialogEditNoteComponent,
   ],
   imports: [
     BrowserModule,

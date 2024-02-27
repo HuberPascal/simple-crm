@@ -14,9 +14,18 @@
         {{ kanban.firstName + " " + kanban.lastName }}
       </div>
       <div>
-        <div>{{ kanban.node }}</div>
+        <div>{{ kanban.note }}</div>
         <p>{{ kanban.price }}</p>
       </div>
+      <button
+        (click)="editNote(kanban)"
+        mat-icon-button
+        aria-label="Example icon button with a edit icon"
+        matTooltip="Edit Note"
+        matTooltipPosition="above"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
     </div>
   </div>
   <div class="kanban-container">
