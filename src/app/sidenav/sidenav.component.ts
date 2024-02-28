@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { AuthService } from '../services/firebase-auth.service';
 import { MatDrawer } from '@angular/material/sidenav';
 import { User } from '../../models/user.class';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-sidenav',

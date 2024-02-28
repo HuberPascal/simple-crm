@@ -19,11 +19,11 @@ interface NoteStatus {
 }
 
 @Component({
-  selector: 'app-add-task-dialog',
-  templateUrl: './add-task-dialog.component.html',
-  styleUrl: './add-task-dialog.component.scss',
+  selector: 'app-dialog-add-task',
+  templateUrl: './dialog-add-task.component.html',
+  styleUrl: './dialog-add-task.component.scss',
 })
-export class AddTaskDialogComponent implements OnInit {
+export class DialogAddTaskConmponent implements OnInit {
   loading: boolean = false;
   kanban = new Kanban();
   user: User = new User();
@@ -35,7 +35,7 @@ export class AddTaskDialogComponent implements OnInit {
   note: string = '';
 
   constructor(
-    public dialogRef: MatDialogRef<AddTaskDialogComponent>,
+    public dialogRef: MatDialogRef<DialogAddTaskConmponent>,
     private authService: AuthService,
     public db: Firestore,
     private database: DatabaseService

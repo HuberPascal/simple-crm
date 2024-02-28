@@ -18,6 +18,7 @@ export class DatabaseService {
   userId!: string | null;
   orderId!: string | null;
   productId!: string | null;
+  taskId!: string | null;
 
   constructor(
     private authService: AuthService,
@@ -135,7 +136,7 @@ export class DatabaseService {
     selectedUserLastName: string
   ) {
     kanbanData.note = note;
-    kanbanData.kanbanStatus = selectedStatus;
+    kanbanData.noteStatus = selectedStatus;
 
     if (selectedUserFirstName) {
       kanbanData.firstName = selectedUserFirstName;
@@ -318,6 +319,44 @@ export class DatabaseService {
    */
   userProductFirebaseData(): object {
     return doc(this.db, 'products', `${this.productId}`);
+  }
+
+  async updateTask(taskData: any, taskId: string) {
+    let docRef: any;
+    this.taskId = taskId;
+    console.log('taskId ist', this.taskId);
+    console.log('taskData ist', taskData);
+
+    try {
+      const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
+
+      if (isAnonymous) {
+        docRef = this.getGuestTaskFirebaseData();
+      } else {
+        docRef = this.getTaskFirebaseData();
+      }
+      this.updateTaskInFirebase(docRef, taskData);
+    } catch (error) {
+      console.error('Fehler beim Updaten der Task Daten', error);
+    }
+  }
+
+  async updateTaskInFirebase(docRef: any, taskData: any) {
+    try {
+      await updateDoc(docRef, {
+        firstName: taskData.firstName,
+        lastName: taskData.lastName,
+        note: taskData.note,
+      });
+    } catch (error) {}
+  }
+
+  getGuestTaskFirebaseData() {
+    return doc(this.db, 'guest_kanban', `${this.taskId}`);
+  }
+
+  getTaskFirebaseData() {
+    return doc(this.db, 'kanban', `${this.taskId}`);
   }
   ////////// Delete //////////
 

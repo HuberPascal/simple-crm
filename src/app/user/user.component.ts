@@ -67,6 +67,7 @@ export class UserComponent {
     onSnapshot(usersCollectionRef, (snapshot: { docs: any[] }) => {
       this.allUsers = snapshot.docs.map((doc) => {
         const userData = doc.data();
+
         return {
           id: doc.id,
           firstName: userData['firstName'],

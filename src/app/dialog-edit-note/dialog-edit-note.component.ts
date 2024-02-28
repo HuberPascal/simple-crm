@@ -2,10 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { Kanban } from '../../models/kanban.class';
 import { User } from '../../models/user.class';
 import { MatDialogRef } from '@angular/material/dialog';
+import { DatabaseService } from '../services/database.service';
 
 interface UserName {
   firstName: string;
   lastName: string;
+  viewValue: string;
+}
+
+interface NoteStatus {
+  value: string;
   viewValue: string;
 }
 
@@ -20,15 +26,20 @@ export class DialogEditNoteComponent implements OnInit {
   loading: boolean = false;
   selectedUser: any;
   selectedStatus: any;
-  noteStatus: any;
   allUsers: any[] = [];
   note: string = '';
   currentNote: any;
 
-  constructor(public dialogRef: MatDialogRef<DialogEditNoteComponent>) {}
+  constructor(
+    public dialogRef: MatDialogRef<DialogEditNoteComponent>,
+    private database: DatabaseService
+  ) {}
 
   ngOnInit(): void {
-    this.loadUserNameInInputField();
+    this.loadDataInInputField();
+  }
+
+  loadDataInInputField() {
     console.log('currentNote ist', this.currentNote);
     console.log('selectedUser:', this.selectedUser);
     if (this.currentNote) {
@@ -42,26 +53,49 @@ export class DialogEditNoteComponent implements OnInit {
         // Wenn der Benutzer nicht in der Liste gefunden wird, fügen Sie ihn hinzu
         this.selectedUser = {
           firstName: this.currentNote.firstName,
-          lastName: this.currentNote.firstlasName,
+          lastName: this.currentNote.lastName,
           viewValue:
             this.currentNote.firstName + ' ' + this.currentNote.lastName,
         };
         this.userName.push(this.selectedUser);
       }
     }
+    this.selectedStatus = this.currentNote.noteStatus;
   }
 
-  loadUserNameInInputField() {
-    this.userName = this.allUsers.map((user) => ({
-      firstName: user.firstName,
-      lastName: user.lastName,
-      viewValue: `${user.firstName} ${user.lastName}`,
-    }));
+  saveNote() {
+    this.loading = true;
+    try {
+      const taskData = this.kanban;
+      console.log('taskData ist', taskData);
+      const taskId = taskData.taskId;
+      // this.kanban.taskId = taskId;
+      const firstName = this.selectedUser.firstName;
+      const lastName = this.selectedUser.lastName;
+      this.kanban.firstName = firstName;
+      this.kanban.lastName = lastName;
+      this.kanban.note = this.note;
+      this.kanban.noteStatus = this.selectedStatus;
+      console.log('taskData ist', taskData);
+      this.database.updateTask(taskData, taskId);
+    } catch (error) {
+      console.error('Fehler beim Speichern der Task Daten', error);
+    }
+    this.dialogRef.close();
   }
 
-  saveNote() {}
-
-  isSaveButtonDisabled() {}
+  isSaveButtonDisabled() {
+    return this.note.length > 0;
+  }
 
   userName: UserName[] = [];
+
+  /**
+   * Provides the value for the productType input field
+   */
+  noteStatus: NoteStatus[] = [
+    { value: 'Pending', viewValue: 'Pending' },
+    { value: 'InProgress', viewValue: 'InProgress' },
+    { value: 'Done', viewValue: 'Done' },
+  ];
 }

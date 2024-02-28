@@ -1,12 +1,17 @@
 <div class="dialog-container">
   <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
 
-  <h1 mat-dialog-title>Add Task</h1>
+  <h1 mat-dialog-title>Edit Task</h1>
   <form mat-dialog-content #orderForm="ngForm">
     <div class="pt-6">
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>User Name</mat-label>
-        <mat-select [(ngModel)]="selectedUser" name="userName" required>
+
+        <mat-select
+          [(ngModel)]="selectedUser"
+          name="userName"
+          [disabled]="loading"
+        >
           <mat-option *ngFor="let user of userName" [value]="user">
             {{ user.viewValue }}
           </mat-option>
@@ -21,7 +26,7 @@
           [disabled]="loading"
           [(ngModel)]="note"
           matInput
-          placeholder="Amount Sold"
+          placeholder="Note"
           type="text"
           name="note"
           required
@@ -30,7 +35,11 @@
 
       <mat-form-field appearance="outline">
         <mat-label>Note Status</mat-label>
-        <mat-select [(ngModel)]="selectedStatus" name="noteStatus" required>
+        <mat-select
+          [(ngModel)]="selectedStatus"
+          name="noteStatus"
+          [disabled]="loading"
+        >
           <mat-option *ngFor="let note of noteStatus" [value]="note.value">
             {{ note.viewValue }}
           </mat-option>
@@ -43,7 +52,7 @@
       Cancel
     </button>
     <button
-      [disabled]="loading || isSaveButtonDisabled()"
+      [disabled]="loading || !isSaveButtonDisabled()"
       mat-button
       (click)="saveNote()"
     >

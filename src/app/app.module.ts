@@ -52,7 +52,7 @@ import { DialogDeleteProductComponent } from './dialog-delete-product/dialog-del
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { HttpClientModule } from '@angular/common/http';
 import { KanbanComponent } from './kanban/kanban.component';
-import { AddTaskDialogComponent } from './add-task-dialog/add-task-dialog.component';
+import { DialogAddTaskConmponent } from './dialog-add-task/dialog-add-task.component';
 import { DialogEditNoteComponent } from './dialog-edit-note/dialog-edit-note.component';
 
 @NgModule({
@@ -81,7 +81,7 @@ import { DialogEditNoteComponent } from './dialog-edit-note/dialog-edit-note.com
     DialogDeleteProductComponent,
     SidenavComponent,
     KanbanComponent,
-    AddTaskDialogComponent,
+    DialogAddTaskConmponent,
     DialogEditNoteComponent,
   ],
   imports: [

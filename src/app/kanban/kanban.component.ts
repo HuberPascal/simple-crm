@@ -10,7 +10,7 @@ import {
 } from 'firebase/firestore';
 import { Firestore } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
-import { AddTaskDialogComponent } from '../add-task-dialog/add-task-dialog.component';
+import { DialogAddTaskConmponent } from '../dialog-add-task/dialog-add-task.component';
 import { DialogEditNoteComponent } from '../dialog-edit-note/dialog-edit-note.component';
 import { User } from '../../models/user.class';
 
@@ -23,9 +23,10 @@ export class KanbanComponent implements OnInit {
   kanban = new Kanban();
   user = new User();
   isAnonymous: boolean = false;
-  allNodes: any[] = [];
+  allNotes: any[] = [];
   allUsers: any[] = [];
   currentNote: any;
+  taskId: string = '';
 
   constructor(
     private authService: AuthService,
@@ -57,21 +58,24 @@ export class KanbanComponent implements OnInit {
 
   getKanbanDataOnSnapshot(kanbanCollectionRef: any) {
     onSnapshot(kanbanCollectionRef, (snapshot: { docs: any[] }) => {
-      this.allNodes = snapshot.docs.map((doc) => {
+      this.allNotes = snapshot.docs.map((doc) => {
         const kanbanData = doc.data();
-        console.log('kanbanData ist', kanbanData);
+
         return {
+          taskId: doc.id,
           note: kanbanData['note'],
           firstName: kanbanData['firstName'],
           lastName: kanbanData['lastName'],
+          noteStatus: kanbanData['noteStatus'],
           price: kanbanData['price'],
         };
       });
+      console.log('kanbanData ist', this.allNotes);
     });
   }
 
   openDialog() {
-    const dialog = this.dialog.open(AddTaskDialogComponent);
+    const dialog = this.dialog.open(DialogAddTaskConmponent);
     dialog.componentInstance.user = new User(this.user.toJSON());
     dialog.componentInstance.allUsers = this.allUsers;
   }
@@ -81,11 +85,14 @@ export class KanbanComponent implements OnInit {
     onSnapshot(usersCollectionRef, (snapshot: { docs: any[] }) => {
       this.allUsers = snapshot.docs.map((doc) => {
         const userData = doc.data();
+        // this.taskId = doc.id;
+        this.kanban.taskId = doc.id;
         return {
+          id: doc.id,
           firstName: userData['firstName'],
           lastName: userData['lastName'],
           price: userData['price'],
-          node: userData['node'],
+          note: userData['note'],
         };
       });
       console.log('allUser ist', this.allUsers);

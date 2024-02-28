@@ -9,7 +9,7 @@
 <div class="kanban">
   <div class="kanban-container">
     <mat-card>Pending</mat-card>
-    <div *ngFor="let kanban of allNodes" class="kanban-list">
+    <div *ngFor="let kanban of allNotes" class="kanban-list">
       <div class="task-titel">
         {{ kanban.firstName + " " + kanban.lastName }}
       </div>
@@ -21,7 +21,7 @@
         (click)="editNote(kanban)"
         mat-icon-button
         aria-label="Example icon button with a edit icon"
-        matTooltip="Edit Note"
+        matTooltip="Edit Task"
         matTooltipPosition="above"
       >
         <mat-icon>edit</mat-icon>
