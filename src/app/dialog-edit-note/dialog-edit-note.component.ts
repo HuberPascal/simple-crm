@@ -39,44 +39,73 @@ export class DialogEditNoteComponent implements OnInit {
     this.loadDataInInputField();
   }
 
+  /**
+   * Loads data into the input fields.
+   */
   loadDataInInputField() {
-    console.log('currentNote ist', this.currentNote);
-    console.log('selectedUser:', this.selectedUser);
+    this.populateUserName();
+    this.selectCurrentUser();
+    this.populateCurrentTaskData();
+  }
+
+  /**
+   * Populates the select fields with user names.
+   */
+  populateUserName() {
+    // Populate the select fields with all users from allUsers
+    this.userName = this.allUsers.map((user) => ({
+      firstName: user.firstName,
+      lastName: user.lastName,
+      viewValue: `${user.firstName} ${user.lastName}`,
+    }));
+  }
+
+  /**
+   * Selects the current user or adds it.
+   */
+  selectCurrentUser() {
     if (this.currentNote) {
-      // Finden Sie den Benutzer in userName, der dem aktuellen Hinweis entspricht
       const selectedUserName = `${this.currentNote.firstName} ${this.currentNote.lastName}`;
+
+      // Find the user in the userName list that matches the current note
       this.selectedUser = this.userName.find(
         (user) => user.viewValue === selectedUserName
       );
 
+      // If the user is not found, add it to the userName list
       if (!this.selectedUser) {
-        // Wenn der Benutzer nicht in der Liste gefunden wird, fügen Sie ihn hinzu
         this.selectedUser = {
           firstName: this.currentNote.firstName,
           lastName: this.currentNote.lastName,
-          viewValue:
-            this.currentNote.firstName + ' ' + this.currentNote.lastName,
+          viewValue: selectedUserName,
         };
         this.userName.push(this.selectedUser);
       }
     }
+  }
+
+  /**
+   * Populates the current task data.
+   */
+  populateCurrentTaskData() {
+    this.note = this.currentNote.note;
     this.selectedStatus = this.currentNote.noteStatus;
   }
 
+  /**
+   * Saves the note data.
+   */
   saveNote() {
     this.loading = true;
     try {
       const taskData = this.kanban;
-      console.log('taskData ist', taskData);
-      const taskId = taskData.taskId;
-      // this.kanban.taskId = taskId;
-      const firstName = this.selectedUser.firstName;
-      const lastName = this.selectedUser.lastName;
-      this.kanban.firstName = firstName;
-      this.kanban.lastName = lastName;
+      const taskId = this.currentNote.taskId;
+
+      this.kanban.firstName = this.selectedUser.firstName;
+      this.kanban.lastName = this.selectedUser.lastName;
       this.kanban.note = this.note;
       this.kanban.noteStatus = this.selectedStatus;
-      console.log('taskData ist', taskData);
+
       this.database.updateTask(taskData, taskId);
     } catch (error) {
       console.error('Fehler beim Speichern der Task Daten', error);
@@ -84,7 +113,11 @@ export class DialogEditNoteComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  isSaveButtonDisabled() {
+  /**
+   * Checks if the save button should be disabled based on the length of the note.
+   * @returns {boolean} True if the save button should be disabled (note length > 0), otherwise false.
+   */
+  isSaveButtonDisabled(): boolean {
     return this.note.length > 0;
   }
 

@@ -347,6 +347,7 @@ export class DatabaseService {
         firstName: taskData.firstName,
         lastName: taskData.lastName,
         note: taskData.note,
+        noteStatus: taskData.noteStatus,
       });
     } catch (error) {}
   }
