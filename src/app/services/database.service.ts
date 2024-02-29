@@ -341,6 +341,11 @@ export class DatabaseService {
     }
   }
 
+  /**
+   * Updates the task data in firebase.
+   * @param docRef
+   * @param taskData
+   */
   async updateTaskInFirebase(docRef: any, taskData: any) {
     try {
       await updateDoc(docRef, {
@@ -352,13 +357,22 @@ export class DatabaseService {
     } catch (error) {}
   }
 
-  getGuestTaskFirebaseData() {
+  /**
+   * Returns the Firebase document reference for a task.
+   * @returns {Object} The Firebase document reference for the guest task.
+   */
+  getGuestTaskFirebaseData(): object {
     return doc(this.db, 'guest_kanban', `${this.taskId}`);
   }
 
-  getTaskFirebaseData() {
+  /**
+   * Returns the Firebase document reference for a task.
+   * @returns {Object} The Firebase document reference for the guest task.
+   */
+  getTaskFirebaseData(): object {
     return doc(this.db, 'kanban', `${this.taskId}`);
   }
+
   ////////// Delete //////////
 
   /**

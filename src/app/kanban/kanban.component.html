@@ -8,31 +8,32 @@
 
 <div class="kanban">
   <div class="kanban-container">
-    <mat-card>Pending</mat-card>
-    <div *ngFor="let kanban of allNotes" class="kanban-list">
+    <mat-card class="red-border">Pending</mat-card>
+    <mat-card *ngFor="let kanban of allNotes" class="kanban-list">
       <div class="task-titel">
-        {{ kanban.firstName + " " + kanban.lastName }}
+        <mat-icon>perm_identity</mat-icon>
+        <p>{{ kanban.firstName + " " + kanban.lastName }}</p>
       </div>
-      <div>
+      <div class="task-note">
+        <mat-icon>notes</mat-icon>
         <div>{{ kanban.note }}</div>
-        <p>{{ kanban.price }}</p>
+        <button
+          (click)="editNote(kanban)"
+          mat-icon-button
+          aria-label="Example icon button with a edit icon"
+          matTooltip="Edit Task"
+          matTooltipPosition="above"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
       </div>
-      <button
-        (click)="editNote(kanban)"
-        mat-icon-button
-        aria-label="Example icon button with a edit icon"
-        matTooltip="Edit Task"
-        matTooltipPosition="above"
-      >
-        <mat-icon>edit</mat-icon>
-      </button>
-    </div>
+    </mat-card>
   </div>
   <div class="kanban-container">
-    <mat-card>In progress</mat-card>
+    <mat-card class="green-border">In progress</mat-card>
   </div>
   <div class="kanban-container">
-    <mat-card>Done</mat-card>
+    <mat-card class="blue-border">Done</mat-card>
   </div>
 </div>
 
