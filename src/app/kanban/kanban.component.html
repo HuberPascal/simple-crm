@@ -6,44 +6,8 @@
   </div>
 </div>
 
-<div class="kanban">
-  <div class="kanban-container">
-    <mat-card class="red-border">Pending</mat-card>
-    <mat-card *ngFor="let kanban of allNotes" class="kanban-list">
-      <div class="task-titel">
-        <mat-icon>perm_identity</mat-icon>
-        <p>{{ kanban.firstName + " " + kanban.lastName }}</p>
-      </div>
-      <div class="task-note">
-        <mat-icon>notes</mat-icon>
-        <div>{{ kanban.note }}</div>
-        <button
-          (click)="editNote(kanban)"
-          mat-icon-button
-          aria-label="Example icon button with a edit icon"
-          matTooltip="Edit Task"
-          matTooltipPosition="above"
-        >
-          <mat-icon>edit</mat-icon>
-        </button>
-      </div>
-    </mat-card>
-  </div>
-  <div class="kanban-container">
-    <mat-card class="green-border">In progress</mat-card>
-  </div>
-  <div class="kanban-container">
-    <mat-card class="blue-border">Done</mat-card>
-  </div>
-</div>
-
-<button
-  (click)="openDialog()"
-  class="add-task-btn"
-  mat-fab
-  color="primary"
-  matTooltip="Add user"
-  matTooltipPosition="above"
->
-  <mat-icon>add</mat-icon>
-</button>
+<app-kanban-drag-and-drop
+  *ngIf="showKanbanDragAndDropComponent"
+  [allNotesfromKanban]="allNotes"
+  (editNote)="onEditNote($event)"
+></app-kanban-drag-and-drop>

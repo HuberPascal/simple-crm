@@ -54,6 +54,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { KanbanComponent } from './kanban/kanban.component';
 import { DialogAddTaskConmponent } from './dialog-add-task/dialog-add-task.component';
 import { DialogEditNoteComponent } from './dialog-edit-note/dialog-edit-note.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { KanbanDragAndDropComponent } from './kanban-drag-and-drop/kanban-drag-and-drop.component';
 
 @NgModule({
   declarations: [
@@ -83,6 +85,7 @@ import { DialogEditNoteComponent } from './dialog-edit-note/dialog-edit-note.com
     KanbanComponent,
     DialogAddTaskConmponent,
     DialogEditNoteComponent,
+    KanbanDragAndDropComponent,
   ],
   imports: [
     BrowserModule,
@@ -104,6 +107,7 @@ import { DialogEditNoteComponent } from './dialog-edit-note/dialog-edit-note.com
     MatMenuModule,
     MatSelectModule,
     HttpClientModule,
+    DragDropModule,
     // AngularFireModule,
     // provideFirebaseApp(() => initializeApp(environment.firebase)),
 

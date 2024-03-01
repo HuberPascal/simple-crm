@@ -1,13 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Kanban } from '../../models/kanban.class';
 import { AuthService } from '../services/firebase-auth.service';
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  onSnapshot,
-} from 'firebase/firestore';
+import { collection, onSnapshot } from 'firebase/firestore';
 import { Firestore } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogAddTaskConmponent } from '../dialog-add-task/dialog-add-task.component';
@@ -27,6 +21,7 @@ export class KanbanComponent implements OnInit {
   allUsers: any[] = [];
   currentNote: any;
   taskId: string = '';
+  showKanbanDragAndDropComponent: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -36,7 +31,6 @@ export class KanbanComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
-    // console.log('user ist', this.user);
 
     if (this.isAnonymous) {
       await this.getKanbanData('guest_kanban');
@@ -85,7 +79,6 @@ export class KanbanComponent implements OnInit {
     onSnapshot(usersCollectionRef, (snapshot: { docs: any[] }) => {
       this.allUsers = snapshot.docs.map((doc) => {
         const userData = doc.data();
-        // this.taskId = doc.id;
         this.kanban.taskId = doc.id;
         return {
           id: doc.id,
@@ -96,10 +89,15 @@ export class KanbanComponent implements OnInit {
         };
       });
       console.log('allUser ist', this.allUsers);
+      this.renderKanbanDragAndDropComponent();
     });
   }
 
-  editNote(currentNote: any) {
+  renderKanbanDragAndDropComponent() {
+    this.showKanbanDragAndDropComponent = true;
+  }
+
+  onEditNote(currentNote: any) {
     const dialog = this.dialog.open(DialogEditNoteComponent);
     dialog.componentInstance.kanban = new Kanban(this.kanban.toJSON());
     dialog.componentInstance.user = new User(this.user.toJSON());

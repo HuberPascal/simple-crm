@@ -1,0 +1,120 @@
+<div class="drag-and-drop-container">
+  <div class="column-container kanban">
+    <div class="column-header">
+      <mat-card class="red-border">Pending</mat-card>
+    </div>
+
+    <div
+      cdkDropList
+      #todoList="cdkDropList"
+      [cdkDropListData]="pendingTasks"
+      [cdkDropListConnectedTo]="[doneList, inProgressList]"
+      class="task-list"
+      (cdkDropListDropped)="drop($event)"
+    >
+      <mat-card
+        *ngFor="let kanban of pendingTasks; let i = index"
+        class="kanban-list"
+        cdkDrag
+        [cdkDragData]="kanban"
+      >
+        <div class="task-titel">
+          <p>{{ kanban.firstName + " " + kanban.lastName }}</p>
+        </div>
+        <div class="task-note">
+          <mat-icon>notes</mat-icon>
+          <div>{{ kanban.note }}</div>
+          <button
+            (click)="triggerEditNoteEvent(kanban)"
+            mat-icon-button
+            aria-label="Example icon button with a edit icon"
+            matTooltip="Edit Task"
+            matTooltipPosition="above"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+
+  <div class="column-container kanban">
+    <div class="column-header">
+      <mat-card class="green-border">In progress</mat-card>
+    </div>
+
+    <div
+      cdkDropList
+      #inProgressList="cdkDropList"
+      [cdkDropListData]="inProgressTasks"
+      [cdkDropListConnectedTo]="[todoList, doneList]"
+      class="task-list"
+      (cdkDropListDropped)="drop($event)"
+    >
+      <mat-card
+        *ngFor="let kanban of inProgressTasks; let i = index"
+        class="kanban-list"
+        cdkDrag
+        [cdkDragData]="kanban"
+      >
+        <div class="task-titel">
+          <mat-icon>perm_identity</mat-icon>
+          <p>{{ kanban.firstName + " " + kanban.lastName }}</p>
+        </div>
+        <div class="task-note">
+          <mat-icon>notes</mat-icon>
+          <div>{{ kanban.note }}</div>
+          <button
+            (click)="triggerEditNoteEvent(kanban)"
+            mat-icon-button
+            aria-label="Example icon button with a edit icon"
+            matTooltip="Edit Task"
+            matTooltipPosition="above"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+
+  <div class="column-container kanban">
+    <div class="column-header">
+      <mat-card class="blue-border">Done</mat-card>
+    </div>
+
+    <div
+      cdkDropList
+      #doneList="cdkDropList"
+      [cdkDropListData]="doneTasks"
+      [cdkDropListConnectedTo]="[todoList, inProgressList]"
+      class="task-list"
+      (cdkDropListDropped)="drop($event)"
+    >
+      <mat-card
+        *ngFor="let kanban of doneTasks; let i = index"
+        class="kanban-list"
+        cdkDrag
+        [cdkDragData]="kanban"
+      >
+        <div class="task-titel">
+          <mat-icon>perm_identity</mat-icon>
+          <p>{{ kanban.firstName + " " + kanban.lastName }}</p>
+        </div>
+        <div class="task-note">
+          <mat-icon>notes</mat-icon>
+          <div>{{ kanban.note }}</div>
+          <button
+            (click)="triggerEditNoteEvent(kanban)"
+            mat-icon-button
+            aria-label="Example icon button with a edit icon"
+            matTooltip="Edit Task"
+            matTooltipPosition="above"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>
