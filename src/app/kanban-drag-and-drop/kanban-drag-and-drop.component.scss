@@ -1,3 +1,7 @@
+p {
+  margin: 0;
+}
+
 .kanban {
   display: flex;
   flex-direction: row;
@@ -30,7 +34,30 @@
     padding: 16px;
     margin: 0 50px;
     background-color: #282953;
-    border-left: 3px solid red;
+  }
+
+  .border-left-pending {
+    border-left: 3px solid #ffd700;
+  }
+
+  .border-left-in-progress {
+    border-left: 3px solid #00bfff;
+  }
+
+  .border-left-done {
+    border-left: 3px solid #00ff00;
+  }
+
+  .red-border {
+    border: 1px solid #ffd700;
+  }
+
+  .green-border {
+    border: 1px solid #00bfff;
+  }
+
+  .blue-border {
+    border: 1px solid #00ff00;
   }
 
   .task-titel {
@@ -47,18 +74,25 @@
     display: flex;
     align-items: flex-start;
     gap: 10px;
-    padding: 10px;
+    padding: 10px 20px 60px 10px;
     background-color: #16103a;
     color: #fff;
     border-radius: 10px;
     width: 100%;
-    min-height: 100px;
+    height: 200px;
     box-sizing: border-box;
+    word-break: break-all;
+    overflow: hidden;
+    overflow-y: scroll;
 
     button {
       position: absolute;
-      bottom: 10px;
-      right: 10px;
+      bottom: 20px;
+      right: 20px;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.3);
+      }
     }
   }
 }
@@ -82,7 +116,7 @@
 }
 
 .column-container {
-  width: 100%;
+  width: 33.33%;
   max-width: 100%;
   display: inline-block;
   vertical-align: top;

@@ -15,14 +15,16 @@
       <mat-card
         *ngFor="let kanban of pendingTasks; let i = index"
         class="kanban-list"
+        [ngClass]="{ 'border-left-pending': kanban.noteStatus == 'Pending' }"
         cdkDrag
         [cdkDragData]="kanban"
       >
         <div class="task-titel">
+          <mat-icon>perm_identity</mat-icon>
+
           <p>{{ kanban.firstName + " " + kanban.lastName }}</p>
         </div>
         <div class="task-note">
-          <mat-icon>notes</mat-icon>
           <div>{{ kanban.note }}</div>
           <button
             (click)="triggerEditNoteEvent(kanban)"
@@ -54,6 +56,9 @@
       <mat-card
         *ngFor="let kanban of inProgressTasks; let i = index"
         class="kanban-list"
+        [ngClass]="{
+          'border-left-in-progress': kanban.noteStatus == 'InProgress'
+        }"
         cdkDrag
         [cdkDragData]="kanban"
       >
@@ -62,7 +67,6 @@
           <p>{{ kanban.firstName + " " + kanban.lastName }}</p>
         </div>
         <div class="task-note">
-          <mat-icon>notes</mat-icon>
           <div>{{ kanban.note }}</div>
           <button
             (click)="triggerEditNoteEvent(kanban)"
@@ -94,6 +98,9 @@
       <mat-card
         *ngFor="let kanban of doneTasks; let i = index"
         class="kanban-list"
+        [ngClass]="{
+          'border-left-done': kanban.noteStatus == 'Done'
+        }"
         cdkDrag
         [cdkDragData]="kanban"
       >
@@ -102,7 +109,6 @@
           <p>{{ kanban.firstName + " " + kanban.lastName }}</p>
         </div>
         <div class="task-note">
-          <mat-icon>notes</mat-icon>
           <div>{{ kanban.note }}</div>
           <button
             (click)="triggerEditNoteEvent(kanban)"

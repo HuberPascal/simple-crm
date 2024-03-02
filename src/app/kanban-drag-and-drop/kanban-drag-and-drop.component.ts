@@ -138,4 +138,18 @@ export class KanbanDragAndDropComponent implements OnInit {
   triggerEditNoteEvent(kanban: any) {
     this.editNote.emit(kanban);
   }
+
+  getBorderClass(noteStatus: string): string {
+    console.log('borderclass', noteStatus);
+    switch (noteStatus) {
+      case 'Pending':
+        return 'border-left-pending';
+      case 'InProgress':
+        return 'border-left-in-progress';
+      case 'Done':
+        return 'border-left-done';
+      default:
+        return '';
+    }
+  }
 }
