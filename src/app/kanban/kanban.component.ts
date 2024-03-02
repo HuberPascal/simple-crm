@@ -37,7 +37,6 @@ export class KanbanComponent implements OnInit {
     } else {
       await this.getKanbanData('kanban');
     }
-
     this.getUserData();
   }
 
@@ -45,8 +44,9 @@ export class KanbanComponent implements OnInit {
     try {
       const kanbanCollectionRef = collection(this.db, kanban);
       this.getKanbanDataOnSnapshot(kanbanCollectionRef);
-    } catch (error) {}
-
+    } catch (error) {
+      console.log('Fehler beim laden der Kanban Daten von Firebase:', error);
+    }
     this.getUserData();
   }
 

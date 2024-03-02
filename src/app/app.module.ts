@@ -50,7 +50,11 @@ import { DialogAddProductComponent } from './dialog-add-product/dialog-add-produ
 import { DialogEditProductComponent } from './dialog-edit-product/dialog-edit-product.component';
 import { DialogDeleteProductComponent } from './dialog-delete-product/dialog-delete-product.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
-import { HttpClientModule } from '@angular/common/http';
+import {
+  HttpClientModule,
+  provideHttpClient,
+  withFetch,
+} from '@angular/common/http';
 import { KanbanComponent } from './kanban/kanban.component';
 import { DialogAddTaskConmponent } from './dialog-add-task/dialog-add-task.component';
 import { DialogEditNoteComponent } from './dialog-edit-note/dialog-edit-note.component';
@@ -126,7 +130,7 @@ import { KanbanDragAndDropComponent } from './kanban-drag-and-drop/kanban-drag-a
     AngularFireAuthModule,
     // provideDatabase(() => getDatabase()),
   ],
-  providers: [provideClientHydration()],
+  providers: [provideHttpClient(withFetch())],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

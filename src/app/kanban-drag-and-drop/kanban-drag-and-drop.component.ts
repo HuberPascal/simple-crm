@@ -1,11 +1,18 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  Output,
+  EventEmitter,
+  SimpleChanges,
+} from '@angular/core';
 import {
   CdkDragDrop,
   moveItemInArray,
   transferArrayItem,
-  CdkDrag,
-  CdkDropList,
 } from '@angular/cdk/drag-drop';
+import { Kanban } from '../../models/kanban.class';
+import { DatabaseService } from '../services/database.service';
 
 @Component({
   selector: 'app-kanban-drag-and-drop',
@@ -18,6 +25,11 @@ export class KanbanDragAndDropComponent implements OnInit {
   pendingTasks: any[] = [];
   inProgressTasks: any[] = [];
   doneTasks: any[] = [];
+  kanban = new Kanban();
+  currentTask: any;
+  taskId: string = '';
+
+  constructor(private database: DatabaseService) {}
 
   ngOnInit(): void {
     console.log('allNotes ist', this.allNotesfromKanban);
@@ -25,8 +37,25 @@ export class KanbanDragAndDropComponent implements OnInit {
     this.pushNotesInArray();
   }
 
+  /**
+   * Lifecycle hook that is called when any data-bound property of the directive changes.
+   * @param {SimpleChanges} changes - An object containing the changed properties and their previous and current values.
+   * @returns {void}
+   */
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['allNotesfromKanban']) {
+      this.pushNotesInArray();
+    }
+  }
+
+  /**
+   * Pushes notes into corresponding arrays based on their status.
+   */
   pushNotesInArray() {
-    console.log('noteStatus ist', this.allNotesfromKanban.noteStatus);
+    this.pendingTasks = [];
+    this.inProgressTasks = [];
+    this.doneTasks = [];
+
     this.allNotesfromKanban.forEach((note: { noteStatus: any }) => {
       switch (note.noteStatus) {
         case 'Pending':
@@ -39,26 +68,71 @@ export class KanbanDragAndDropComponent implements OnInit {
           this.doneTasks.push(note);
           break;
         default:
+          this.pendingTasks.push(note);
           break;
       }
     });
   }
 
+  /**
+   * Handles the drop event when an item is dropped into a container.
+   * @param {CdkDragDrop<string[]>} event - The drop event object.
+   */
   drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
-      moveItemInArray(
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
+      this.moveItemWithinContainer(event);
     } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
+      this.moveItemToDifferentContainer(event);
     }
+  }
+
+  /**
+   * Moves an item within the same container.
+   * @param {CdkDragDrop<string[]>} event - The drop event object.
+   */
+  private moveItemWithinContainer(event: CdkDragDrop<string[]>) {
+    moveItemInArray(
+      event.container.data,
+      event.previousIndex,
+      event.currentIndex
+    );
+  }
+
+  /**
+   * Moves an item to a different container.
+   * @param {CdkDragDrop<string[]>} event - The drop event object.
+   */
+  private moveItemToDifferentContainer(event: CdkDragDrop<string[]>) {
+    transferArrayItem(
+      event.previousContainer.data,
+      event.container.data,
+      event.previousIndex,
+      event.currentIndex
+    );
+
+    this.updateTaskStatus(event);
+  }
+
+  /**
+   * Updates the status of the task after it has been moved to a different container.
+   * @param {CdkDragDrop<string[]>} event - The drop event object.
+   */
+  private updateTaskStatus(event: CdkDragDrop<string[]>) {
+    this.currentTask = event.item.data;
+    this.taskId = this.currentTask.taskId;
+
+    if (event.container.data === this.pendingTasks) {
+      console.log('Task moved to Pending array');
+      this.currentTask.noteStatus = 'Pending';
+    } else if (event.container.data === this.inProgressTasks) {
+      console.log('Task moved to In Progress array');
+      this.currentTask.noteStatus = 'InProgress';
+    } else if (event.container.data === this.doneTasks) {
+      console.log('Task moved to Done array');
+      this.currentTask.noteStatus = 'Done';
+    }
+
+    this.database.updateTask(this.currentTask, this.taskId);
   }
 
   triggerEditNoteEvent(kanban: any) {

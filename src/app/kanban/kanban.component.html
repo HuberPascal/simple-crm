@@ -6,6 +6,17 @@
   </div>
 </div>
 
+<button
+  (click)="openDialog()"
+  class="add-task-btn"
+  mat-fab
+  color="primary"
+  matTooltip="Add user"
+  matTooltipPosition="above"
+>
+  <mat-icon>add</mat-icon>
+</button>
+
 <app-kanban-drag-and-drop
   *ngIf="showKanbanDragAndDropComponent"
   [allNotesfromKanban]="allNotes"

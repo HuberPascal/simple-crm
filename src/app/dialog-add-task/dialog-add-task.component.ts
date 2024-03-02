@@ -74,6 +74,7 @@ export class DialogAddTaskConmponent implements OnInit {
     } catch (error) {
       console.error('Fehler beim speichern der Notiz', error);
     }
+    this.dialogRef.close();
   }
 
   isSaveButtonDisabled() {}

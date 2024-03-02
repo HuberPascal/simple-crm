@@ -335,7 +335,7 @@ export class DatabaseService {
       } else {
         docRef = this.getTaskFirebaseData();
       }
-      this.updateTaskInFirebase(docRef, taskData);
+      this.updateTaskInFirebase(docRef, taskData, taskId);
     } catch (error) {
       console.error('Fehler beim Updaten der Task Daten', error);
     }
@@ -346,15 +346,18 @@ export class DatabaseService {
    * @param docRef
    * @param taskData
    */
-  async updateTaskInFirebase(docRef: any, taskData: any) {
+  async updateTaskInFirebase(docRef: any, taskData: any, taskId: string) {
     try {
       await updateDoc(docRef, {
         firstName: taskData.firstName,
         lastName: taskData.lastName,
         note: taskData.note,
         noteStatus: taskData.noteStatus,
+        taskId: taskId,
       });
-    } catch (error) {}
+    } catch (error) {
+      console.error('Fehler beim updaten des Tasks in Firebase', error);
+    }
   }
 
   /**
