@@ -16,11 +16,11 @@ interface NoteStatus {
 }
 
 @Component({
-  selector: 'app-dialog-edit-note',
-  templateUrl: './dialog-edit-note.component.html',
-  styleUrl: './dialog-edit-note.component.scss',
+  selector: 'app-dialog-edit-task',
+  templateUrl: './dialog-edit-task.component.html',
+  styleUrl: './dialog-edit-task.component.scss',
 })
-export class DialogEditNoteComponent implements OnInit {
+export class DialogEditTaskComponent implements OnInit {
   kanban: Kanban = new Kanban();
   user: User = new User();
   loading: boolean = false;
@@ -31,7 +31,7 @@ export class DialogEditNoteComponent implements OnInit {
   currentNote: any;
 
   constructor(
-    public dialogRef: MatDialogRef<DialogEditNoteComponent>,
+    public dialogRef: MatDialogRef<DialogEditTaskComponent>,
     private database: DatabaseService
   ) {}
 

@@ -1,16 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
-import {
-  QuerySnapshot,
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  onSnapshot,
-  query,
-  where,
-} from 'firebase/firestore';
+import { collection, doc, onSnapshot, query, where } from 'firebase/firestore';
 import { User } from '../../models/user.class';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogEditAddressComponent } from '../dialog-edit-address/dialog-edit-address.component';
@@ -30,7 +21,7 @@ import { Product } from '../../models/product.class';
 })
 export class UserDetailComponent {
   orderData: any;
-  static convertTimestampToDate(orderDate: any): Date | null {
+  static convertTimestampToDate(): Date | null {
     throw new Error('Method not implemented.');
   }
   userId: string | null = '';
@@ -57,26 +48,26 @@ export class UserDetailComponent {
 
       if (this.userId) {
         if (isAnonymous) {
-          // Logik für Gastbenutzer
           this.getUser(this.userId, 'guest_users');
           this.getOrders(this.userId, 'guest_orders');
         } else {
-          // Logik für angemeldete Benutzer
           this.getUser(this.userId, 'users');
           this.getOrders(this.userId, 'orders');
         }
-        // this.sortOrders(); // Bestellungen der Reihe nach sortieren
       }
     });
     this.getProducts();
   }
 
-  // User anhand der ID speichern in new User
+  /**
+   * Retrieves user data from Firestore based on the provided user ID and collection name.
+   * @param userId The ID of the user to retrieve.
+   * @param user The name of the collection where user data is stored.
+   */
   getUser(userId: any, user: string) {
     onSnapshot(doc(this.db, user, userId), (doc) => {
       if (doc.exists()) {
         const userData = doc.data();
-        // userData.birthDate ist ein Firebase Timestamp
         if (userData['birthDate']) {
           const userObj = this.convertTimestampToDate(userData['birthDate']);
           userData['birthDate'] = this.formatDateBirthday(userObj);
@@ -88,12 +79,18 @@ export class UserDetailComponent {
     });
   }
 
+  /**
+   * Opens a dialog for editing user details.
+   */
   editMenu() {
     const dialog = this.dialog.open(DialogEditAddressComponent);
     dialog.componentInstance.user = new User(this.user.toJSON());
     dialog.componentInstance.userId = this.userId;
   }
 
+  /**
+   * Opens a dialog for editing user details.
+   */
   editUserDetail() {
     const dialog = this.dialog.open(DialogEditUserComponent);
     dialog.componentInstance.user = new User(this.user.toJSON());
@@ -101,12 +98,19 @@ export class UserDetailComponent {
     dialog.componentInstance.userId = this.userId;
   }
 
+  /**
+   * Opens a dialog for editing user address.
+   */
   editUserAdress() {
     const dialog = this.dialog.open(DialogEditAddressComponent);
     dialog.componentInstance.user = new User(this.user.toJSON());
     dialog.componentInstance.userId = this.userId;
   }
 
+  /**
+   * Opens a dialog for editing an order.
+   * @param order The ID of the order to be edited.
+   */
   async editOrder(order: string) {
     const dialog = this.dialog.open(DialogEditOrderComponent);
 
@@ -114,6 +118,10 @@ export class UserDetailComponent {
     dialog.componentInstance.order = new Order(order);
   }
 
+  /**
+   * Opens a dialog for deleting a user.
+   * Sets the user, userId, and allOrders properties on the dialog component.
+   */
   deleteUser() {
     const dialog = this.dialog.open(DialogDeleteUserComponent);
     dialog.componentInstance.user = new User(this.user.toJSON());
@@ -121,13 +129,20 @@ export class UserDetailComponent {
     dialog.componentInstance.allOrders = this.allOrders;
   }
 
+  /**
+   * Opens a dialog for deleting an order.
+   * @param order The ID of the order to be deleted.
+   */
   deleteOrder(order: string) {
     const dialog = this.dialog.open(DialogDeleteOrderComponent);
-
     dialog.componentInstance.order = new Order(order);
   }
 
-  // Bestellung für den Richtigen Benutzer laden
+  /**
+   * Retrieves orders associated with the given user ID from Firestore.
+   * @param userId The ID of the user whose orders are to be retrieved.
+   * @param orders The name of the collection where orders are stored.
+   */
   getOrders(userId: any, orders: string) {
     const ordersRef = collection(this.db, orders);
     const q = query(ordersRef, where('userId', '==', userId));
@@ -135,19 +150,12 @@ export class UserDetailComponent {
     onSnapshot(
       q,
       (querySnapshot) => {
-        this.allOrders = []; // Array leeren, um Duplikate bei erneuten Abfragen zu verhindern
+        this.allOrders = [];
         querySnapshot.forEach((doc) => {
-          const orderId = doc.id; // Hier erhalten Sie die doc-ID
+          const orderId = doc.id;
           const orderData = doc.data();
-          orderData['orderId'] = orderId; // Fügen Sie die ID als separates Attribut hinzu
-
-          if (orderData['orderDate']) {
-            const dateObj = this.convertTimestampToDate(orderData['orderDate']);
-            orderData['orderDate'] = this.formatDate(dateObj);
-            this.order = new Order(orderData);
-            // this.order['orderId'] = orderId; ////////////////////// evt. löschen
-          }
-          this.allOrders.push(new Order(orderData)); // Fügen Sie die umgewandelten Daten zum Array hinzu, um sie im HTML anzuzeigen
+          orderData['orderId'] = orderId;
+          this.getOrderData(orderData);
           this.sortOrders(); // Bestellunge der Reihe nach sortieren
         });
       },
@@ -157,6 +165,24 @@ export class UserDetailComponent {
     );
   }
 
+  /**
+   * Processes the retrieved order data and adds it to the list of all orders.
+   * @param orderData The data of the order to be processed and added.
+   */
+  getOrderData(orderData: any) {
+    if (orderData['orderDate']) {
+      const dateObj = this.convertTimestampToDate(orderData['orderDate']);
+      orderData['orderDate'] = this.formatDate(dateObj);
+      this.order = new Order(orderData);
+    }
+    this.allOrders.push(new Order(orderData));
+  }
+
+  /**
+   * Converts Firestore timestamp to JavaScript Date object.
+   * @param timestamp The timestamp to convert.
+   * @returns A Date object representing the converted timestamp, or null if the timestamp is invalid.
+   */
   private convertTimestampToDate(timestamp: any): Date | null {
     if (timestamp && typeof timestamp.seconds === 'number') {
       return new Date(timestamp.seconds * 1000);
@@ -165,6 +191,11 @@ export class UserDetailComponent {
     }
   }
 
+  /**
+   * Formats a Date object into a localized date string.
+   * @param date The Date object to format.
+   * @returns A formatted date string.
+   */
   private formatDate(date: Date | null): string {
     return date
       ? date.toLocaleString('de-DE', {
@@ -178,6 +209,11 @@ export class UserDetailComponent {
       : '';
   }
 
+  /**
+   * Formats a Date object representing a birthday into a localized date string.
+   * @param date The Date object representing the birthday.
+   * @returns A formatted birthday date string.
+   */
   private formatDateBirthday(date: Date | null): string {
     return date
       ? date.toLocaleString('de-DE', {
@@ -191,16 +227,22 @@ export class UserDetailComponent {
       : '';
   }
 
+  /**
+   * Calculates the total amount of all orders.
+   * @returns The total amount of all orders.
+   */
   calculateTotal(): number {
     const total = this.allOrders.reduce(
       (total, order) => total + order.amount * order.price,
       0
     );
-
     // Ergebnis auf zwei Dezimalstellen runden
     return parseFloat(total.toFixed(2));
   }
 
+  /**
+   * Sorts the list of orders by order date in ascending order.
+   */
   sortOrders() {
     this.allOrders = this.allOrders.sort((a, b) => {
       const orderA = parseFloat(a.orderDate);
@@ -209,19 +251,25 @@ export class UserDetailComponent {
     });
   }
 
+  /**
+   * Opens a dialog for adding a new order.
+   */
   openDialog() {
     const dialog = this.dialog.open(DialogAddOrderComponent);
     dialog.componentInstance.userId = this.userId;
     dialog.componentInstance.allProducts = this.allProducts;
-    // dialog.componentInstance.order = new Order(this.order.toJSON());
   }
 
+  /**
+   * Formats a number by adding apostrophes as thousand separators.
+   * @param number The number to format.
+   * @returns The formatted number with apostrophes as thousand separators.
+   */
   formatNumberWithApostrophe(number: number): string {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'");
   }
 
   async getProducts() {
-    // const firebaseData = collection(this.db, 'products');
     const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
 
     if (isAnonymous) {
@@ -231,6 +279,9 @@ export class UserDetailComponent {
     }
   }
 
+  /**
+   * Retrieves product data from Firestore.
+   */
   async getProductData(product: string) {
     try {
       const productCollectionRef = collection(this.db, product);

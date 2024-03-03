@@ -27,6 +27,11 @@ export class AuthService {
 
   constructor(private auth: Auth, private _snackBar: MatSnackBar) {}
 
+  /**
+   * Saves the user name to the authenticated user's profile.
+   * @param {string} name - The name to be saved.
+   * @returns {Promise<void>} A promise that resolves when the name is successfully saved.
+   */
   async saveUserName(name: string): Promise<void> {
     const user_auth: any = this.auth.currentUser;
 
@@ -42,6 +47,9 @@ export class AuthService {
     }
   }
 
+  /**
+   * Retrieves the user name from the authenticated user's profile.
+   */
   async getUserName() {
     const user_auth: any = this.auth.currentUser;
 
@@ -54,35 +62,57 @@ export class AuthService {
     }
   }
 
-  async register(email: string, password: string, name: string) {
+  /**
+   * Registers a new user with the provided email, password, and name.
+   * @param {string} email - The email of the user.
+   * @param {string} password - The password of the user.
+   */
+  async register(email: string, password: string) {
     return createUserWithEmailAndPassword(this.auth, email, password);
   }
 
+  /**
+   * Logs in a user with the provided email and password.
+   * @param {string} email - The email of the user.
+   * @param {string} password - The password of the user.
+   */
   login(email: string, password: string) {
     return signInWithEmailAndPassword(this.auth, email, password);
   }
 
+  /**
+   * Checks if the provided email exists in the authentication system.
+   * @param {string} email - The email to check.
+   */
   async checkEmailExistence(email: string) {
     return fetchSignInMethodsForEmail(this.auth, email);
   }
 
+  /**
+   * Sends a password reset email to the provided email address.
+   * @param {string} email - The email address to send the password reset email to.
+   */
   resetPassword(email: string) {
     return sendPasswordResetEmail(this.auth, email);
   }
 
+  /**
+   * Logs in a user anonymously.
+   */
   guestLogin() {
     return signInAnonymously(this.auth);
   }
 
+  /**
+   * Logs in a user with Google authentication provider.
+   */
   googleLogin() {
     return signInWithPopup(this.auth, new GoogleAuthProvider());
   }
 
-  appleLogin() {
-    const provider = new OAuthProvider('apple.com');
-    return signInWithPopup(this.auth, provider);
-  }
-
+  /**
+   * Logs out the currently authenticated user.
+   */
   logout() {
     return signOut(this.auth);
   }
@@ -103,6 +133,9 @@ export class AuthService {
     });
   }
 
+  /**
+   * Checks the authentication state of the user.
+   */
   checkAuth() {
     return new Promise<boolean>(async (resolve, reject) => {
       onAuthStateChanged(this.auth, (user) => {
@@ -115,6 +148,9 @@ export class AuthService {
     });
   }
 
+  /**
+   * Checks if the user is authenticated as a guest user.
+   */
   checkAuthLoggedInAsGuest() {
     return new Promise<boolean>((resolve, reject) => {
       onAuthStateChanged(this.auth, (user) => {

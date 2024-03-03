@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Kanban } from '../../models/kanban.class';
 import { MatDialogRef } from '@angular/material/dialog';
-import { AuthService } from '../services/firebase-auth.service';
 import { Firestore } from '@angular/fire/firestore';
-import { doc, getDoc, getDocs } from 'firebase/firestore';
 import { User } from '../../models/user.class';
 import { DatabaseService } from '../services/database.service';
 
@@ -36,17 +34,17 @@ export class DialogAddTaskConmponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<DialogAddTaskConmponent>,
-    private authService: AuthService,
     public db: Firestore,
     private database: DatabaseService
   ) {}
 
   ngOnInit(): void {
-    console.log('die übergebenen User daten sind', this.allUsers);
     this.loadUserNameInInputField();
-    console.log('der  Status ist', this.noteStatus);
   }
 
+  /**
+   * Loads user names into the input field.
+   */
   loadUserNameInInputField() {
     this.userName = this.allUsers.map((user) => ({
       firstName: user.firstName,
@@ -55,9 +53,11 @@ export class DialogAddTaskConmponent implements OnInit {
     }));
   }
 
+  /**
+   * Saves the note to the database.
+   */
   async saveNote() {
     try {
-      console.log('note ist', this.note);
       const note = this.note;
       const kanbanData = this.kanban.toJSON();
       const selectedStatus = this.selectedStatus;
@@ -77,13 +77,26 @@ export class DialogAddTaskConmponent implements OnInit {
     this.dialogRef.close();
   }
 
-  isSaveButtonDisabled() {} //////////////////////
+  /**
+   * Checks if the selected user is falsy or if the length of the note is greater than 10 characters
+   * or if the selected status is falsy.
+   * @returns {boolean} True if any of the conditions are met, otherwise false.
+   */
+  isSaveButtonDisabled(): boolean {
+    return !this.selectedUser || this.note.length == 0 || !this.selectedStatus;
+  }
 
+  /**
+   * Array representing different note statuses.
+   */
   noteStatus: NoteStatus[] = [
     { value: 'Pending', viewValue: 'Pending' },
     { value: 'InProgress', viewValue: 'In Progress' },
     { value: 'Done', viewValue: 'Done' },
   ];
 
+  /**
+   * Array representing user names.
+   */
   userName: UserName[] = [];
 }

@@ -1,18 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DialogEditNoteComponent } from './dialog-edit-note.component';
+import { DialogEditTaskComponent } from './dialog-edit-task.component';
 
 describe('DialogEditNoteComponent', () => {
-  let component: DialogEditNoteComponent;
-  let fixture: ComponentFixture<DialogEditNoteComponent>;
+  let component: DialogEditTaskComponent;
+  let fixture: ComponentFixture<DialogEditTaskComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DialogEditNoteComponent]
-    })
-    .compileComponents();
-    
-    fixture = TestBed.createComponent(DialogEditNoteComponent);
+      declarations: [DialogEditTaskComponent],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(DialogEditTaskComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

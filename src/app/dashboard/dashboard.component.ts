@@ -37,11 +37,17 @@ export class DashboardComponent implements OnInit {
     this.extractProductsFromUserData();
   }
 
+  /**
+   * Retrieves the user's display name.
+   */
   async getUserByName() {
     await this.authService.getUserName(); // displayName-Wert aktualisieren
     this.displayName = this.authService.displayName;
   }
 
+  /**
+   * Retrieves user data from Firestore.
+   */
   async getUserFirebaseData() {
     const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
     let firebaseData;
@@ -53,6 +59,9 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  /**
+   * Retrieves product data from Firestore.
+   */
   async getProductFirebaseData() {
     const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
     let firebaseData;
@@ -64,6 +73,9 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  /**
+   * Retrieves order data from Firestore.
+   */
   async getOrderFirebaseData() {
     const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
     let firebaseData;
@@ -75,18 +87,27 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  /**
+   * Retrieves the number of users from Firestore and updates the count.
+   */
   async getNumberOfUsers() {
     const firebaseData = await this.getUserFirebaseData();
     const querySnapshot = await getDocs(firebaseData);
     this.numberOfUsers = querySnapshot.size;
   }
 
+  /**
+   * Retrieves the number of products from Firestore and updates the count.
+   */
   async getNumberOfProducts() {
     const firebaseData = await this.getProductFirebaseData();
     const querySnapshot = await getDocs(firebaseData);
     this.getNumberOfProduct = querySnapshot.size;
   }
 
+  /**
+   * Calculates the total amount of all orders and updates the total amount.
+   */
   async calculateTotalOfAllOrders() {
     const firebaseData = await this.getOrderFirebaseData();
 
@@ -103,12 +124,19 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  /**
+   * Calculates the total amount of an order.
+   * @param {Object} orderData - Order data.
+   */
   async calculateOrderTotal(orderData: any) {
     const amount = orderData['amount'];
     const price = orderData['price'];
     return amount * price;
   }
 
+  /**
+   * Extracts cities from user data and updates city counts and charts.
+   */
   async extractCitiesFromUserData() {
     const firebaseData = await this.getUserFirebaseData();
 
@@ -123,6 +151,9 @@ export class DashboardComponent implements OnInit {
     this.cityCount();
   }
 
+  /**
+   * Counts the occurrences of each city and updates city counts and charts.
+   */
   cityCount() {
     // Häufigkeit jeder Stadt zählen
     const cityCount = this.cityCounter(this.allCities);
@@ -141,7 +172,10 @@ export class DashboardComponent implements OnInit {
     this.createChartResidence();
   }
 
-  // Funktion zum Zählen der Vorkommen von Elementen in einem Array
+  /**
+   * Counts the occurrences of each city in an array.
+   * @param {string[]} array - Array of cities.
+   */
   cityCounter(array: any) {
     return array.reduce((accumulator: any, element: any) => {
       accumulator[element] = (accumulator[element] || 0) + 1;
@@ -149,6 +183,10 @@ export class DashboardComponent implements OnInit {
     }, {});
   }
 
+  /**
+   * Extracts counts of the top three cities from the city count object.
+   * @param {Object.<string, number>} cityCount - Object containing city counts.
+   */
   extractCityCounts(cityCount: any) {
     const cityCounts: number[] = [];
 
@@ -160,16 +198,27 @@ export class DashboardComponent implements OnInit {
     return cityCounts;
   }
 
+  /**
+   * Sorts cities by count in descending order.
+   * @param {Object} cityCount - Object containing city counts.
+   */
   sortCitiesByCount(cityCount: { [key: string]: number }) {
     return Object.keys(cityCount).sort((a, b) => cityCount[b] - cityCount[a]);
   }
 
+  /**
+   * Sorts products by count in descending order.
+   * @param {Object.<string, number>} productCount - Object containing product counts.
+   */
   sortProductByCount(productCount: { [key: string]: number }) {
     return Object.keys(productCount).sort(
       (a, b) => productCount[b] - productCount[a]
     );
   }
 
+  /**
+   * Extracts products from order data and updates product counts and charts.
+   */
   async extractProductsFromUserData() {
     const firebaseData = await this.getOrderFirebaseData();
 
@@ -183,6 +232,9 @@ export class DashboardComponent implements OnInit {
     this.productCount();
   }
 
+  /**
+   * Counts the occurrences of each product and updates product counts and charts.
+   */
   productCount() {
     const productCount = this.productCounter(this.allProducts);
     const sortedProducts = this.sortProductByCount(productCount);
@@ -203,6 +255,10 @@ export class DashboardComponent implements OnInit {
     this.createChartProducts();
   }
 
+  /**
+   * Counts the occurrences of each product in an array.
+   * @param {string[]} array - Array of products.
+   */
   productCounter(array: any) {
     return array.reduce((accumulator: any, element: any) => {
       accumulator[element] = (accumulator[element] || 0) + 1;
@@ -210,10 +266,18 @@ export class DashboardComponent implements OnInit {
     }, {});
   }
 
+  /**
+   * Formats a number with apostrophes for every three digits.
+   * @param {number} number - Number to format.
+   * @returns {string} Formatted number.
+   */
   formatNumberWithApostrophe(number: number): string {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'");
   }
 
+  /**
+   * Creates the residence chart using Chart.js.
+   */
   createChartResidence() {
     this.chartResidence = new Chart('MyChartResidence', {
       type: 'bar', // Typ des horizontalen Balkendiagramms
@@ -269,6 +333,9 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  /**
+   * Creates the products chart using Chart.js.
+   */
   createChartProducts() {
     this.chartProducts = new Chart('MyChartProducts', {
       type: 'doughnut',

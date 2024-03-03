@@ -1,8 +1,5 @@
 import { NgModule } from '@angular/core';
-import {
-  BrowserModule,
-  provideClientHydration,
-} from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -22,7 +19,6 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
-import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from '../environments/environments';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
@@ -43,8 +39,6 @@ import { DialogAddOrderComponent } from './dialog-add-order/dialog-add-order.com
 import { MatSelectModule } from '@angular/material/select';
 import { ImprintComponent } from './imprint/imprint.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
-import { GuestDashboardComponent } from './guest-dashboard/guest-dashboard.component';
-import { GuestUserComponent } from './guest-user/guest-user.component';
 import { ProductsComponent } from './products/products.component';
 import { DialogAddProductComponent } from './dialog-add-product/dialog-add-product.component';
 import { DialogEditProductComponent } from './dialog-edit-product/dialog-edit-product.component';
@@ -57,7 +51,7 @@ import {
 } from '@angular/common/http';
 import { KanbanComponent } from './kanban/kanban.component';
 import { DialogAddTaskConmponent } from './dialog-add-task/dialog-add-task.component';
-import { DialogEditNoteComponent } from './dialog-edit-note/dialog-edit-note.component';
+import { DialogEditTaskComponent } from './dialog-edit-task/dialog-edit-task.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { KanbanDragAndDropComponent } from './kanban-drag-and-drop/kanban-drag-and-drop.component';
 import { DialogDeleteTaskComponent } from './dialog-delete-task/dialog-delete-task.component';
@@ -80,8 +74,6 @@ import { DialogDeleteTaskComponent } from './dialog-delete-task/dialog-delete-ta
     DialogAddOrderComponent,
     ImprintComponent,
     PrivacyPolicyComponent,
-    GuestDashboardComponent,
-    GuestUserComponent,
     ProductsComponent,
     DialogAddProductComponent,
     DialogEditProductComponent,
@@ -89,7 +81,7 @@ import { DialogDeleteTaskComponent } from './dialog-delete-task/dialog-delete-ta
     SidenavComponent,
     KanbanComponent,
     DialogAddTaskConmponent,
-    DialogEditNoteComponent,
+    DialogEditTaskComponent,
     KanbanDragAndDropComponent,
     DialogDeleteTaskComponent,
   ],
@@ -114,7 +106,6 @@ import { DialogDeleteTaskComponent } from './dialog-delete-task/dialog-delete-ta
     MatSelectModule,
     HttpClientModule,
     DragDropModule,
-    // AngularFireModule,
     // provideFirebaseApp(() => initializeApp(environment.firebase)),
 
     provideFirebaseApp(() =>
@@ -130,7 +121,6 @@ import { DialogDeleteTaskComponent } from './dialog-delete-task/dialog-delete-ta
     provideFirestore(() => getFirestore()),
     provideAuth(() => getAuth()),
     AngularFireAuthModule,
-    // provideDatabase(() => getDatabase()),
   ],
   providers: [provideHttpClient(withFetch())],
   bootstrap: [AppComponent],

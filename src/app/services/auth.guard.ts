@@ -11,9 +11,7 @@ export const authGuard: CanActivateFn = async (route, state) => {
   if (isAuthenticated) {
     return true;
   } else {
-    console.log(
-      'Der Guard funktioniert. Der Benutzer hat keinen Zugriff auf diese Route'
-    );
+    console.error('Der Benutzer hat keinen Zugriff auf diese Route');
     router.navigate(['/sign-in']);
     return false;
   }

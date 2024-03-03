@@ -3,12 +3,12 @@ import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 
 export class Order {
-  orderDate: Date | null; // Erlaubt sowohl Date-Objekte als auch null
+  orderDate: Date | null;
   amount: number;
   product: string | undefined;
   orderStatus: string | undefined;
   price: number;
-  userId: string | null; // Hinzufügen der userId als Eigenschaft
+  userId: string | null;
   orderId: string;
 
   constructor(obj?: any) {
@@ -17,8 +17,8 @@ export class Order {
     this.product = obj ? obj.product : '';
     this.orderStatus = obj ? obj.orderStatus : '';
     this.price = obj ? obj.price : '';
-    this.userId = obj ? obj.userId : ''; // Initialisieren der userId
-    this.orderId = obj ? obj.orderId : ''; // Initialisieren der orderId
+    this.userId = obj ? obj.userId : '';
+    this.orderId = obj ? obj.orderId : '';
   }
 
   public toJSON() {

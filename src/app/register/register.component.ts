@@ -116,7 +116,7 @@ export class RegisterComponent {
     name: string
   ): Promise<void> {
     try {
-      await this.authService.register(email, password, name);
+      await this.authService.register(email, password);
       await this.authService.saveUserName(name);
       this.handleSuccessfulRegistration(email, password);
     } catch (error) {

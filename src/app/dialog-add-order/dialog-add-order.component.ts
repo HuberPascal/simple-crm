@@ -46,7 +46,7 @@ export class DialogAddOrderComponent implements OnInit {
   loadProductNameInInputField() {
     this.productName = this.allProducts.map((product) => ({
       value: product.productName,
-      viewValue: `${product.productName} - ${product.price} CHF`, // Füge den Produktnamen und den Preis hinzu
+      viewValue: `${product.productName} - ${product.price} CHF`, // Produktnamen und den Preis hinzufügen
       price: product.price,
     }));
   }

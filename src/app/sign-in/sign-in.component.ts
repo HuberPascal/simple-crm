@@ -64,7 +64,9 @@ export class SignInComponent {
     this.loading = true;
     try {
       await this.authService.googleLogin();
+      this.SidenavComponent.loggedIn = true;
       this.SidenavComponent.isDrawerOpened = true;
+      this.SidenavComponent.isUserLoggedIn = true;
       await this.getUserByName();
       this.router.navigate(['dashboard']);
       this.authService.openSnackBarLogin('Logged in as', this.displayName);
@@ -92,6 +94,10 @@ export class SignInComponent {
     }
   }
 
+  /**
+   * Asynchronously retrieves the user's display name from the authentication service.
+   * Updates the displayName property with the retrieved value.
+   */
   async getUserByName() {
     await this.authService.getUserName(); // displayName-Wert aktualisieren
     this.displayName = this.authService.displayName;

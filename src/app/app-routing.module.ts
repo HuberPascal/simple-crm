@@ -9,8 +9,6 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { authGuard } from './services/auth.guard';
 import { ImprintComponent } from './imprint/imprint.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
-import { GuestUserComponent } from './guest-user/guest-user.component';
-import { GuestDashboardComponent } from './guest-dashboard/guest-dashboard.component';
 import { ProductsComponent } from './products/products.component';
 import { KanbanComponent } from './kanban/kanban.component';
 

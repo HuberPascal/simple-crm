@@ -5,7 +5,7 @@ import { collection, onSnapshot } from 'firebase/firestore';
 import { Firestore } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogAddTaskConmponent } from '../dialog-add-task/dialog-add-task.component';
-import { DialogEditNoteComponent } from '../dialog-edit-note/dialog-edit-note.component';
+import { DialogEditTaskComponent } from '../dialog-edit-task/dialog-edit-task.component';
 import { User } from '../../models/user.class';
 
 @Component({
@@ -122,7 +122,7 @@ export class KanbanComponent implements OnInit {
    * @param currentNote - The current task being edited.
    */
   onEditNote(currentNote: any) {
-    const dialog = this.dialog.open(DialogEditNoteComponent);
+    const dialog = this.dialog.open(DialogEditTaskComponent);
     dialog.componentInstance.kanban = new Kanban(this.kanban.toJSON());
     dialog.componentInstance.user = new User(this.user.toJSON());
     dialog.componentInstance.allUsers = this.allUsers;
