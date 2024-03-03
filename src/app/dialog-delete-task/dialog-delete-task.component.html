@@ -1,0 +1,10 @@
+<h1 mat-dialog-title>Delete This Task?</h1>
+<div mat-dialog-content>
+  Are You Sure You Want to Delete the Task for
+  <span class="warn">{{ kanban.firstName }} {{ kanban.lastName }}</span
+  >?
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button (click)="deleteTask()" mat-dialog-close>Delete</button>
+</div>

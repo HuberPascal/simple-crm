@@ -25,15 +25,29 @@
           <p>{{ kanban.firstName + " " + kanban.lastName }}</p>
         </div>
         <div class="task-note">
-          <div>{{ kanban.note }}</div>
+          <div class="scroll-container">
+            <div class="note-content">{{ kanban.note }}</div>
+          </div>
+        </div>
+
+        <div class="task-edit-container">
           <button
-            (click)="triggerEditNoteEvent(kanban)"
+            (click)="triggerEditTaskEvent(kanban)"
             mat-icon-button
             aria-label="Example icon button with a edit icon"
             matTooltip="Edit Task"
             matTooltipPosition="above"
           >
             <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            (click)="openDialog(kanban)"
+            mat-icon-button
+            aria-label="Example icon button with a edit icon"
+            matTooltip="Edit Task"
+            matTooltipPosition="above"
+          >
+            <mat-icon class="delete">delete</mat-icon>
           </button>
         </div>
       </mat-card>
@@ -67,15 +81,29 @@
           <p>{{ kanban.firstName + " " + kanban.lastName }}</p>
         </div>
         <div class="task-note">
-          <div>{{ kanban.note }}</div>
+          <div class="scroll-container">
+            <div class="note-content">{{ kanban.note }}</div>
+          </div>
+        </div>
+
+        <div class="task-edit-container">
           <button
-            (click)="triggerEditNoteEvent(kanban)"
+            (click)="triggerEditTaskEvent(kanban)"
             mat-icon-button
             aria-label="Example icon button with a edit icon"
             matTooltip="Edit Task"
             matTooltipPosition="above"
           >
             <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            (click)="openDialog(kanban)"
+            mat-icon-button
+            aria-label="Example icon button with a edit icon"
+            matTooltip="Edit Task"
+            matTooltipPosition="above"
+          >
+            <mat-icon class="delete">delete</mat-icon>
           </button>
         </div>
       </mat-card>
@@ -109,15 +137,29 @@
           <p>{{ kanban.firstName + " " + kanban.lastName }}</p>
         </div>
         <div class="task-note">
-          <div>{{ kanban.note }}</div>
+          <div class="scroll-container">
+            <div class="note-content">{{ kanban.note }}</div>
+          </div>
+        </div>
+
+        <div class="task-edit-container">
           <button
-            (click)="triggerEditNoteEvent(kanban)"
+            (click)="triggerEditTaskEvent(kanban)"
             mat-icon-button
             aria-label="Example icon button with a edit icon"
             matTooltip="Edit Task"
             matTooltipPosition="above"
           >
             <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            (click)="openDialog(kanban)"
+            mat-icon-button
+            aria-label="Example icon button with a edit icon"
+            matTooltip="Edit Task"
+            matTooltipPosition="above"
+          >
+            <mat-icon class="delete">delete</mat-icon>
           </button>
         </div>
       </mat-card>

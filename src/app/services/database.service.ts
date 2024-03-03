@@ -324,8 +324,6 @@ export class DatabaseService {
   async updateTask(taskData: any, taskId: string) {
     let docRef: any;
     this.taskId = taskId;
-    console.log('taskId ist', this.taskId);
-    console.log('taskData ist', taskData);
 
     try {
       const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
@@ -431,6 +429,16 @@ export class DatabaseService {
       }
     } catch (error) {
       console.error('Fehler beim löschen des Benutzers: ', error);
+    }
+  }
+
+  async deleteTask(taskId: any) {
+    const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
+
+    if (isAnonymous) {
+      await deleteDoc(doc(this.db, 'guest_kanban', `${taskId}`));
+    } else {
+      await deleteDoc(doc(this.db, 'kanban', `${taskId}`));
     }
   }
 }

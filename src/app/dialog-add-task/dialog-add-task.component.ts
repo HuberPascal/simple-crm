@@ -77,11 +77,11 @@ export class DialogAddTaskConmponent implements OnInit {
     this.dialogRef.close();
   }
 
-  isSaveButtonDisabled() {}
+  isSaveButtonDisabled() {} //////////////////////
 
   noteStatus: NoteStatus[] = [
     { value: 'Pending', viewValue: 'Pending' },
-    { value: 'InProgress', viewValue: 'InProgress' },
+    { value: 'InProgress', viewValue: 'In Progress' },
     { value: 'Done', viewValue: 'Done' },
   ];
 

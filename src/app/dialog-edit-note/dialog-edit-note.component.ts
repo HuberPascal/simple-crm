@@ -128,7 +128,7 @@ export class DialogEditNoteComponent implements OnInit {
    */
   noteStatus: NoteStatus[] = [
     { value: 'Pending', viewValue: 'Pending' },
-    { value: 'InProgress', viewValue: 'InProgress' },
+    { value: 'InProgress', viewValue: 'In Progress' },
     { value: 'Done', viewValue: 'Done' },
   ];
 }

@@ -60,6 +60,7 @@ import { DialogAddTaskConmponent } from './dialog-add-task/dialog-add-task.compo
 import { DialogEditNoteComponent } from './dialog-edit-note/dialog-edit-note.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { KanbanDragAndDropComponent } from './kanban-drag-and-drop/kanban-drag-and-drop.component';
+import { DialogDeleteTaskComponent } from './dialog-delete-task/dialog-delete-task.component';
 
 @NgModule({
   declarations: [
@@ -90,6 +91,7 @@ import { KanbanDragAndDropComponent } from './kanban-drag-and-drop/kanban-drag-a
     DialogAddTaskConmponent,
     DialogEditNoteComponent,
     KanbanDragAndDropComponent,
+    DialogDeleteTaskComponent,
   ],
   imports: [
     BrowserModule,

@@ -13,6 +13,8 @@ import {
 } from '@angular/cdk/drag-drop';
 import { Kanban } from '../../models/kanban.class';
 import { DatabaseService } from '../services/database.service';
+import { DialogDeleteTaskComponent } from '../dialog-delete-task/dialog-delete-task.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-kanban-drag-and-drop',
@@ -29,7 +31,7 @@ export class KanbanDragAndDropComponent implements OnInit {
   currentTask: any;
   taskId: string = '';
 
-  constructor(private database: DatabaseService) {}
+  constructor(private database: DatabaseService, public dialog: MatDialog) {}
 
   ngOnInit(): void {
     console.log('allNotes ist', this.allNotesfromKanban);
@@ -135,12 +137,20 @@ export class KanbanDragAndDropComponent implements OnInit {
     this.database.updateTask(this.currentTask, this.taskId);
   }
 
-  triggerEditNoteEvent(kanban: any) {
+  /**
+   * Triggers the edit task event.
+   * @param {any} kanban - The kanban task to be edited.
+   */
+  triggerEditTaskEvent(kanban: any) {
     this.editNote.emit(kanban);
   }
 
+  /**
+   * Retrieves the CSS class for task border based on its status.
+   * @param {string} noteStatus - The status of the task.
+   * @returns {string} - CSS class for task border.
+   */
   getBorderClass(noteStatus: string): string {
-    console.log('borderclass', noteStatus);
     switch (noteStatus) {
       case 'Pending':
         return 'border-left-pending';
@@ -151,5 +161,14 @@ export class KanbanDragAndDropComponent implements OnInit {
       default:
         return '';
     }
+  }
+
+  /**
+   * Opens a dialog for deleting a task.
+   * @param {any} kanban - The kanban task to be deleted.
+   */
+  openDialog(kanban: any) {
+    const dialog = this.dialog.open(DialogDeleteTaskComponent);
+    dialog.componentInstance.kanban = kanban;
   }
 }
