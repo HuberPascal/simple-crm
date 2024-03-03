@@ -125,6 +125,17 @@ button {
   color: red;
 }
 
+.noTaskMassage {
+  border: 2px dotted var(--primary-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  margin: 0 50px;
+  border-radius: 5px;
+  color: #fff;
+}
+
 .drag-and-drop-container {
   display: flex;
   gap: 15px;

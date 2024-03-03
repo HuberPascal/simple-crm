@@ -59,3 +59,25 @@ body {
   --text-color: #333; /* Beispiel für eine Textfarbe */
   --warn-color: #d32f2f;
 }
+
+/* Chrome, Safari */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color); /* Medium grey */
+  border-radius: 6px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-color) transparent;
+}

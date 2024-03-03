@@ -51,6 +51,9 @@
           </button>
         </div>
       </mat-card>
+      <div *ngIf="pendingTasks.length === 0" class="noTaskMassage">
+        No tasks In Pending
+      </div>
     </div>
   </div>
 
@@ -107,6 +110,9 @@
           </button>
         </div>
       </mat-card>
+      <div *ngIf="inProgressTasks.length === 0" class="noTaskMassage">
+        No tasks In progress
+      </div>
     </div>
   </div>
 
@@ -163,6 +169,9 @@
           </button>
         </div>
       </mat-card>
+      <div *ngIf="doneTasks.length === 0" class="noTaskMassage">
+        No tasks In Done
+      </div>
     </div>
   </div>
 </div>
