@@ -432,6 +432,10 @@ export class DatabaseService {
     }
   }
 
+  /**
+   * Delete the Task in Firebase.
+   * @param productId
+   */
   async deleteTask(taskId: any) {
     const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
 
