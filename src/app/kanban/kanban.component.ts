@@ -22,6 +22,8 @@ export class KanbanComponent implements OnInit {
   currentNote: any;
   taskId: string = '';
   showKanbanDragAndDropComponent: boolean = false;
+  filterInputValue: any; // Eingabe vom Suchfeld
+  originalNotes: any[] = [];
 
   constructor(
     private authService: AuthService,
@@ -40,6 +42,10 @@ export class KanbanComponent implements OnInit {
     this.getUserData();
   }
 
+  /**
+   * Retrieves Kanban data from Firestore.
+   * @param kanban - The name of the Firestore collection containing Kanban data.
+   */
   async getKanbanData(kanban: string) {
     try {
       const kanbanCollectionRef = collection(this.db, kanban);
@@ -50,6 +56,10 @@ export class KanbanComponent implements OnInit {
     this.getUserData();
   }
 
+  /**
+   * Listens for changes in Kanban data and updates the component accordingly.
+   * @param kanbanCollectionRef - Reference to the Firestore collection containing Kanban data.
+   */
   getKanbanDataOnSnapshot(kanbanCollectionRef: any) {
     onSnapshot(kanbanCollectionRef, (snapshot: { docs: any[] }) => {
       this.allNotes = snapshot.docs.map((doc) => {
@@ -65,15 +75,22 @@ export class KanbanComponent implements OnInit {
         };
       });
       console.log('kanbanData ist', this.allNotes);
+      this.originalNotes = this.allNotes;
     });
   }
 
-  openDialog() {
+  /**
+   * Opens the dialog for adding a new task.
+   */
+  openDialogAddTask() {
     const dialog = this.dialog.open(DialogAddTaskConmponent);
     dialog.componentInstance.user = new User(this.user.toJSON());
     dialog.componentInstance.allUsers = this.allUsers;
   }
 
+  /**
+   * Retrieves user data from Firestore.
+   */
   async getUserData() {
     const usersCollectionRef = collection(this.db, 'guest_users');
     onSnapshot(usersCollectionRef, (snapshot: { docs: any[] }) => {
@@ -93,15 +110,53 @@ export class KanbanComponent implements OnInit {
     });
   }
 
+  /**
+   * Renders the Kanban Drag and Drop component.
+   */
   renderKanbanDragAndDropComponent() {
     this.showKanbanDragAndDropComponent = true;
   }
 
+  /**
+   * Opens the dialog for editing a task.
+   * @param currentNote - The current task being edited.
+   */
   onEditNote(currentNote: any) {
     const dialog = this.dialog.open(DialogEditNoteComponent);
     dialog.componentInstance.kanban = new Kanban(this.kanban.toJSON());
     dialog.componentInstance.user = new User(this.user.toJSON());
     dialog.componentInstance.allUsers = this.allUsers;
     dialog.componentInstance.currentNote = currentNote;
+  }
+
+  /**
+   * Filters tasks based on the input value from the search field.
+   * If the filter input is empty, displays the original unfiltered data.
+   */
+  filterTasksFromInput() {
+    // Wenn der Filter leer ist, die ursprünglichen Daten anzeigen
+    if (this.filterInputValue === '') {
+      this.allNotes = this.originalNotes;
+    } else {
+      // Das ursprüngliche Array filtern und das gefilterte Array speichern
+      const filteredNotes = this.originalNotes.filter((task) =>
+        this.searchTask(task)
+      );
+      this.allNotes = filteredNotes;
+    }
+  }
+
+  /**
+   * Searches for a task based on the filter input value.
+   * @param task - The task to search within.
+   */
+  searchTask(task: any) {
+    // Überprüfen, ob der Filterwert in firstName, lastName oder note enthalten ist
+    const searchValue = this.filterInputValue.toLowerCase();
+    return (
+      task.firstName.toString().toLowerCase().includes(searchValue) ||
+      task.lastName.toString().toLowerCase().includes(searchValue) ||
+      task.note.toString().toLowerCase().includes(searchValue)
+    );
   }
 }

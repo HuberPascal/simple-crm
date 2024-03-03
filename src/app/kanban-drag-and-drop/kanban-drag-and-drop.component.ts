@@ -146,28 +146,10 @@ export class KanbanDragAndDropComponent implements OnInit {
   }
 
   /**
-   * Retrieves the CSS class for task border based on its status.
-   * @param {string} noteStatus - The status of the task.
-   * @returns {string} - CSS class for task border.
-   */
-  getBorderClass(noteStatus: string): string {
-    switch (noteStatus) {
-      case 'Pending':
-        return 'border-left-pending';
-      case 'InProgress':
-        return 'border-left-in-progress';
-      case 'Done':
-        return 'border-left-done';
-      default:
-        return '';
-    }
-  }
-
-  /**
    * Opens a dialog for deleting a task.
    * @param {any} kanban - The kanban task to be deleted.
    */
-  openDialog(kanban: any) {
+  openDialogDeleteTask(kanban: any) {
     const dialog = this.dialog.open(DialogDeleteTaskComponent);
     dialog.componentInstance.kanban = kanban;
   }

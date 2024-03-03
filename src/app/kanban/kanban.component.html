@@ -1,17 +1,22 @@
 <div class="kanban-header">
-  <h1><mat-icon>inventory_2</mat-icon> Kanban</h1>
+  <h1><mat-icon>task</mat-icon> Kanban</h1>
   <div class="filter-container">
-    <input type="text" />
+    <input
+      type="text"
+      placeholder="search Task"
+      (input)="filterTasksFromInput()"
+      [(ngModel)]="filterInputValue"
+    />
     <mat-icon>search</mat-icon>
   </div>
 </div>
 
 <button
-  (click)="openDialog()"
+  (click)="openDialogAddTask()"
   class="add-task-btn"
   mat-fab
   color="primary"
-  matTooltip="Add user"
+  matTooltip="Add Task"
   matTooltipPosition="above"
 >
   <mat-icon>add</mat-icon>
