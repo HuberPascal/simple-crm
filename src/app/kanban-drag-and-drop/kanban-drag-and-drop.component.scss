@@ -17,6 +17,12 @@ p {
   gap: 20px;
   width: 100%;
   margin-bottom: 20px;
+
+  mat-card {
+    @media (max-width: 1000px) {
+      width: 100%;
+    }
+  }
 }
 
 mat-card {
@@ -24,6 +30,11 @@ mat-card {
   text-align: center;
   background-color: #282953;
   color: #fff;
+
+  @media (max-width: 1000px) {
+    min-width: 230px;
+    width: 230px;
+  }
 }
 
 .kanban-list {
@@ -34,6 +45,14 @@ mat-card {
   padding: 16px;
   margin: 0 50px;
   background-color: #282953;
+
+  @media (max-width: 1400px) {
+    margin: 0 20px;
+  }
+
+  @media (max-width: 1150px) {
+    margin: 0;
+  }
 }
 
 .border-left-pending {
@@ -140,6 +159,10 @@ button {
   display: flex;
   gap: 15px;
   margin-bottom: 25px;
+
+  @media (max-width: 1000px) {
+    flex-direction: column;
+  }
 }
 
 .column-container {
@@ -147,6 +170,10 @@ button {
   max-width: 100%;
   display: inline-block;
   vertical-align: top;
+
+  @media (max-width: 1000px) {
+    width: auto;
+  }
 }
 
 .task-list {
@@ -156,6 +183,13 @@ button {
   display: flex;
   flex-direction: column;
   gap: 10px;
+
+  @media (max-width: 1000px) {
+    min-height: unset;
+    flex-direction: row;
+    overflow-x: auto;
+    padding-bottom: 10px;
+  }
 }
 
 .cdk-drag-preview {
