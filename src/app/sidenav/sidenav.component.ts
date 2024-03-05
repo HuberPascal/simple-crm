@@ -1,4 +1,4 @@
-import { Component, ViewChild, inject } from '@angular/core';
+import { Component, ViewChild, inject, HostListener } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/firebase-auth.service';
@@ -11,8 +11,8 @@ import { User } from '../../models/user.class';
   styleUrl: './sidenav.component.scss',
 })
 export class SidenavComponent {
-  firestore: Firestore = inject(Firestore);
   @ViewChild('drawer') drawer: MatDrawer | undefined;
+  firestore: Firestore = inject(Firestore);
   isDrawerOpened: boolean = false;
   loggedIn: boolean = false;
   isUserLoggedIn: boolean = false;
@@ -20,12 +20,14 @@ export class SidenavComponent {
   user: any;
   isVisible: boolean = true;
   durationInSeconds = 5;
+  mobileView: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) {}
 
   async ngOnInit(): Promise<void> {
     this.isUserLoggedIn = await this.authService.checkAuthLoggedInAsUser();
     this.loggedIn = await this.authService.checkAuth();
+    this.checkScreenSize();
   }
 
   /**
@@ -111,6 +113,32 @@ export class SidenavComponent {
       }
     } else {
       return false; // 'active' Klasse nicht zuweisen für andere Links
+    }
+  }
+
+  /**
+   * Host listener function that listens for window resize events.
+   * It triggers the checkScreenSize method when the window is resized.
+   * @param {any} event - The window resize event object.
+   */
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.checkScreenSize();
+  }
+
+  /**
+   * Checks the screen size and adjusts the drawer mode accordingly.
+   * If the window width is less than 1000 pixels, sets the drawer mode to 'over',
+   * otherwise sets it to 'side'.
+   */
+  checkScreenSize() {
+    this.mobileView = window.innerWidth < 1000;
+    if (this.drawer) {
+      if (this.mobileView) {
+        this.drawer.mode = 'over';
+      } else {
+        this.drawer.mode = 'side';
+      }
     }
   }
 }
