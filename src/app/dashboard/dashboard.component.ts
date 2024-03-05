@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import Chart from 'chart.js/auto';
 import { AuthService } from '../services/firebase-auth.service';
 import { Firestore } from '@angular/fire/firestore';
@@ -25,6 +25,7 @@ export class DashboardComponent implements OnInit {
   topThreeProducts: string[] = [];
   productsCounts: number[] = [];
   productWithLowestCount: string = '';
+  mobileView: boolean = false;
 
   constructor(private authService: AuthService, public db: Firestore) {}
 
@@ -170,6 +171,7 @@ export class DashboardComponent implements OnInit {
       this.cityCounts.push(count);
     });
     this.createChartResidence();
+    this.checkScreenSize();
   }
 
   /**
@@ -273,6 +275,32 @@ export class DashboardComponent implements OnInit {
    */
   formatNumberWithApostrophe(number: number): string {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'");
+  }
+
+  /**
+   * Host listener function that listens for window resize events.
+   * It triggers the checkScreenSize method when the window is resized.
+   * @param {any} event - The window resize event object.
+   */
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.checkScreenSize();
+  }
+
+  /**
+   * Adjusts chart responsiveness based on screen size.
+   */
+  checkScreenSize() {
+    this.mobileView = window.innerWidth < 750;
+    if (this.mobileView) {
+      this.chartResidence.config.options.responsive = true; // Macht den Chart responsive
+      this.chartResidence.config.options.maintainAspectRatio = false; // Verhindert das Beibehalten des Seitenverhältnisses
+    } else {
+      this.chartResidence.config.options.responsive = false;
+      this.chartResidence.config.options.maintainAspectRatio = true;
+    }
+    // Update the chart after modifying options
+    this.chartResidence.update();
   }
 
   /**

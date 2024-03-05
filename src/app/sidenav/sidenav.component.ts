@@ -25,9 +25,9 @@ export class SidenavComponent {
   constructor(private authService: AuthService, private router: Router) {}
 
   async ngOnInit(): Promise<void> {
+    this.checkScreenSize();
     this.isUserLoggedIn = await this.authService.checkAuthLoggedInAsUser();
     this.loggedIn = await this.authService.checkAuth();
-    this.checkScreenSize();
   }
 
   /**

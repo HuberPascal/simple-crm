@@ -14,12 +14,20 @@
     display: flex;
     align-items: center;
     gap: 10px;
+
+    @media (max-width: 500px) {
+      font-size: 20px;
+    }
   }
 
   .filter-container {
     display: flex;
     align-items: center;
     gap: 10px;
+
+    @media (max-width: 375px) {
+      gap: 5px;
+    }
   }
 
   input {
@@ -27,6 +35,14 @@
     border-style: none;
     padding: 5px;
     outline: none;
+
+    @media (max-width: 430px) {
+      width: 100px;
+    }
+
+    @media (max-width: 375px) {
+      width: 85px;
+    }
   }
 }
 
@@ -102,6 +118,11 @@ mat-card {
   position: fixed;
   right: 56px;
   bottom: 56px;
+
+  @media (max-width: 500px) {
+    right: 20px;
+    bottom: 20px;
+  }
 }
 
 .delete {
@@ -131,6 +152,10 @@ mat-card {
 
     .selected {
       background-color: var(--primary-color);
+    }
+
+    @media (max-width: 500px) {
+      flex-direction: column;
     }
   }
 }

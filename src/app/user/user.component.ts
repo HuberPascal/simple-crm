@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogAddUserComponent } from '../dialog-add-user/dialog-add-user.component';
 import { User } from '../../models/user.class';
@@ -22,6 +22,7 @@ export class UserComponent {
   filteredUsersInputField: any[] = []; // Gefilterte Benutzerdaten vom Suchfeld
   filterInputValue: any; // Eingabe vom Suchfeld
   filterNotFound: boolean = false;
+  mobileView: boolean = false;
 
   constructor(
     public db: Firestore,
@@ -34,6 +35,7 @@ export class UserComponent {
   }
 
   async ngOnInit(): Promise<void> {
+    this.checkScreenSize();
     this.isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
 
     if (this.isAnonymous) {
@@ -200,6 +202,29 @@ export class UserComponent {
       this.filterNotFound = true;
     } else {
       this.filterNotFound = false;
+    }
+  }
+
+  /**
+   * Host listener function that listens for window resize events.
+   * It triggers the checkScreenSize method when the window is resized.
+   * @param {any} event - The window resize event object.
+   */
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.checkScreenSize();
+  }
+
+  /**
+   * Checks the screen size and adjusts the drawer mode accordingly.
+   * If the window width is less than 800 pixels, sets mobileView to true, else sets it to false.
+   */
+  checkScreenSize() {
+    this.mobileView = window.innerWidth < 800;
+    if (this.mobileView) {
+      this.mobileView = true;
+    } else {
+      this.mobileView = false;
     }
   }
 }
