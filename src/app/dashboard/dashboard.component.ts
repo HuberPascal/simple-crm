@@ -25,7 +25,6 @@ export class DashboardComponent implements OnInit {
   topThreeProducts: string[] = [];
   productsCounts: number[] = [];
   productWithLowestCount: string = '';
-  mobileView: boolean = false;
 
   constructor(private authService: AuthService, public db: Firestore) {}
 
@@ -171,7 +170,7 @@ export class DashboardComponent implements OnInit {
       this.cityCounts.push(count);
     });
     this.createChartResidence();
-    this.checkScreenSize();
+    this.checkScreenSize750px();
   }
 
   /**
@@ -209,16 +208,6 @@ export class DashboardComponent implements OnInit {
   }
 
   /**
-   * Sorts products by count in descending order.
-   * @param {Object.<string, number>} productCount - Object containing product counts.
-   */
-  sortProductByCount(productCount: { [key: string]: number }) {
-    return Object.keys(productCount).sort(
-      (a, b) => productCount[b] - productCount[a]
-    );
-  }
-
-  /**
    * Extracts products from order data and updates product counts and charts.
    */
   async extractProductsFromUserData() {
@@ -235,26 +224,73 @@ export class DashboardComponent implements OnInit {
   }
 
   /**
-   * Counts the occurrences of each product and updates product counts and charts.
+   * Calculates the count of each product, updates the product with the lowest count,
+   * updates the top three products, creates a chart, and checks the screen size.
    */
   productCount() {
-    const productCount = this.productCounter(this.allProducts);
+    const productCount = this.calculateProductCount(this.allProducts);
     const sortedProducts = this.sortProductByCount(productCount);
+    this.updateProductsWithLowestCount(sortedProducts);
+    this.updateTopThreeProducts(sortedProducts, productCount);
+    this.createChartProducts();
+    this.checkScreenSize950px();
+  }
+
+  /**
+   * Calculates the count of each product in the given array.
+   * @param {string[]} products - The array of product names.
+   */
+  calculateProductCount(products: string[]): { [product: string]: number } {
+    const productCount: { [product: string]: number } = {};
+    products.forEach((product) => {
+      if (productCount[product]) {
+        productCount[product]++;
+      } else {
+        productCount[product] = 1;
+      }
+    });
+    return productCount;
+  }
+
+  /**
+   * Sorts products by count in descending order.
+   * @param {Object.<string, number>} productCount - Object containing product counts.
+   */
+  sortProductByCount(productCount: { [key: string]: number }) {
+    return Object.keys(productCount).sort(
+      (a, b) => productCount[b] - productCount[a]
+    );
+  }
+
+  /**
+   * Updates the product with the lowest count based on the sorted product array.
+   * @param {string[]} sortedProducts - The array of sorted product names.
+   */
+  updateProductsWithLowestCount(sortedProducts: string[]) {
     this.productWithLowestCount = sortedProducts[sortedProducts.length - 1];
-    this.productWithLowestCount =
-      this.productWithLowestCount.charAt(0).toLocaleUpperCase() +
-      this.productWithLowestCount.slice(1);
-    this.productWithLowestCount =
-      this.productWithLowestCount.charAt(0).toUpperCase() +
-      this.productWithLowestCount.slice(1);
+    this.productWithLowestCount = this.capitalizeFirstLetter(
+      this.productWithLowestCount
+    );
+  }
 
+  /**
+   * Updates the list of top three products and their counts based on the sorted product array.
+   */
+  updateTopThreeProducts(sortedProducts: string[], productCount: any) {
     this.topThreeProducts = sortedProducts.slice(0, 3);
-
     this.topThreeProducts.forEach((product) => {
       const count = productCount[product];
       this.productsCounts.push(count);
     });
-    this.createChartProducts();
+  }
+
+  /**
+   * Capitalizes the first letter of the given word.
+   * @param {string} word - The word to capitalize.
+   * @returns {string} The word with the first letter capitalized.
+   */
+  capitalizeFirstLetter(word: string): string {
+    return word.charAt(0).toLocaleUpperCase() + word.slice(1);
   }
 
   /**
@@ -284,23 +320,48 @@ export class DashboardComponent implements OnInit {
    */
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
-    this.checkScreenSize();
+    this.checkScreenSize750px();
+    this.checkScreenSize950px();
   }
 
   /**
    * Adjusts chart responsiveness based on screen size.
    */
-  checkScreenSize() {
-    this.mobileView = window.innerWidth < 750;
-    if (this.mobileView) {
+  checkScreenSize750px() {
+    let mobileView = window.innerWidth < 750;
+
+    if (mobileView) {
       this.chartResidence.config.options.responsive = true; // Macht den Chart responsive
       this.chartResidence.config.options.maintainAspectRatio = false; // Verhindert das Beibehalten des Seitenverhältnisses
     } else {
       this.chartResidence.config.options.responsive = false;
       this.chartResidence.config.options.maintainAspectRatio = true;
     }
-    // Update the chart after modifying options
-    this.chartResidence.update();
+
+    if (!mobileView && this.chartResidence) {
+      this.chartResidence.destroy();
+      this.createChartResidence();
+    }
+  }
+
+  /**
+   * Adjusts chart responsiveness based on screen size.
+   */
+  checkScreenSize950px() {
+    let mobileView = window.innerWidth < 950;
+
+    if (mobileView) {
+      this.chartProducts.config.options.responsive = true; // Macht den Chart responsive
+      this.chartProducts.config.options.maintainAspectRatio = false; // Verhindert das Beibehalten des Seitenverhältnisses
+    } else {
+      this.chartProducts.config.options.responsive = false;
+      this.chartProducts.config.options.maintainAspectRatio = true;
+    }
+
+    if (!mobileView && this.chartProducts) {
+      this.chartProducts.destroy();
+      this.createChartProducts();
+    }
   }
 
   /**
@@ -349,7 +410,7 @@ export class DashboardComponent implements OnInit {
             },
           },
         },
-        aspectRatio: 4, // Ändern Sie diesen Wert, um die Höhe anzupassen
+        aspectRatio: 4, // Höhe anpassen
         plugins: {
           legend: {
             labels: {
@@ -397,7 +458,7 @@ export class DashboardComponent implements OnInit {
         ],
       },
       options: {
-        aspectRatio: 4, // Ändern Sie diesen Wert, um die Höhe anzupassen
+        aspectRatio: 4, // Höhe anpassen
         plugins: {
           legend: {
             labels: {

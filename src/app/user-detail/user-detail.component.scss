@@ -11,6 +11,11 @@
     width: 100px;
     object-fit: cover;
     border-radius: 100%;
+
+    @media (max-width: 450px) {
+      height: 80px;
+      width: 80px;
+    }
   }
 }
 
@@ -29,6 +34,10 @@
 
   a {
     color: #fff;
+  }
+
+  @media (max-width: 450px) {
+    margin-left: 16px;
   }
 }
 
@@ -107,6 +116,10 @@
   display: flex;
   flex-direction: row;
   gap: 30px;
+
+  @media (max-width: 650px) {
+    flex-direction: column;
+  }
 }
 
 mat-card {
@@ -140,6 +153,11 @@ mat-card {
 .purchase-total-container {
   display: flex;
   justify-content: space-between;
+
+  @media (max-width: 470px) {
+    flex-direction: column;
+    gap: 10px;
+  }
 }
 
 .total-orders-container {
@@ -151,6 +169,10 @@ mat-card {
 
   p {
     margin: 0;
+  }
+
+  @media (max-width: 470px) {
+    width: 100%;
   }
 }
 

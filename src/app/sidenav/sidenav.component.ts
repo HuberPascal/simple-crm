@@ -141,4 +141,12 @@ export class SidenavComponent {
       }
     }
   }
+
+  closeDrawerIfMobile() {
+    if (this.drawer) {
+      if (this.mobileView) {
+        this.drawer.close();
+      }
+    }
+  }
 }

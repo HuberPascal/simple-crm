@@ -18,13 +18,13 @@
       [class.selected]="selectedFilter === 'Product Name'"
       (click)="selectedFilter = 'Product Name'; filterProducts()"
     >
-      Product Name
+      {{ mobileView ? "Product" : "Product Name" }}
     </button>
     <button
       [class.selected]="selectedFilter === 'Price per Unit'"
       (click)="selectedFilter = 'Price per Unit'; filterProducts()"
     >
-      Price per Unit
+      {{ mobileView ? "Price" : "Price per Unit" }}
     </button>
     <button
       *ngIf="!mobileView"
@@ -40,8 +40,10 @@
   <table class="order-table">
     <thead>
       <tr>
-        <th>Product Name</th>
-        <th>Price per Unit</th>
+        <th>{{ mobileView ? "Product" : "Product Name" }}</th>
+
+        <th>{{ mobileView ? "Price" : "Price per Unit" }}</th>
+
         <th *ngIf="!mobileView">Type</th>
         <th>Action</th>
       </tr>

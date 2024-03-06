@@ -112,22 +112,26 @@
   <table class="detail-table">
     <thead>
       <tr>
-        <th>Order Date</th>
-        <th>Amount Sold</th>
-        <th>Product Name</th>
-        <th>Order Status</th>
-        <th>Price per Unit</th>
-        <th>Total Value</th>
+        <th *ngIf="!mobileView">Order Date</th>
+        <th *ngIf="!mobileViewSmall">Amount Sold</th>
+        <th>{{ mobileViewSmall ? "Product" : "Product Name" }}</th>
+
+        <th *ngIf="!mobileView">Order Status</th>
+        <th>{{ mobileViewSmall ? "Price" : "Price per Unit" }}</th>
+
+        <th *ngIf="!mobileView">Total Value</th>
         <th>Action</th>
       </tr>
     </thead>
     <tr *ngFor="let order of allOrders">
-      <td>{{ order.orderDate }}</td>
-      <td>{{ order.amount }}</td>
+      <td *ngIf="!mobileView">{{ order.orderDate }}</td>
+      <td *ngIf="!mobileViewSmall">{{ order.amount }}</td>
       <td>{{ order.product }}</td>
-      <td>{{ order.orderStatus }}</td>
+      <td *ngIf="!mobileView">{{ order.orderStatus }}</td>
       <td>{{ formatNumberWithApostrophe(order.price) }} CHF</td>
-      <td>{{ formatNumberWithApostrophe(order.amount * order.price) }} CHF</td>
+      <td *ngIf="!mobileView">
+        {{ formatNumberWithApostrophe(order.amount * order.price) }} CHF
+      </td>
       <td class="action-container">
         <button
           (click)="editOrder(order)"

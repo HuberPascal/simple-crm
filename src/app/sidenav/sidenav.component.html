@@ -12,18 +12,21 @@
       <ul class="menu-items">
         <div class="sidebar-container">
           <li
+            (click)="closeDrawerIfMobile()"
             [ngClass]="{ active: shouldActivate('dashboard') }"
             [routerLink]="isUserLoggedIn ? '/dashboard' : '/guest/dashboard'"
           >
             <mat-icon>space_dashboard</mat-icon>Dashboard
           </li>
           <li
+            (click)="closeDrawerIfMobile()"
             [ngClass]="{ active: shouldActivate('user') }"
             [routerLink]="isUserLoggedIn ? '/user' : '/guest/user'"
           >
             <mat-icon>perm_identity</mat-icon>User
           </li>
           <li
+            (click)="closeDrawerIfMobile()"
             *ngIf="user"
             [ngClass]="{
               active: !shouldActivate('user'),
@@ -35,12 +38,14 @@
             <p class="user-name">{{ user.firstName }} {{ user.lastName }}</p>
           </li>
           <li
+            (click)="closeDrawerIfMobile()"
             [ngClass]="{ active: shouldActivate('products') }"
             [routerLink]="isUserLoggedIn ? '/products' : '/guest/products'"
           >
             <mat-icon>inventory_2</mat-icon>Products
           </li>
           <li
+            (click)="closeDrawerIfMobile()"
             [ngClass]="{ active: shouldActivate('kanban') }"
             [routerLink]="isUserLoggedIn ? '/kanban' : '/guest/kanban'"
           >
@@ -52,10 +57,18 @@
       <div class="sidebar-bottom-section">
         <ul class="menu-items">
           <div class="sidebar-container">
-            <li [routerLinkActive]="['active']" routerLink="/imprint">
+            <li
+              (click)="closeDrawerIfMobile()"
+              [routerLinkActive]="['active']"
+              routerLink="/imprint"
+            >
               <mat-icon>info</mat-icon>Imprint
             </li>
-            <li [routerLinkActive]="['active']" routerLink="/privacy-policy">
+            <li
+              (click)="closeDrawerIfMobile()"
+              [routerLinkActive]="['active']"
+              routerLink="/privacy-policy"
+            >
               <mat-icon>policy</mat-icon>Privacy policy
             </li>
             <li (click)="logout()"><mat-icon>logout</mat-icon>Logout</li>

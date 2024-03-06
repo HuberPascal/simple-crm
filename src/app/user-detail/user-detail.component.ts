@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
 import { collection, doc, onSnapshot, query, where } from 'firebase/firestore';
@@ -31,6 +31,8 @@ export class UserDetailComponent {
   allOrders: any[] = [];
   filteredOrders: any;
   allProducts: any[] = [];
+  mobileView: boolean = false;
+  mobileViewSmall: boolean = false;
 
   constructor(
     public db: Firestore,
@@ -40,6 +42,8 @@ export class UserDetailComponent {
   ) {}
 
   ngOnInit() {
+    this.checkScreenSize();
+    this.checkScreenSize400px();
     // Die ID aus der URL holen
     this.route.paramMap.subscribe(async (paramMap) => {
       this.userId = paramMap.get('id');
@@ -294,6 +298,39 @@ export class UserDetailComponent {
       });
     } catch (error) {
       console.error('Fehler beim Laden der Produkt-Daten:', error);
+    }
+  }
+
+  /**
+   * Host listener function that listens for window resize events.
+   * It triggers the checkScreenSize method when the window is resized.
+   * @param {any} event - The window resize event object.
+   */
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.checkScreenSize();
+    this.checkScreenSize400px();
+  }
+
+  /**
+   * Checks the screen size and adjusts the drawer mode accordingly.
+   * If the window width is less than 500 pixels, sets mobileView to true, else sets it to false.
+   */
+  checkScreenSize() {
+    this.mobileView = window.innerWidth < 1000;
+    if (this.mobileView) {
+      this.mobileView = true;
+    } else {
+      this.mobileView = false;
+    }
+  }
+
+  checkScreenSize400px() {
+    this.mobileViewSmall = window.innerWidth < 500;
+    if (this.mobileViewSmall) {
+      this.mobileViewSmall = true;
+    } else {
+      this.mobileViewSmall = false;
     }
   }
 }
