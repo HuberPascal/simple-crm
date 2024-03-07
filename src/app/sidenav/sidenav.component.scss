@@ -20,11 +20,16 @@ mat-drawer {
 
 .logo-container {
   border-bottom: 1px solid rgba(0, 0, 0, 0.04);
-  padding-left: 16px;
+  padding-left: 25px;
   padding-right: 16px;
-  min-height: 56px;
+  margin: 20px 0;
   display: flex;
+  justify-content: center;
   align-items: center;
+
+  img {
+    width: 80%;
+  }
 }
 
 mat-toolbar,
@@ -45,7 +50,7 @@ mat-toolbar-row {
 .menu-items {
   list-style-type: none;
   padding: 0;
-
+  margin: 0;
   display: flex;
   flex-direction: column;
   align-items: center;

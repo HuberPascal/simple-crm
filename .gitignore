@@ -47,4 +47,4 @@ Thumbs.db
 .runtimeconfig.json
 
 # Custom ignore
-/src/environments
+environments
