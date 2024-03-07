@@ -132,12 +132,14 @@ export class SidenavComponent {
    * otherwise sets it to 'side'.
    */
   checkScreenSize() {
-    this.mobileView = window.innerWidth < 1000;
-    if (this.drawer) {
-      if (this.mobileView) {
-        this.drawer.mode = 'over';
-      } else {
-        this.drawer.mode = 'side';
+    if (typeof window !== 'undefined') {
+      this.mobileView = window.innerWidth < 1000;
+      if (this.drawer) {
+        if (this.mobileView) {
+          this.drawer.mode = 'over';
+        } else {
+          this.drawer.mode = 'side';
+        }
       }
     }
   }

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../services/firebase-auth.service';
 import { Router } from '@angular/router';
+import { SidenavComponent } from '../sidenav/sidenav.component';
 
 @Component({
   selector: 'app-register',
@@ -23,7 +24,11 @@ export class RegisterComponent {
   ismail: boolean = false;
   registerError: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private SidenavComponent: SidenavComponent
+  ) {}
 
   /**
    * Checks whether the email address is valid according to a specific pattern.
@@ -135,6 +140,8 @@ export class RegisterComponent {
     this.isUserRegister = true;
     this.userEmail = email;
     this.userPassword = password;
+    this.SidenavComponent.loggedIn = true;
+    this.SidenavComponent.isDrawerOpened = true;
     this.router.navigate(['/dashboard']);
   }
 }

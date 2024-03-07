@@ -23,7 +23,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class AuthService {
   isLoggedIn: any;
   displayName: string = '';
-  durationInSeconds = 4;
+  durationInSeconds = 3;
 
   constructor(private auth: Auth, private _snackBar: MatSnackBar) {}
 

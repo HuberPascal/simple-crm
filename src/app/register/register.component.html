@@ -22,6 +22,7 @@
             [(ngModel)]="name"
             name="name"
             placeholder="Name"
+            autocomplete="off"
             matInput
             required
           />
@@ -35,6 +36,7 @@
             [(ngModel)]="email"
             name="email"
             placeholder="Email"
+            autocomplete="off"
             matInput
             required
             (input)="validateMail()"
@@ -58,6 +60,7 @@
             [(ngModel)]="password"
             name="password"
             placeholder="Password"
+            autocomplete="off"
             required
             (input)="validatePassword()"
           />

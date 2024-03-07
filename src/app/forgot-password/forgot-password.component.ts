@@ -15,6 +15,8 @@ export class ForgotPasswordComponent {
   fadeOutBtn: boolean | undefined = false;
   loading: boolean = false;
   registerError: boolean = false;
+  isEmailValid: boolean = true;
+  ismail: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -72,5 +74,24 @@ export class ForgotPasswordComponent {
     this.emailFormInputField = this.email;
     this.email = '';
     this.sendMail = true;
+    setTimeout(() => {
+      this.router.navigate(['/']);
+    }, 3000);
+  }
+
+  /**
+   * Checks whether the email address is valid according to a specific pattern.
+   */
+  validateMail() {
+    const emailPattern =
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(this.email);
+    this.isEmailValid = emailPattern;
+
+    if (this.isEmailValid) {
+      this.ismail = true;
+    } else {
+      this.ismail = false;
+    }
+    this.isEmailExists = false;
   }
 }
