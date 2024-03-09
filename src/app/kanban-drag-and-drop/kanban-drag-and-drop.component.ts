@@ -34,8 +34,6 @@ export class KanbanDragAndDropComponent implements OnInit {
   constructor(private database: DatabaseService, public dialog: MatDialog) {}
 
   ngOnInit(): void {
-    console.log('allNotes ist', this.allNotesfromKanban);
-    console.log('pendingTasks ist', this.pendingTasks);
     this.pushNotesInArray();
   }
 
@@ -124,13 +122,10 @@ export class KanbanDragAndDropComponent implements OnInit {
     this.taskId = this.currentTask.taskId;
 
     if (event.container.data === this.pendingTasks) {
-      console.log('Task moved to Pending array');
       this.currentTask.noteStatus = 'Pending';
     } else if (event.container.data === this.inProgressTasks) {
-      console.log('Task moved to In Progress array');
       this.currentTask.noteStatus = 'InProgress';
     } else if (event.container.data === this.doneTasks) {
-      console.log('Task moved to Done array');
       this.currentTask.noteStatus = 'Done';
     }
 

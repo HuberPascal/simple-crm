@@ -317,20 +317,24 @@ export class UserDetailComponent {
    * If the window width is less than 500 pixels, sets mobileView to true, else sets it to false.
    */
   checkScreenSize() {
-    this.mobileView = window.innerWidth < 1000;
-    if (this.mobileView) {
-      this.mobileView = true;
-    } else {
-      this.mobileView = false;
+    if (typeof window !== 'undefined') {
+      this.mobileView = window.innerWidth < 1000;
+      if (this.mobileView) {
+        this.mobileView = true;
+      } else {
+        this.mobileView = false;
+      }
     }
   }
 
   checkScreenSize400px() {
-    this.mobileViewSmall = window.innerWidth < 500;
-    if (this.mobileViewSmall) {
-      this.mobileViewSmall = true;
-    } else {
-      this.mobileViewSmall = false;
+    if (typeof window !== 'undefined') {
+      this.mobileViewSmall = window.innerWidth < 500;
+      if (this.mobileViewSmall) {
+        this.mobileViewSmall = true;
+      } else {
+        this.mobileViewSmall = false;
+      }
     }
   }
 }

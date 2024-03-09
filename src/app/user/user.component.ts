@@ -143,7 +143,6 @@ export class UserComponent {
    * Filters the products based on the selected filter.
    */
   filterUserFromInput(): void {
-    console.log('filter User geht');
     if (this.selectedFilter === 'First Name') {
       this.filterFirstName();
     } else if (this.selectedFilter === 'Last Name') {

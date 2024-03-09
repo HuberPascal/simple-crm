@@ -127,7 +127,7 @@ mat-card {
   background-color: #16103a;
   width: 100%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   border-bottom-right-radius: 10px;
   border-bottom-left-radius: 10px;
   padding: 5px;
@@ -153,6 +153,21 @@ button {
   margin: 0 50px;
   border-radius: 5px;
   color: #fff;
+
+  @media (max-width: 1400px) {
+    margin: 0 20px;
+  }
+
+  @media (max-width: 1150px) {
+    margin: 0;
+  }
+
+  @media (max-width: 1000px) {
+    width: 230px;
+    box-sizing: border-box;
+    height: 274px;
+    align-items: flex-start;
+  }
 }
 
 .drag-and-drop-container {
@@ -179,7 +194,7 @@ button {
 .task-list {
   min-height: 600px;
   border-radius: 4px;
-  overflow: hidden;
+  overflow: auto;
   display: flex;
   flex-direction: column;
   gap: 10px;

@@ -51,7 +51,7 @@ export class KanbanComponent implements OnInit {
       const kanbanCollectionRef = collection(this.db, kanban);
       this.getKanbanDataOnSnapshot(kanbanCollectionRef);
     } catch (error) {
-      console.log('Fehler beim laden der Kanban Daten von Firebase:', error);
+      console.error('Fehler beim laden der Kanban Daten von Firebase:', error);
     }
     this.getUserData();
   }
@@ -74,7 +74,6 @@ export class KanbanComponent implements OnInit {
           price: kanbanData['price'],
         };
       });
-      console.log('kanbanData ist', this.allNotes);
       this.originalNotes = this.allNotes;
     });
   }
@@ -105,7 +104,6 @@ export class KanbanComponent implements OnInit {
           note: userData['note'],
         };
       });
-      console.log('allUser ist', this.allUsers);
       this.renderKanbanDragAndDropComponent();
     });
   }

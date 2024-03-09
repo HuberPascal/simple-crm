@@ -18,7 +18,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
-import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { environment } from '../environments/environments';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
@@ -55,6 +54,7 @@ import { DialogEditTaskComponent } from './dialog-edit-task/dialog-edit-task.com
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { KanbanDragAndDropComponent } from './kanban-drag-and-drop/kanban-drag-and-drop.component';
 import { DialogDeleteTaskComponent } from './dialog-delete-task/dialog-delete-task.component';
+import { DialogSwapTaskComponent } from './dialog-swap-task/dialog-swap-task.component';
 
 @NgModule({
   declarations: [
@@ -84,6 +84,7 @@ import { DialogDeleteTaskComponent } from './dialog-delete-task/dialog-delete-ta
     DialogEditTaskComponent,
     KanbanDragAndDropComponent,
     DialogDeleteTaskComponent,
+    DialogSwapTaskComponent,
   ],
   imports: [
     BrowserModule,
@@ -109,7 +110,6 @@ import { DialogDeleteTaskComponent } from './dialog-delete-task/dialog-delete-ta
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideFirestore(() => getFirestore()),
     provideAuth(() => getAuth()),
-    AngularFireAuthModule,
   ],
   providers: [provideHttpClient(withFetch())],
   bootstrap: [AppComponent],

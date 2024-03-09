@@ -12,11 +12,14 @@
 }
 
 .sign-in-container {
-  width: 300px;
+  width: 90%;
+  max-width: 360px;
   background-color: #fff;
   padding: 24px 32px;
   border-radius: 2px;
   font-family: "Roboto", sans-serif;
+  display: flex;
+  justify-content: center;
 
   h1 {
     text-align: center;

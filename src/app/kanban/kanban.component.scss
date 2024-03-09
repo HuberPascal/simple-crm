@@ -54,6 +54,7 @@ p {
   position: fixed;
   right: 56px;
   bottom: 56px;
+  z-index: 1000;
 
   @media (max-width: 500px) {
     right: 20px;

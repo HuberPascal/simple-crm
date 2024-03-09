@@ -328,19 +328,21 @@ export class DashboardComponent implements OnInit {
    * Adjusts chart responsiveness based on screen size.
    */
   checkScreenSize750px() {
-    let mobileView = window.innerWidth < 750;
+    if (typeof window !== 'undefined') {
+      let mobileView = window.innerWidth < 750;
 
-    if (mobileView) {
-      this.chartResidence.config.options.responsive = true; // Macht den Chart responsive
-      this.chartResidence.config.options.maintainAspectRatio = false; // Verhindert das Beibehalten des Seitenverhältnisses
-    } else {
-      this.chartResidence.config.options.responsive = false;
-      this.chartResidence.config.options.maintainAspectRatio = true;
-    }
+      if (mobileView) {
+        this.chartResidence.config.options.responsive = true; // Macht den Chart responsive
+        this.chartResidence.config.options.maintainAspectRatio = false; // Verhindert das Beibehalten des Seitenverhältnisses
+      } else {
+        this.chartResidence.config.options.responsive = false;
+        this.chartResidence.config.options.maintainAspectRatio = true;
+      }
 
-    if (!mobileView && this.chartResidence) {
-      this.chartResidence.destroy();
-      this.createChartResidence();
+      if (!mobileView && this.chartResidence) {
+        this.chartResidence.destroy();
+        this.createChartResidence();
+      }
     }
   }
 
@@ -348,19 +350,21 @@ export class DashboardComponent implements OnInit {
    * Adjusts chart responsiveness based on screen size.
    */
   checkScreenSize950px() {
-    let mobileView = window.innerWidth < 950;
+    if (typeof window !== 'undefined') {
+      let mobileView = window.innerWidth < 950;
 
-    if (mobileView) {
-      this.chartProducts.config.options.responsive = true; // Macht den Chart responsive
-      this.chartProducts.config.options.maintainAspectRatio = false; // Verhindert das Beibehalten des Seitenverhältnisses
-    } else {
-      this.chartProducts.config.options.responsive = false;
-      this.chartProducts.config.options.maintainAspectRatio = true;
-    }
+      if (mobileView) {
+        this.chartProducts.config.options.responsive = true; // Macht den Chart responsive
+        this.chartProducts.config.options.maintainAspectRatio = false; // Verhindert das Beibehalten des Seitenverhältnisses
+      } else {
+        this.chartProducts.config.options.responsive = false;
+        this.chartProducts.config.options.maintainAspectRatio = true;
+      }
 
-    if (!mobileView && this.chartProducts) {
-      this.chartProducts.destroy();
-      this.createChartProducts();
+      if (!mobileView && this.chartProducts) {
+        this.chartProducts.destroy();
+        this.createChartProducts();
+      }
     }
   }
 

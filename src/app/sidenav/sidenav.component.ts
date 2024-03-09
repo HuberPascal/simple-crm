@@ -145,9 +145,11 @@ export class SidenavComponent {
   }
 
   closeDrawerIfMobile() {
-    if (this.drawer) {
-      if (this.mobileView) {
-        this.drawer.close();
+    if (typeof window !== 'undefined') {
+      if (this.drawer) {
+        if (this.mobileView) {
+          this.drawer.close();
+        }
       }
     }
   }

@@ -40,7 +40,6 @@ export class DialogDeleteUserComponent implements OnInit {
   deleteAllOrders() {
     this.allOrders.forEach((order) => {
       let orderId = order['orderId'];
-      console.log('allOrder ID ist', orderId);
       this.database.deleteOrder(orderId);
     });
   }
