@@ -31,24 +31,40 @@
         </div>
 
         <div class="task-edit-container">
-          <button
-            (click)="triggerEditTaskEvent(kanban)"
-            mat-icon-button
-            aria-label="Example icon button with a edit icon"
-            matTooltip="Edit Task"
-            matTooltipPosition="above"
-          >
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button
-            (click)="openDialogDeleteTask(kanban)"
-            mat-icon-button
-            aria-label="Example icon button with a delete icon"
-            matTooltip="Delete Task"
-            matTooltipPosition="above"
-          >
-            <mat-icon class="delete">delete</mat-icon>
-          </button>
+          <div>
+            <button
+              *ngIf="mobileView"
+              (click)="openDialogSwapTask(kanban)"
+              mat-icon-button
+              aria-label="Example icon button with a swap icon"
+              matTooltip="Swap Task"
+              matTooltipPosition="above"
+            >
+              <mat-icon>swap_vert</mat-icon>
+            </button>
+          </div>
+
+          <div>
+            <button
+              (click)="triggerEditTaskEvent(kanban)"
+              mat-icon-button
+              aria-label="Example icon button with a edit icon"
+              matTooltip="Edit Task"
+              matTooltipPosition="above"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+
+            <button
+              (click)="openDialogDeleteTask(kanban)"
+              mat-icon-button
+              aria-label="Example icon button with a delete icon"
+              matTooltip="Delete Task"
+              matTooltipPosition="above"
+            >
+              <mat-icon class="delete">delete</mat-icon>
+            </button>
+          </div>
         </div>
       </mat-card>
       <div *ngIf="pendingTasks.length === 0" class="noTaskMassage">
@@ -90,24 +106,40 @@
         </div>
 
         <div class="task-edit-container">
-          <button
-            (click)="triggerEditTaskEvent(kanban)"
-            mat-icon-button
-            aria-label="Example icon button with a edit icon"
-            matTooltip="Edit Task"
-            matTooltipPosition="above"
-          >
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button
-            (click)="openDialogDeleteTask(kanban)"
-            mat-icon-button
-            aria-label="Example icon button with a delete icon"
-            matTooltip="Delete Task"
-            matTooltipPosition="above"
-          >
-            <mat-icon class="delete">delete</mat-icon>
-          </button>
+          <div>
+            <button
+              *ngIf="mobileView"
+              (click)="openDialogSwapTask(kanban)"
+              mat-icon-button
+              aria-label="Example icon button with a swap icon"
+              matTooltip="Swap Task"
+              matTooltipPosition="above"
+            >
+              <mat-icon>swap_vert</mat-icon>
+            </button>
+          </div>
+
+          <div>
+            <button
+              (click)="triggerEditTaskEvent(kanban)"
+              mat-icon-button
+              aria-label="Example icon button with a edit icon"
+              matTooltip="Edit Task"
+              matTooltipPosition="above"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+
+            <button
+              (click)="openDialogDeleteTask(kanban)"
+              mat-icon-button
+              aria-label="Example icon button with a delete icon"
+              matTooltip="Delete Task"
+              matTooltipPosition="above"
+            >
+              <mat-icon class="delete">delete</mat-icon>
+            </button>
+          </div>
         </div>
       </mat-card>
       <div *ngIf="inProgressTasks.length === 0" class="noTaskMassage">
@@ -149,24 +181,40 @@
         </div>
 
         <div class="task-edit-container">
-          <button
-            (click)="triggerEditTaskEvent(kanban)"
-            mat-icon-button
-            aria-label="Example icon button with a edit icon"
-            matTooltip="Edit Task"
-            matTooltipPosition="above"
-          >
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button
-            (click)="openDialogDeleteTask(kanban)"
-            mat-icon-button
-            aria-label="Example icon button with a delete icon"
-            matTooltip="Delete Task"
-            matTooltipPosition="above"
-          >
-            <mat-icon class="delete">delete</mat-icon>
-          </button>
+          <div>
+            <button
+              *ngIf="mobileView"
+              (click)="openDialogSwapTask(kanban)"
+              mat-icon-button
+              aria-label="Example icon button with a swap icon"
+              matTooltip="Swap Task"
+              matTooltipPosition="above"
+            >
+              <mat-icon>swap_vert</mat-icon>
+            </button>
+          </div>
+
+          <div>
+            <button
+              (click)="triggerEditTaskEvent(kanban)"
+              mat-icon-button
+              aria-label="Example icon button with a edit icon"
+              matTooltip="Edit Task"
+              matTooltipPosition="above"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+
+            <button
+              (click)="openDialogDeleteTask(kanban)"
+              mat-icon-button
+              aria-label="Example icon button with a delete icon"
+              matTooltip="Delete Task"
+              matTooltipPosition="above"
+            >
+              <mat-icon class="delete">delete</mat-icon>
+            </button>
+          </div>
         </div>
       </mat-card>
       <div *ngIf="doneTasks.length === 0" class="noTaskMassage">

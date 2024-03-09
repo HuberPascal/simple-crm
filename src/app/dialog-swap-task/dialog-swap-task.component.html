@@ -1,1 +1,35 @@
-<p>dialog-swap-task works!</p>
+<mat-card>
+  <div class="headline">
+    <mat-icon (click)="dialogRef.close()" class="arrow-back"
+      >arrow_back_ios_new</mat-icon
+    >
+    <h1>Move to</h1>
+  </div>
+
+  <div class="btn-container">
+    <button
+      [ngClass]="{ disabled: taskStatusIsPending }"
+      [disabled]="taskStatusIsPending"
+      mat-flat-button
+      (click)="swapTask('Pending')"
+    >
+      Pending
+    </button>
+    <button
+      [ngClass]="{ disabled: taskStatusIsInProgress }"
+      [disabled]="taskStatusIsInProgress"
+      mat-flat-button
+      (click)="swapTask('InProgress')"
+    >
+      In progress
+    </button>
+    <button
+      [ngClass]="{ disabled: taskStatusIsDone }"
+      [disabled]="taskStatusIsDone"
+      mat-flat-button
+      (click)="swapTask('Done')"
+    >
+      Done
+    </button>
+  </div>
+</mat-card>

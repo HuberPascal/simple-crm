@@ -5,6 +5,7 @@ import {
   Output,
   EventEmitter,
   SimpleChanges,
+  HostListener,
 } from '@angular/core';
 import {
   CdkDragDrop,
@@ -15,6 +16,7 @@ import { Kanban } from '../../models/kanban.class';
 import { DatabaseService } from '../services/database.service';
 import { DialogDeleteTaskComponent } from '../dialog-delete-task/dialog-delete-task.component';
 import { MatDialog } from '@angular/material/dialog';
+import { DialogSwapTaskComponent } from '../dialog-swap-task/dialog-swap-task.component';
 
 @Component({
   selector: 'app-kanban-drag-and-drop',
@@ -30,10 +32,12 @@ export class KanbanDragAndDropComponent implements OnInit {
   kanban = new Kanban();
   currentTask: any;
   taskId: string = '';
+  mobileView: boolean = false;
 
   constructor(private database: DatabaseService, public dialog: MatDialog) {}
 
   ngOnInit(): void {
+    this.checkScreenSize();
     this.pushNotesInArray();
   }
 
@@ -132,6 +136,11 @@ export class KanbanDragAndDropComponent implements OnInit {
     this.database.updateTask(this.currentTask, this.taskId);
   }
 
+  openDialogSwapTask(kanban: any) {
+    const dialog = this.dialog.open(DialogSwapTaskComponent);
+    dialog.componentInstance.kanban = kanban;
+  }
+
   /**
    * Triggers the edit task event.
    * @param {any} kanban - The kanban task to be edited.
@@ -147,5 +156,22 @@ export class KanbanDragAndDropComponent implements OnInit {
   openDialogDeleteTask(kanban: any) {
     const dialog = this.dialog.open(DialogDeleteTaskComponent);
     dialog.componentInstance.kanban = kanban;
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.checkScreenSize();
+  }
+
+  checkScreenSize() {
+    if (typeof window !== 'undefined') {
+      let mobileView = window.innerWidth < 1000;
+
+      if (mobileView) {
+        this.mobileView = true;
+      } else {
+        this.mobileView = false;
+      }
+    }
   }
 }
