@@ -32,4 +32,16 @@ export class DialogEditAddressComponent {
     this.loading = false;
     this.dialogRef.close();
   }
+
+  /**
+   * Only releases the save button when all fields have been filled out
+   * @returns {boolean} Returns true if all is valid, otherwise false.
+   */
+  isSaveButtonDisabled(): boolean {
+    return (
+      this.user.street.length === 0 ||
+      !this.user.zipCode ||
+      this.user.city.length === 0
+    );
+  }
 }

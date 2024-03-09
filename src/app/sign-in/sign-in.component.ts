@@ -104,6 +104,9 @@ export class SignInComponent {
     this.displayName = this.authService.displayName;
   }
 
+  /**
+   * Toggles the visibility of the password input field.
+   */
   togglePasswordVisibility(event: MouseEvent) {
     event.preventDefault();
     this.hide = !this.hide;

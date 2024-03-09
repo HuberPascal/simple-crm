@@ -38,4 +38,17 @@ export class DialogEditUserComponent implements OnInit {
     this.loading = false;
     this.dialogRef.close();
   }
+
+  /**
+   * Only releases the save button when all fields have been filled out
+   * @returns {boolean} Returns true if all is valid, otherwise false.
+   */
+  isSaveButtonDisabled(): boolean {
+    return (
+      this.user.firstName.length === 0 ||
+      this.user.lastName.length === 0 ||
+      !this.user.birthDate ||
+      this.user.email.length === 0
+    );
+  }
 }

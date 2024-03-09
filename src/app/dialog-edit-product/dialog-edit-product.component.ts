@@ -50,7 +50,7 @@ export class DialogEditProductComponent implements OnInit {
    * @returns {boolean} Returns true if all is valid, otherwise false.
    */
   isSaveButtonDisabled(): boolean {
-    return !this.product.productName || this.product.price < 0;
+    return !this.product.price;
   }
 
   /**

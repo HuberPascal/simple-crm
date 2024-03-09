@@ -33,8 +33,11 @@ export class RegisterComponent {
     private SidenavComponent: SidenavComponent
   ) {}
 
+  /**
+   * Validates the entered name to ensure it contains at least 4 alphabetical characters.
+   */
   validateName() {
-    const namePattern = /^[a-zA-Z]{2,}$/.test(this.name); // Mindestens 2 Buchstaben im Namen
+    const namePattern = /^[a-zA-Z]{4,}$/.test(this.name); // Mindestens 4 Buchstaben im Namen
     this.isNameValid = namePattern;
 
     if (this.isNameValid) {
@@ -159,6 +162,9 @@ export class RegisterComponent {
     this.router.navigate(['/dashboard']);
   }
 
+  /**
+   * Toggles the visibility of the password input field.
+   */
   togglePasswordVisibility(event: MouseEvent) {
     event.preventDefault();
     this.hide = !this.hide;

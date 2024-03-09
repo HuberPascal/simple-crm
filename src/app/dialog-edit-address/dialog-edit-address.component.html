@@ -44,7 +44,7 @@
           Cancel
         </button>
         <button
-          [disabled]="loading"
+          [disabled]="loading || isSaveButtonDisabled()"
           mat-button
           (click)="saveUser()"
           cdkFocusInitial

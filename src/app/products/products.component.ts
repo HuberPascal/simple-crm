@@ -238,11 +238,13 @@ export class ProductsComponent implements OnInit {
    * If the window width is less than 500 pixels, sets mobileView to true, else sets it to false.
    */
   checkScreenSize() {
-    this.mobileView = window.innerWidth < 500;
-    if (this.mobileView) {
-      this.mobileView = true;
-    } else {
-      this.mobileView = false;
+    if (typeof window !== 'undefined') {
+      this.mobileView = window.innerWidth < 500;
+      if (this.mobileView) {
+        this.mobileView = true;
+      } else {
+        this.mobileView = false;
+      }
     }
   }
 }
