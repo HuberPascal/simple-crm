@@ -25,8 +25,12 @@
             autocomplete="off"
             matInput
             required
+            (input)="validateName()"
           />
         </mat-form-field>
+        <div *ngIf="!isNameValid" class="error-message">
+          Please provide a valid name with at least 2 alphabetical characters.
+        </div>
 
         <!-- Email input -->
         <mat-form-field appearance="outline" class="full-width">
@@ -56,7 +60,7 @@
           <mat-label>Password</mat-label>
           <input
             matInput
-            type="password"
+            [type]="hide ? 'password' : 'text'"
             [(ngModel)]="password"
             name="password"
             placeholder="Password"
@@ -64,6 +68,16 @@
             required
             (input)="validatePassword()"
           />
+          <button
+            class="password-btn"
+            mat-icon-button
+            matSuffix
+            (click)="togglePasswordVisibility($event)"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide"
+          >
+            <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+          </button>
         </mat-form-field>
         <div *ngIf="!isPasswordValid" class="error-message">
           Password must have at least 8 characters, including one number, one
@@ -76,8 +90,9 @@
         </div>
 
         <button
-          [disabled]="!ispassword"
-          [ngClass]="{ disabled: !ismail || !ispassword }"
+          class="sign-up-btn"
+          [disabled]="!isName || !ismail || !ispassword"
+          [ngClass]="{ disabled: !isName || !ismail || !ispassword }"
           type="submit"
         >
           Sign up

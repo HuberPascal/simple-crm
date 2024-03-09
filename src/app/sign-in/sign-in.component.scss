@@ -12,7 +12,7 @@
 }
 
 .sign-in-container {
-  width: 90%;
+  width: 80%;
   max-width: 360px;
   background-color: #fff;
   padding: 24px 32px;
@@ -26,6 +26,10 @@
     font-weight: 500;
     font-size: 30px;
     margin-bottom: 30px;
+
+    @media (max-width: 500px) {
+      margin-bottom: 15px;
+    }
   }
 
   input {
@@ -47,6 +51,10 @@
     &:hover {
       background-color: #3f51b5;
     }
+  }
+
+  @media (max-width: 500px) {
+    padding: 18px 32px;
   }
 }
 
@@ -103,7 +111,7 @@
 
   span {
     cursor: pointer;
-    font-weight: 600;
+    font-weight: 500;
   }
 }
 
@@ -122,7 +130,7 @@
   a {
     text-decoration: none;
     color: #0000ff;
-    font-weight: 600;
+    font-weight: 500;
   }
 }
 
@@ -138,4 +146,13 @@
     border-top-left-radius: 2px;
     border-top-right-radius: 2px;
   }
+}
+
+.password-btn {
+  background-color: transparent !important;
+  color: black !important;
+  margin: 0 !important;
+  margin-right: 5px !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
 }

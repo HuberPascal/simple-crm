@@ -17,6 +17,7 @@ export class SignInComponent {
   loading: boolean = false;
   durationInSeconds = 5;
   displayName: string = '';
+  hide = true;
 
   @ViewChild('drawer') drawer: MatDrawer | undefined;
 
@@ -101,5 +102,10 @@ export class SignInComponent {
   async getUserByName() {
     await this.authService.getUserName(); // displayName-Wert aktualisieren
     this.displayName = this.authService.displayName;
+  }
+
+  togglePasswordVisibility(event: MouseEvent) {
+    event.preventDefault();
+    this.hide = !this.hide;
   }
 }

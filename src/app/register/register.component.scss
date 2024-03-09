@@ -30,7 +30,7 @@
     width: 100%;
   }
 
-  button {
+  .sign-up-btn {
     margin: 16px 0;
     background-color: #405de6;
     color: white;
@@ -43,7 +43,7 @@
     font-weight: 500;
     width: 100%;
 
-    &:hover {
+    &:hover:enabled {
       background-color: #3f51b5;
     }
   }
@@ -68,7 +68,7 @@
   a {
     text-decoration: none;
     color: #0000ff;
-    font-weight: 600;
+    font-weight: 500;
   }
 }
 
@@ -82,4 +82,14 @@
 
 .disabled {
   opacity: 30%;
+  cursor: not-allowed !important;
+}
+
+.password-btn {
+  background-color: transparent !important;
+  color: black !important;
+  margin: 0 !important;
+  margin-right: 5px !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
 }

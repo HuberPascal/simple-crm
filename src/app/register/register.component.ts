@@ -17,18 +17,32 @@ export class RegisterComponent {
   userEmail: string | undefined;
   userPassword: string | undefined;
   loading: boolean = false;
+  isNameValid: boolean = true;
   isEmailValid: boolean = true;
   isPasswordValid: boolean = true;
+  isName: boolean = false;
   isEmailExists: boolean = false;
   ispassword: boolean = false;
   ismail: boolean = false;
   registerError: boolean = false;
+  hide = true;
 
   constructor(
     private authService: AuthService,
     private router: Router,
     private SidenavComponent: SidenavComponent
   ) {}
+
+  validateName() {
+    const namePattern = /^[a-zA-Z]{2,}$/.test(this.name); // Mindestens 2 Buchstaben im Namen
+    this.isNameValid = namePattern;
+
+    if (this.isNameValid) {
+      this.isName = true;
+    } else {
+      this.isName = false;
+    }
+  }
 
   /**
    * Checks whether the email address is valid according to a specific pattern.
@@ -143,5 +157,10 @@ export class RegisterComponent {
     this.SidenavComponent.loggedIn = true;
     this.SidenavComponent.isDrawerOpened = true;
     this.router.navigate(['/dashboard']);
+  }
+
+  togglePasswordVisibility(event: MouseEvent) {
+    event.preventDefault();
+    this.hide = !this.hide;
   }
 }

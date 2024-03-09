@@ -27,13 +27,23 @@
 
           <input
             matInput
-            type="password"
+            [type]="hide ? 'password' : 'text'"
             [(ngModel)]="password"
             name="password"
             placeholder="Password"
             autocomplete="current-password"
             required
           />
+          <button
+            class="password-btn"
+            mat-icon-button
+            matSuffix
+            (click)="togglePasswordVisibility($event)"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide"
+          >
+            <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+          </button>
         </mat-form-field>
 
         <div *ngIf="errorMessage" class="error-message">
