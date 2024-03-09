@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, HostListener, ViewChild } from '@angular/core';
 import { AuthService } from '../services/firebase-auth.service';
 import { Router } from '@angular/router';
 import { SidenavComponent } from '../sidenav/sidenav.component';
@@ -18,6 +18,7 @@ export class SignInComponent {
   durationInSeconds = 5;
   displayName: string = '';
   hide = true;
+  mobileView: boolean = false;
 
   @ViewChild('drawer') drawer: MatDrawer | undefined;
 
@@ -50,7 +51,7 @@ export class SignInComponent {
   async handleSuccessfulLogin() {
     this.authService.getUserName();
     this.SidenavComponent.loggedIn = true;
-    this.SidenavComponent.isDrawerOpened = true;
+    this.SidenavComponent.checkIsDrawerOpened();
     this.SidenavComponent.isUserLoggedIn = true;
     await this.getUserByName();
     this.router.navigate(['dashboard']);
@@ -66,7 +67,7 @@ export class SignInComponent {
     try {
       await this.authService.googleLogin();
       this.SidenavComponent.loggedIn = true;
-      this.SidenavComponent.isDrawerOpened = true;
+      this.SidenavComponent.checkIsDrawerOpened();
       this.SidenavComponent.isUserLoggedIn = true;
       await this.getUserByName();
       this.router.navigate(['dashboard']);
@@ -86,7 +87,7 @@ export class SignInComponent {
     try {
       await this.authService.guestLogin();
       this.SidenavComponent.loggedIn = true;
-      this.SidenavComponent.isDrawerOpened = true;
+      this.SidenavComponent.checkIsDrawerOpened();
       this.router.navigate(['guest/dashboard']);
       this.authService.openSnackBar('Logged in as Guest!');
     } catch (error) {
@@ -110,5 +111,33 @@ export class SignInComponent {
   togglePasswordVisibility(event: MouseEvent) {
     event.preventDefault();
     this.hide = !this.hide;
+  }
+
+  /**
+   * Host listener function that listens for window resize events.
+   * It triggers the checkScreenSize method when the window is resized.
+   * @param {any} event - The window resize event object.
+   */
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.checkScreenSize();
+  }
+
+  /**
+   * Checks the screen size and adjusts the drawer mode accordingly.
+   * If the window width is less than 1000 pixels, sets the drawer mode to 'over',
+   * otherwise sets it to 'side'.
+   */
+  checkScreenSize() {
+    if (typeof window !== 'undefined') {
+      this.mobileView = window.innerWidth < 1000;
+      if (this.drawer) {
+        if (this.mobileView) {
+          this.drawer.mode = 'over';
+        } else {
+          this.drawer.mode = 'side';
+        }
+      }
+    }
   }
 }

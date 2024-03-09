@@ -26,6 +26,7 @@ export class SidenavComponent {
 
   async ngOnInit(): Promise<void> {
     this.checkScreenSize();
+    this.checkIsDrawerOpened();
     this.isUserLoggedIn = await this.authService.checkAuthLoggedInAsUser();
     this.loggedIn = await this.authService.checkAuth();
   }
@@ -144,6 +145,9 @@ export class SidenavComponent {
     }
   }
 
+  /**
+   * Closes the drawer if the application is viewed on a mobile device.
+   */
   closeDrawerIfMobile() {
     if (typeof window !== 'undefined') {
       if (this.drawer) {
@@ -151,6 +155,17 @@ export class SidenavComponent {
           this.drawer.close();
         }
       }
+    }
+  }
+
+  /**
+   * Checks if the drawer is opened and updates the corresponding state.
+   */
+  checkIsDrawerOpened() {
+    if (!this.mobileView) {
+      this.isDrawerOpened = true;
+    } else {
+      this.isDrawerOpened = false;
     }
   }
 }
