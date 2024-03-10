@@ -219,11 +219,13 @@ export class UserComponent {
    * If the window width is less than 800 pixels, sets mobileView to true, else sets it to false.
    */
   checkScreenSize() {
-    this.mobileView = window.innerWidth < 800;
-    if (this.mobileView) {
-      this.mobileView = true;
-    } else {
-      this.mobileView = false;
+    if (typeof window !== 'undefined') {
+      this.mobileView = window.innerWidth < 800;
+      if (this.mobileView) {
+        this.mobileView = true;
+      } else {
+        this.mobileView = false;
+      }
     }
   }
 }

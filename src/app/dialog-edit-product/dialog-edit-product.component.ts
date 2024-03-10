@@ -37,7 +37,10 @@ export class DialogEditProductComponent implements OnInit {
       const productId = this.product['productId'];
       const selectedProductType = this.selectedValue;
       this.product.orderType = selectedProductType;
+      productData.price = this.product.price;
       this.database.updateProduct(productData, productId);
+      console.log('product data ist', productData);
+      this.database.updateOrder(productData.price, productId);
     } catch (error) {
       console.error('Fehler beim updaten des Produkts:', error);
     }

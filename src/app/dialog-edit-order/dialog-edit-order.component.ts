@@ -10,9 +10,9 @@ interface OrderStatus {
 }
 
 interface ProductName {
-  value: string;
-  viewValue: string;
+  productName: string;
   price: number;
+  viewValue: string;
 }
 
 @Component({
@@ -26,14 +26,56 @@ export class DialogEditOrderComponent implements OnInit {
   orderId: string | null = '';
   loading: boolean = false;
   selectedValue: string | undefined;
+  allProducts: any[] = [];
+  selectedProduct: any;
+  currentProduct: any;
 
   constructor(
     public dialogRef: MatDialogRef<DialogEditOrderComponent>,
     private database: DatabaseService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
+    console.log('allProducts', this.allProducts);
+
     this.selectedValue = this.order.orderStatus;
+    this.loadDataInInputField();
+  }
+
+  /**
+   * Loads data into the input fields.
+   */
+  loadDataInInputField() {
+    this.populateProductName();
+    this.selectCurrentProduct();
+  }
+
+  populateProductName() {
+    this.productName = this.allProducts.map((product) => ({
+      productName: product.productName,
+      price: product.price,
+      viewValue: `${product.productName} - ${product.price} CHF`,
+    }));
+    console.log('productName', this.productName);
+  }
+
+  selectCurrentProduct() {
+    console.log('currentProduct', this.currentProduct);
+    if (this.currentProduct) {
+      const selectedProductName = `${this.currentProduct.product} - ${this.currentProduct.price} CHF`;
+
+      this.selectedProduct = this.productName.find(
+        (product) => product.viewValue === selectedProductName
+      );
+
+      if (!this.selectedProduct) {
+        this.selectedProduct = {
+          productName: this.currentProduct.productName,
+          viewValue: selectedProductName,
+        };
+        this.productName.push(this.selectedProduct);
+      }
+    }
   }
 
   /**
@@ -45,6 +87,9 @@ export class DialogEditOrderComponent implements OnInit {
       const orderData = this.order;
       const orderId = this.order['orderId'];
       this.order.orderStatus = this.selectedValue;
+      this.order.product = this.selectedProduct.productName;
+      this.order.price = this.selectedProduct.price;
+      console.log('neue edit Order Daten', orderData);
 
       this.database.updateOrder(orderData, orderId);
     } catch (error) {
@@ -63,6 +108,11 @@ export class DialogEditOrderComponent implements OnInit {
     { value: 'Delivered', viewValue: 'Delivered' },
     { value: 'Canceled', viewValue: 'Canceled' },
   ];
+
+  /**
+   * Array representing product names.
+   */
+  productName: ProductName[] = [];
 
   /**
    * Only releases the save button when all fields have been filled out

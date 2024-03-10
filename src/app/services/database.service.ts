@@ -246,6 +246,8 @@ export class DatabaseService {
     await updateDoc(docRef, {
       amount: orderData.amount,
       orderStatus: orderData.orderStatus,
+      product: orderData.product,
+      price: orderData.price,
     });
   }
 

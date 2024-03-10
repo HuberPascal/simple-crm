@@ -63,6 +63,15 @@ export class UserDetailComponent {
     this.getProducts();
   }
 
+  changeProductName(allProducts: any) {
+    console.log('changeAllProducts', allProducts);
+    const allOrders = { ...this.allOrders };
+    console.log('allOrders', allOrders);
+
+    if (allProducts.productName == allOrders) {
+    }
+  }
+
   /**
    * Retrieves user data from Firestore based on the provided user ID and collection name.
    * @param userId The ID of the user to retrieve.
@@ -112,14 +121,24 @@ export class UserDetailComponent {
   }
 
   /**
+   * Opens a dialog for adding a new order.
+   */
+  addOrder() {
+    const dialog = this.dialog.open(DialogAddOrderComponent);
+    dialog.componentInstance.userId = this.userId;
+    dialog.componentInstance.allProducts = this.allProducts;
+  }
+
+  /**
    * Opens a dialog for editing an order.
    * @param order The ID of the order to be edited.
    */
   async editOrder(order: string) {
     const dialog = this.dialog.open(DialogEditOrderComponent);
 
-    // Die Richtige Order aufrufen --> orderId
     dialog.componentInstance.order = new Order(order);
+    dialog.componentInstance.allProducts = this.allProducts;
+    dialog.componentInstance.currentProduct = order;
   }
 
   /**
@@ -179,7 +198,8 @@ export class UserDetailComponent {
       orderData['orderDate'] = this.formatDate(dateObj);
       this.order = new Order(orderData);
     }
-    this.allOrders.push(new Order(orderData));
+    this.allOrders.push(orderData);
+    console.log('allOrders ist aktualisiert', this.allOrders);
   }
 
   /**
@@ -256,15 +276,6 @@ export class UserDetailComponent {
   }
 
   /**
-   * Opens a dialog for adding a new order.
-   */
-  openDialog() {
-    const dialog = this.dialog.open(DialogAddOrderComponent);
-    dialog.componentInstance.userId = this.userId;
-    dialog.componentInstance.allProducts = this.allProducts;
-  }
-
-  /**
    * Formats a number by adding apostrophes as thousand separators.
    * @param number The number to format.
    * @returns The formatted number with apostrophes as thousand separators.
@@ -295,6 +306,8 @@ export class UserDetailComponent {
           const productData = doc.data();
           this.allProducts.push(productData);
         });
+        console.log('produktdata', this.allProducts);
+        this.changeProductName(this.allProducts);
       });
     } catch (error) {
       console.error('Fehler beim Laden der Produkt-Daten:', error);

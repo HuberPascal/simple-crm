@@ -26,7 +26,6 @@ export class SidenavComponent {
 
   async ngOnInit(): Promise<void> {
     this.checkScreenSize();
-    this.checkIsDrawerOpened();
     this.isUserLoggedIn = await this.authService.checkAuthLoggedInAsUser();
     this.loggedIn = await this.authService.checkAuth();
   }
