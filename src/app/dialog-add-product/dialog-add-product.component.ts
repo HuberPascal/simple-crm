@@ -31,6 +31,7 @@ export class DialogAddProductComponent {
     try {
       const productData = this.product.toJSON();
       const selectedTypeStatus = this.selectedValue;
+      productData.currentProductId = this.generateRandomProductId(10);
 
       await this.database.saveProduct(productData, selectedTypeStatus);
     } catch (error) {
@@ -38,6 +39,20 @@ export class DialogAddProductComponent {
     }
     this.loading = false;
     this.dialogRef.close();
+  }
+
+  /**
+   * Generates a random product ID of the specified length.
+   * @param {number} length The length of the generated product ID.
+   */
+  generateRandomProductId(length: number): string {
+    const chars =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+      result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
   }
 
   /**

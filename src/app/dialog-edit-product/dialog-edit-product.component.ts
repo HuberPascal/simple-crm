@@ -37,15 +37,30 @@ export class DialogEditProductComponent implements OnInit {
       const productId = this.product['productId'];
       const selectedProductType = this.selectedValue;
       this.product.orderType = selectedProductType;
-      productData.price = this.product.price;
       this.database.updateProduct(productData, productId);
-      console.log('product data ist', productData);
-      this.database.updateOrder(productData.price, productId);
     } catch (error) {
       console.error('Fehler beim updaten des Produkts:', error);
     }
     this.loading = false;
     this.dialogRef.close();
+
+    this.updateProduct();
+  }
+
+  async updateProduct() {
+    const newProductName = this.product.productName;
+
+    try {
+      const productId = this.product.currentProductId;
+      const productPrise = this.product.price;
+      this.database.updateDataInFirebaseOrders(
+        productId,
+        newProductName,
+        productPrise
+      );
+    } catch (error) {
+      console.error('Fehler beim updaten des Produkts:', error);
+    }
   }
 
   /**

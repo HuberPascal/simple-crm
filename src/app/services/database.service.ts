@@ -6,6 +6,11 @@ import {
   doc,
   deleteDoc,
   updateDoc,
+  getDoc,
+  getDocs,
+  where,
+  query,
+  onSnapshot,
 } from 'firebase/firestore';
 import { Firestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
@@ -47,6 +52,7 @@ export class DatabaseService {
       if (selectedProduct) {
         orderData.product = selectedProduct.name;
         orderData.price = selectedProduct.price;
+        orderData.currentProductId = selectedProduct.currentProductId;
       }
       orderData.orderStatus = selectedValue;
 
@@ -243,8 +249,6 @@ export class DatabaseService {
    * @param orderData
    */
   async updateOrderDataInFirebase(docRef: any, orderData: any | undefined) {
-    console.log('database orderData', orderData);
-    console.log('database docRef', docRef);
     await updateDoc(docRef, {
       amount: orderData.amount,
       orderStatus: orderData.orderStatus,
@@ -472,11 +476,52 @@ export class DatabaseService {
     docRef: any,
     orderData: any | undefined
   ) {
-    console.log('database orderData', orderData);
-    console.log('database docRef', docRef);
     await updateDoc(docRef, {
       product: orderData.product,
-      // price: orderData.price,
     });
+  }
+
+  async updateDataInFirebaseOrders(
+    productId: string,
+    newProductName: string,
+    productPrise: number
+  ) {
+    try {
+      // Produkt-ID als aktuelle Produkt-ID festlegen
+      const currentProductId = productId;
+
+      // Referenz auf die Sammlung "guest_products" erstellen
+      const productsRef = collection(this.db, 'guest_orders');
+
+      // Eine Abfrage erstellen, um Dokumente mit der aktuellen Produkt-ID zu suchen
+      const q = query(
+        productsRef,
+        where('currentProductId', '==', currentProductId)
+      );
+
+      // Die Abfrage ausführen, um die entsprechenden Dokumente zu erhalten
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        // Iteriere über alle gefundenen Dokumente und aktualisiere jedes davon
+        querySnapshot.forEach(async (doc) => {
+          const docRef = doc.ref;
+
+          // Das Dokument aktualisieren, um das productName-Feld zu aktualisieren
+          await updateDoc(docRef, {
+            product: newProductName,
+            price: productPrise,
+          });
+
+          console.log(`Produkt mit der ID ${doc.id} erfolgreich aktualisiert.`);
+        });
+
+        console.log('Alle entsprechenden Produkte erfolgreich aktualisiert.');
+      } else {
+        console.log('Keine Produkte mit der angegebenen Produkt-ID gefunden.');
+      }
+    } catch (error) {
+      console.error('Fehler beim Aktualisieren der Produkte:', error);
+    }
   }
 }

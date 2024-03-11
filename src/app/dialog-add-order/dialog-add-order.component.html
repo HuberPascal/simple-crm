@@ -29,7 +29,11 @@
         <mat-select [(ngModel)]="selectedProduct" name="productName" required>
           <mat-option
             *ngFor="let product of productName"
-            [value]="{ name: product.value, price: product.price }"
+            [value]="{
+              name: product.value,
+              price: product.price,
+              currentProductId: product.currentProductId
+            }"
           >
             {{ product.viewValue }}
           </mat-option>

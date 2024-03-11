@@ -13,6 +13,7 @@ interface ProductName {
   value: string;
   viewValue: string;
   price: number;
+  currentProductId: number;
 }
 
 @Component({
@@ -48,6 +49,7 @@ export class DialogAddOrderComponent implements OnInit {
       value: product.productName,
       viewValue: `${product.productName} - ${product.price} CHF`, // Produktnamen und den Preis hinzufügen
       price: product.price,
+      currentProductId: product.currentProductId,
     }));
   }
 

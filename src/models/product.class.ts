@@ -6,12 +6,14 @@ export class Product {
   price: number;
   orderType: string | undefined;
   productId: string;
+  currentProductId: string;
 
   constructor(obj?: any) {
     this.productName = obj ? obj.productName : '';
     this.price = obj ? obj.price : '';
     this.orderType = obj ? obj.orderType : '';
     this.productId = obj ? obj.productId : '';
+    this.currentProductId = obj ? obj.currentProductId : '';
   }
 
   public toJSON() {
@@ -19,6 +21,7 @@ export class Product {
       productName: this.productName,
       price: this.price,
       orderType: this.orderType,
+      currentProductId: this.currentProductId,
     };
   }
 }

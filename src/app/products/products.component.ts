@@ -78,7 +78,7 @@ export class ProductsComponent implements OnInit {
   /**
    * Opens a dialog to add a new product.
    */
-  openDialog() {
+  openDialogAdProduct() {
     this.dialog.open(DialogAddProductComponent);
   }
 

@@ -38,7 +38,6 @@ export class Order {
       orderStatus: this.orderStatus,
       price: this.price,
       userId: this.userId,
-      orderId: this.orderId,
     };
   }
 }

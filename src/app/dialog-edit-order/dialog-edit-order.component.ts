@@ -36,8 +36,6 @@ export class DialogEditOrderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('allProducts', this.allProducts);
-
     this.selectedValue = this.order.orderStatus;
     this.loadDataInInputField();
   }
@@ -56,11 +54,9 @@ export class DialogEditOrderComponent implements OnInit {
       price: product.price,
       viewValue: `${product.productName} - ${product.price} CHF`,
     }));
-    console.log('productName', this.productName);
   }
 
   selectCurrentProduct() {
-    console.log('currentProduct', this.currentProduct);
     if (this.currentProduct) {
       const selectedProductName = `${this.currentProduct.product} - ${this.currentProduct.price} CHF`;
 
@@ -89,7 +85,6 @@ export class DialogEditOrderComponent implements OnInit {
       this.order.orderStatus = this.selectedValue;
       this.order.product = this.selectedProduct.productName;
       this.order.price = this.selectedProduct.price;
-      console.log('neue edit Order Daten', orderData);
 
       this.database.updateOrder(orderData, orderId);
     } catch (error) {

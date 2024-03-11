@@ -194,7 +194,6 @@ export class UserDetailComponent {
       this.order = new Order(orderData);
     }
     this.allOrders.push(orderData);
-    console.log('allOrders ist aktualisiert', this.allOrders);
   }
 
   /**
@@ -301,7 +300,6 @@ export class UserDetailComponent {
           const productData = doc.data();
           this.allProducts.push(productData);
         });
-        console.log('produktdata', this.allProducts);
       });
     } catch (error) {
       console.error('Fehler beim Laden der Produkt-Daten:', error);
