@@ -33,6 +33,10 @@ export class UserDetailComponent {
   allProducts: any[] = [];
   mobileView: boolean = false;
   mobileViewSmall: boolean = false;
+  productNameFromOrders: any;
+  productNameFromProducts: any;
+  productNameFromOrdersArray: any[] = [];
+  productNameFromProductsArray: any[] = [];
 
   constructor(
     public db: Firestore,
@@ -61,15 +65,6 @@ export class UserDetailComponent {
       }
     });
     this.getProducts();
-  }
-
-  changeProductName(allProducts: any) {
-    console.log('changeAllProducts', allProducts);
-    const allOrders = { ...this.allOrders };
-    console.log('allOrders', allOrders);
-
-    if (allProducts.productName == allOrders) {
-    }
   }
 
   /**
@@ -307,7 +302,6 @@ export class UserDetailComponent {
           this.allProducts.push(productData);
         });
         console.log('produktdata', this.allProducts);
-        this.changeProductName(this.allProducts);
       });
     } catch (error) {
       console.error('Fehler beim Laden der Produkt-Daten:', error);

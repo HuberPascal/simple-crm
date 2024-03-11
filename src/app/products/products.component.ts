@@ -36,9 +36,9 @@ export class ProductsComponent implements OnInit {
     const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
 
     if (isAnonymous) {
-      await this.getOrderData('guest_products');
+      await this.getProductData('guest_products');
     } else {
-      await this.getOrderData('products');
+      await this.getProductData('products');
     }
   }
 
@@ -47,10 +47,10 @@ export class ProductsComponent implements OnInit {
    *
    * @param {string} product - The name of the collection from which to fetch user data.
    */
-  async getOrderData(product: string) {
+  async getProductData(product: string) {
     try {
       const productCollectionRef = collection(this.db, product);
-      this.getOrderDataSnapShot(productCollectionRef);
+      this.getOProductDataSnapShot(productCollectionRef);
     } catch (error) {
       console.error('Fehler beim Aktualisieren der Produkte-Daten:', error);
     }
@@ -62,7 +62,7 @@ export class ProductsComponent implements OnInit {
    *
    * @param {any} productCollectionRef - The reference to the collection in Firestore.
    */
-  getOrderDataSnapShot(productCollectionRef: any) {
+  getOProductDataSnapShot(productCollectionRef: any) {
     onSnapshot(productCollectionRef, (snapshot: { docs: any[] }) => {
       this.allProducts = [];
       snapshot.docs.forEach((doc) => {

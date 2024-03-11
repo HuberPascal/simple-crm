@@ -1,7 +1,7 @@
 <div class="drag-and-drop-container">
   <div class="column-container kanban">
     <div class="column-header">
-      <mat-card class="red-border">Pending</mat-card>
+      <mat-card class="orange-border">Pending</mat-card>
     </div>
 
     <div
@@ -17,6 +17,7 @@
         class="kanban-list"
         [ngClass]="{ 'border-left-pending': kanban.noteStatus == 'Pending' }"
         cdkDrag
+        [cdkDragDisabled]="mobileView"
         [cdkDragData]="kanban"
       >
         <div class="task-titel">
@@ -67,7 +68,10 @@
           </div>
         </div>
       </mat-card>
-      <div *ngIf="pendingTasks.length === 0" class="noTaskMassage">
+      <div
+        *ngIf="pendingTasks.length === 0"
+        class="noTaskMassage orange-dotted-border"
+      >
         No tasks In Pending
       </div>
     </div>
@@ -75,7 +79,7 @@
 
   <div class="column-container kanban">
     <div class="column-header">
-      <mat-card class="green-border">In progress</mat-card>
+      <mat-card class="blue-border">In progress</mat-card>
     </div>
 
     <div
@@ -93,6 +97,7 @@
           'border-left-in-progress': kanban.noteStatus == 'InProgress'
         }"
         cdkDrag
+        [cdkDragDisabled]="mobileView"
         [cdkDragData]="kanban"
       >
         <div class="task-titel">
@@ -142,7 +147,10 @@
           </div>
         </div>
       </mat-card>
-      <div *ngIf="inProgressTasks.length === 0" class="noTaskMassage">
+      <div
+        *ngIf="inProgressTasks.length === 0"
+        class="noTaskMassage blue-dotted-border"
+      >
         No tasks In progress
       </div>
     </div>
@@ -150,7 +158,7 @@
 
   <div class="column-container kanban">
     <div class="column-header">
-      <mat-card class="blue-border">Done</mat-card>
+      <mat-card class="green-border">Done</mat-card>
     </div>
 
     <div
@@ -168,6 +176,7 @@
           'border-left-done': kanban.noteStatus == 'Done'
         }"
         cdkDrag
+        [cdkDragDisabled]="mobileView"
         [cdkDragData]="kanban"
       >
         <div class="task-titel">
@@ -217,7 +226,10 @@
           </div>
         </div>
       </mat-card>
-      <div *ngIf="doneTasks.length === 0" class="noTaskMassage">
+      <div
+        *ngIf="doneTasks.length === 0"
+        class="noTaskMassage green-dotted-border"
+      >
         No tasks In Done
       </div>
     </div>

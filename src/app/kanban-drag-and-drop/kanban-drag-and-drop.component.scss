@@ -70,16 +70,28 @@ mat-card {
   border-right: 2px solid #00ff00;
 }
 
-.red-border {
+.orange-border {
   border: 1px solid #ffd700;
 }
 
-.green-border {
+.blue-border {
   border: 1px solid #00bfff;
 }
 
-.blue-border {
+.green-border {
   border: 1px solid #00ff00;
+}
+
+.orange-dotted-border {
+  border: 2px dotted #ffd700;
+}
+
+.blue-dotted-border {
+  border: 2px dotted #00bfff;
+}
+
+.green-dotted-border {
+  border: 2px dotted #00ff00;
 }
 
 .task-titel {
@@ -145,7 +157,6 @@ button {
 }
 
 .noTaskMassage {
-  border: 2px dotted var(--primary-color);
   display: flex;
   justify-content: center;
   align-items: center;

@@ -148,6 +148,11 @@ mat-card {
   position: fixed;
   right: 56px;
   bottom: 56px;
+
+  @media (max-width: 500px) {
+    right: 20px;
+    bottom: 20px;
+  }
 }
 
 .purchase-total-container {

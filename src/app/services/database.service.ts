@@ -243,6 +243,8 @@ export class DatabaseService {
    * @param orderData
    */
   async updateOrderDataInFirebase(docRef: any, orderData: any | undefined) {
+    console.log('database orderData', orderData);
+    console.log('database docRef', docRef);
     await updateDoc(docRef, {
       amount: orderData.amount,
       orderStatus: orderData.orderStatus,
@@ -446,5 +448,35 @@ export class DatabaseService {
     } else {
       await deleteDoc(doc(this.db, 'kanban', `${taskId}`));
     }
+  }
+
+  async updateOrderFromProducts(orderData: any | undefined, orderId: string) {
+    let docRef: any;
+    this.orderId = orderId;
+
+    try {
+      const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
+
+      if (isAnonymous) {
+        docRef = this.guestOrderFirebaseData();
+      } else {
+        docRef = this.userOrderFirebaseData();
+      }
+      await this.updateOrderDataInFirebaseFromProducts(docRef, orderData);
+    } catch (error) {
+      console.error('Fehler beim Aktualisieren des Dokuments:', error);
+    }
+  }
+
+  async updateOrderDataInFirebaseFromProducts(
+    docRef: any,
+    orderData: any | undefined
+  ) {
+    console.log('database orderData', orderData);
+    console.log('database docRef', docRef);
+    await updateDoc(docRef, {
+      product: orderData.product,
+      // price: orderData.price,
+    });
   }
 }

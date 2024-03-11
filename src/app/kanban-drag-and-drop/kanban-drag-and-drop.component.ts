@@ -165,9 +165,9 @@ export class KanbanDragAndDropComponent implements OnInit {
 
   checkScreenSize() {
     if (typeof window !== 'undefined') {
-      let mobileView = window.innerWidth < 1000;
+      this.mobileView = window.innerWidth < 1000;
 
-      if (mobileView) {
+      if (this.mobileView) {
         this.mobileView = true;
       } else {
         this.mobileView = false;
