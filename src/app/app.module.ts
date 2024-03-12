@@ -43,6 +43,7 @@ import { DialogAddProductComponent } from './dialog-add-product/dialog-add-produ
 import { DialogEditProductComponent } from './dialog-edit-product/dialog-edit-product.component';
 import { DialogDeleteProductComponent } from './dialog-delete-product/dialog-delete-product.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import {
   HttpClientModule,
   provideHttpClient,
@@ -107,6 +108,7 @@ import { DialogSwapTaskComponent } from './dialog-swap-task/dialog-swap-task.com
     MatSelectModule,
     HttpClientModule,
     DragDropModule,
+    AngularFireAuthModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideFirestore(() => getFirestore()),
     provideAuth(() => getAuth()),

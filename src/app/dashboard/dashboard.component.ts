@@ -169,8 +169,8 @@ export class DashboardComponent implements OnInit {
       const count = cityCount[city];
       this.cityCounts.push(count);
     });
-    this.createChartResidence();
-    this.checkScreenSize750px();
+    // this.createChartResidence();
+    // this.checkScreenSize750px();
   }
 
   /**
@@ -232,8 +232,8 @@ export class DashboardComponent implements OnInit {
     const sortedProducts = this.sortProductByCount(productCount);
     this.updateProductsWithLowestCount(sortedProducts);
     this.updateTopThreeProducts(sortedProducts, productCount);
-    this.createChartProducts();
-    this.checkScreenSize950px();
+    // this.createChartProducts();
+    // this.checkScreenSize950px();
   }
 
   /**
@@ -320,8 +320,8 @@ export class DashboardComponent implements OnInit {
    */
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
-    this.checkScreenSize750px();
-    this.checkScreenSize950px();
+    // this.checkScreenSize750px();
+    // this.checkScreenSize950px();
   }
 
   /**
@@ -332,16 +332,18 @@ export class DashboardComponent implements OnInit {
       let mobileView = window.innerWidth < 750;
 
       if (mobileView) {
-        this.chartResidence.config.options.responsive = true; // Macht den Chart responsive
-        this.chartResidence.config.options.maintainAspectRatio = false; // Verhindert das Beibehalten des Seitenverhältnisses
+        this.chartResidence.config.options.responsive = true;
+        this.chartResidence.config.options.maintainAspectRatio = false;
       } else {
         this.chartResidence.config.options.responsive = false;
         this.chartResidence.config.options.maintainAspectRatio = true;
       }
 
-      if (!mobileView && this.chartResidence) {
-        this.chartResidence.destroy();
-        this.createChartResidence();
+      if (this.chartResidence) {
+        if (!mobileView && this.chartResidence.data) {
+          this.chartResidence.destroy();
+          // this.createChartResidence();
+        }
       }
     }
   }
@@ -354,16 +356,18 @@ export class DashboardComponent implements OnInit {
       let mobileView = window.innerWidth < 950;
 
       if (mobileView) {
-        this.chartProducts.config.options.responsive = true; // Macht den Chart responsive
-        this.chartProducts.config.options.maintainAspectRatio = false; // Verhindert das Beibehalten des Seitenverhältnisses
+        this.chartProducts.config.options.responsive = true;
+        this.chartProducts.config.options.maintainAspectRatio = false;
       } else {
         this.chartProducts.config.options.responsive = false;
         this.chartProducts.config.options.maintainAspectRatio = true;
       }
 
-      if (!mobileView && this.chartProducts) {
-        this.chartProducts.destroy();
-        this.createChartProducts();
+      if (this.chartProducts) {
+        if (!mobileView && this.chartProducts.data) {
+          this.chartProducts.destroy();
+          // this.createChartProducts();
+        }
       }
     }
   }
@@ -371,106 +375,106 @@ export class DashboardComponent implements OnInit {
   /**
    * Creates the residence chart using Chart.js.
    */
-  createChartResidence() {
-    this.chartResidence = new Chart('MyChartResidence', {
-      type: 'bar', // Typ des horizontalen Balkendiagramms
+  // createChartResidence() {
+  //   this.chartResidence = new Chart('MyChartResidence', {
+  //     type: 'bar', // Typ des horizontalen Balkendiagramms
 
-      data: {
-        labels: [
-          this.topThreeCities[0],
-          this.topThreeCities[1],
-          this.topThreeCities[2],
-        ],
-        datasets: [
-          {
-            label: 'Cities',
-            data: [this.cityCounts[0], this.cityCounts[1], this.cityCounts[2]],
-            backgroundColor: [
-              'rgba(255, 99, 132, 0.4)',
-              'rgba(255, 159, 64, 0.4)',
-              'rgba(255, 205, 86, 0.4)',
-            ],
-            borderColor: [
-              'rgb(255, 99, 132, 1.0)',
-              'rgb(255, 159, 64, 1.0)',
-              'rgb(255, 205, 86, 1.0)',
-            ],
-            borderWidth: 1,
-          },
-        ],
-      },
-      options: {
-        indexAxis: 'y',
-        scales: {
-          x: {
-            beginAtZero: true,
-            ticks: {
-              color: '#fff',
-            },
-          },
-          y: {
-            ticks: {
-              color: '#fff',
-            },
-          },
-        },
-        aspectRatio: 4, // Höhe anpassen
-        plugins: {
-          legend: {
-            labels: {
-              color: '#fff',
-            },
-          },
-        },
-      },
-    });
-  }
+  //     data: {
+  //       labels: [
+  //         this.topThreeCities[0],
+  //         this.topThreeCities[1],
+  //         this.topThreeCities[2],
+  //       ],
+  //       datasets: [
+  //         {
+  //           label: 'Cities',
+  //           data: [this.cityCounts[0], this.cityCounts[1], this.cityCounts[2]],
+  //           backgroundColor: [
+  //             'rgba(255, 99, 132, 0.4)',
+  //             'rgba(255, 159, 64, 0.4)',
+  //             'rgba(255, 205, 86, 0.4)',
+  //           ],
+  //           borderColor: [
+  //             'rgb(255, 99, 132, 1.0)',
+  //             'rgb(255, 159, 64, 1.0)',
+  //             'rgb(255, 205, 86, 1.0)',
+  //           ],
+  //           borderWidth: 1,
+  //         },
+  //       ],
+  //     },
+  //     options: {
+  //       indexAxis: 'y',
+  //       scales: {
+  //         x: {
+  //           beginAtZero: true,
+  //           ticks: {
+  //             color: '#fff',
+  //           },
+  //         },
+  //         y: {
+  //           ticks: {
+  //             color: '#fff',
+  //           },
+  //         },
+  //       },
+  //       aspectRatio: 4, // Höhe anpassen
+  //       plugins: {
+  //         legend: {
+  //           labels: {
+  //             color: '#fff',
+  //           },
+  //         },
+  //       },
+  //     },
+  //   });
+  // }
 
   /**
    * Creates the products chart using Chart.js.
    */
-  createChartProducts() {
-    this.chartProducts = new Chart('MyChartProducts', {
-      type: 'doughnut',
+  // createChartProducts() {
+  //   this.chartProducts = new Chart('MyChartProducts', {
+  //     type: 'doughnut',
 
-      data: {
-        labels: [
-          this.topThreeProducts[0],
-          this.topThreeProducts[1],
-          this.topThreeProducts[2],
-        ],
-        datasets: [
-          {
-            label: 'Products',
-            data: [
-              this.productsCounts[0],
-              this.productsCounts[1],
-              this.productsCounts[2],
-            ],
-            backgroundColor: [
-              'rgba(54, 162, 235, 0.4)',
-              'rgba(255, 206, 86, 0.4)',
-              'rgba(75, 192, 192, 0.4)',
-            ],
-            borderColor: [
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)',
-            ],
-            hoverOffset: 4,
-          },
-        ],
-      },
-      options: {
-        aspectRatio: 4, // Höhe anpassen
-        plugins: {
-          legend: {
-            labels: {
-              color: '#fff',
-            },
-          },
-        },
-      },
-    });
-  }
+  //     data: {
+  //       labels: [
+  //         this.topThreeProducts[0],
+  //         this.topThreeProducts[1],
+  //         this.topThreeProducts[2],
+  //       ],
+  //       datasets: [
+  //         {
+  //           label: 'Products',
+  //           data: [
+  //             this.productsCounts[0],
+  //             this.productsCounts[1],
+  //             this.productsCounts[2],
+  //           ],
+  //           backgroundColor: [
+  //             'rgba(54, 162, 235, 0.4)',
+  //             'rgba(255, 206, 86, 0.4)',
+  //             'rgba(75, 192, 192, 0.4)',
+  //           ],
+  //           borderColor: [
+  //             'rgba(54, 162, 235, 1)',
+  //             'rgba(255, 206, 86, 1)',
+  //             'rgba(75, 192, 192, 1)',
+  //           ],
+  //           hoverOffset: 4,
+  //         },
+  //       ],
+  //     },
+  //     options: {
+  //       aspectRatio: 4, // Höhe anpassen
+  //       plugins: {
+  //         legend: {
+  //           labels: {
+  //             color: '#fff',
+  //           },
+  //         },
+  //       },
+  //     },
+  //   });
+  // }
 }
