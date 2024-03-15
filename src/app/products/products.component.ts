@@ -235,11 +235,11 @@ export class ProductsComponent implements OnInit {
 
   /**
    * Checks the screen size and adjusts the drawer mode accordingly.
-   * If the window width is less than 500 pixels, sets mobileView to true, else sets it to false.
+   * If the window width is less than 600 pixels, sets mobileView to true, else sets it to false.
    */
   checkScreenSize() {
     if (typeof window !== 'undefined') {
-      this.mobileView = window.innerWidth < 500;
+      this.mobileView = window.innerWidth < 600;
       if (this.mobileView) {
         this.mobileView = true;
       } else {

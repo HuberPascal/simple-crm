@@ -47,7 +47,7 @@ export class UserDetailComponent {
 
   ngOnInit() {
     this.checkScreenSize();
-    this.checkScreenSize400px();
+    this.checkScreenSize600px();
     // Die ID aus der URL holen
     this.route.paramMap.subscribe(async (paramMap) => {
       this.userId = paramMap.get('id');
@@ -314,16 +314,16 @@ export class UserDetailComponent {
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.checkScreenSize();
-    this.checkScreenSize400px();
+    this.checkScreenSize600px();
   }
 
   /**
    * Checks the screen size and adjusts the drawer mode accordingly.
-   * If the window width is less than 500 pixels, sets mobileView to true, else sets it to false.
+   * If the window width is less than 1100 pixels, sets mobileView to true, else sets it to false.
    */
   checkScreenSize() {
     if (typeof window !== 'undefined') {
-      this.mobileView = window.innerWidth < 1000;
+      this.mobileView = window.innerWidth < 1100;
       if (this.mobileView) {
         this.mobileView = true;
       } else {
@@ -332,9 +332,13 @@ export class UserDetailComponent {
     }
   }
 
-  checkScreenSize400px() {
+  /**
+   * Checks the screen size and adjusts the drawer mode accordingly.
+   * If the window width is less than 600 pixels, sets mobileView to true, else sets it to false.
+   */
+  checkScreenSize600px() {
     if (typeof window !== 'undefined') {
-      this.mobileViewSmall = window.innerWidth < 500;
+      this.mobileViewSmall = window.innerWidth < 600;
       if (this.mobileViewSmall) {
         this.mobileViewSmall = true;
       } else {

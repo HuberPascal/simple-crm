@@ -52,6 +52,7 @@ export class SignInComponent {
     this.authService.getUserName();
     this.SidenavComponent.loggedIn = true;
     this.SidenavComponent.checkIsDrawerOpened();
+    this.SidenavComponent.checkScreenSize();
     this.SidenavComponent.isUserLoggedIn = true;
     await this.getUserByName();
     this.router.navigate(['dashboard']);
@@ -68,6 +69,7 @@ export class SignInComponent {
       await this.authService.googleLogin();
       this.SidenavComponent.loggedIn = true;
       this.SidenavComponent.checkIsDrawerOpened();
+      this.SidenavComponent.checkScreenSize();
       this.SidenavComponent.isUserLoggedIn = true;
       await this.getUserByName();
       this.router.navigate(['dashboard']);
@@ -88,6 +90,7 @@ export class SignInComponent {
       await this.authService.guestLogin();
       this.SidenavComponent.loggedIn = true;
       this.SidenavComponent.checkIsDrawerOpened();
+      this.SidenavComponent.checkScreenSize();
       this.router.navigate(['guest/dashboard']);
       this.authService.openSnackBar('Logged in as Guest!');
     } catch (error) {

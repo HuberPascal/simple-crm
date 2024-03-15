@@ -40,12 +40,18 @@
   <table class="order-table">
     <thead>
       <tr>
-        <th>{{ mobileView ? "Product" : "Product Name" }}</th>
+        <th class="ellipsis-container">
+          <div class="ellipsis-text">
+            {{ mobileView ? "Product" : "Product Name" }}
+          </div>
+        </th>
 
-        <th>{{ mobileView ? "Price" : "Price per Unit" }}</th>
+        <th class="price-container">
+          {{ mobileView ? "Price" : "Price per Unit" }}
+        </th>
 
-        <th *ngIf="!mobileView">Type</th>
-        <th>Action</th>
+        <th *ngIf="!mobileView" class="type-container">Type</th>
+        <th class="action-container">Action</th>
       </tr>
     </thead>
     <tbody [ngClass]="{ dNone: filterNotFound }">
@@ -53,9 +59,13 @@
         *ngIf="filteredProductsInputField.length > 0; else allProductsBlock"
       >
         <tr *ngFor="let product of filteredProductsInputField">
-          <td>{{ product.productName }}</td>
-          <td>{{ product.price }} CHF</td>
-          <td>{{ product.orderType }}</td>
+          <td class="ellipsis-container">
+            <div class="ellipsis-text">{{ product.productName }}</div>
+          </td>
+          <td class="price-container">{{ product.price }} CHF</td>
+          <td *ngIf="!mobileView" class="type-container">
+            {{ product.orderType }}
+          </td>
           <td class="action-container">
             <button
               (click)="editProduct(product)"
@@ -81,9 +91,15 @@
       </ng-container>
       <ng-template #allProductsBlock>
         <tr *ngFor="let product of allProducts">
-          <td>{{ product.productName }}</td>
-          <td>{{ product.price }} CHF</td>
-          <td *ngIf="!mobileView">{{ product.orderType }}</td>
+          <td class="ellipsis-container">
+            <div class="ellipsis-text">
+              {{ product.productName }}
+            </div>
+          </td>
+          <td class="price-container">{{ product.price }} CHF</td>
+          <td *ngIf="!mobileView" class="type-container">
+            {{ product.orderType }}
+          </td>
           <td class="action-container">
             <button
               (click)="editProduct(product)"
