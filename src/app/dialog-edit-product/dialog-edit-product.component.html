@@ -6,7 +6,7 @@
     <div>
       <div>
         <div class="pt-6">
-          <mat-form-field appearance="outline" class="mr-16">
+          <mat-form-field appearance="outline" class="full-width">
             <mat-label>Product Name</mat-label>
             <input
               type="text"
@@ -17,8 +17,10 @@
               required
             />
           </mat-form-field>
+        </div>
 
-          <mat-form-field appearance="outline">
+        <div>
+          <mat-form-field appearance="outline" class="mr-16">
             <mat-label>Price per Unit</mat-label>
             <input
               type="number"
@@ -30,10 +32,8 @@
               required
             />
           </mat-form-field>
-        </div>
 
-        <div>
-          <mat-form-field appearance="outline">
+          <mat-form-field appearance="outline" class="mr-16">
             <mat-label>Type</mat-label>
             <mat-select [(ngModel)]="selectedValue" name="productType">
               <mat-option

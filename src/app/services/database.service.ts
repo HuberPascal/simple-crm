@@ -454,6 +454,12 @@ export class DatabaseService {
     }
   }
 
+  /**
+   * Asynchronously updates an order from products.
+   *
+   * @param {any | undefined} orderData - Data of the order to be updated.
+   * @param {string} orderId - ID of the order to be updated.
+   */
   async updateOrderFromProducts(orderData: any | undefined, orderId: string) {
     let docRef: any;
     this.orderId = orderId;
@@ -472,6 +478,12 @@ export class DatabaseService {
     }
   }
 
+  /**
+   * Asynchronously updates order data in Firebase from products.
+   *
+   * @param {any} docRef - Reference to the document in Firebase.
+   * @param {any | undefined} orderData - Data of the order.
+   */
   async updateOrderDataInFirebaseFromProducts(
     docRef: any,
     orderData: any | undefined
@@ -481,47 +493,96 @@ export class DatabaseService {
     });
   }
 
+  /**
+   * Asynchronously updates data in Firebase orders.
+   *
+   * @param {string} productId - ID of the product.
+   * @param {string} newProductName - New name of the product.
+   * @param {number} productPrice - New price of the product.
+   */
   async updateDataInFirebaseOrders(
     productId: string,
     newProductName: string,
     productPrise: number
   ) {
+    let productsRef: any;
     try {
-      // Produkt-ID als aktuelle Produkt-ID festlegen
-      const currentProductId = productId;
+      const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
 
-      // Referenz auf die Sammlung "guest_products" erstellen
-      const productsRef = collection(this.db, 'guest_orders');
-
-      // Eine Abfrage erstellen, um Dokumente mit der aktuellen Produkt-ID zu suchen
-      const q = query(
-        productsRef,
-        where('currentProductId', '==', currentProductId)
-      );
-
-      // Die Abfrage ausführen, um die entsprechenden Dokumente zu erhalten
-      const querySnapshot = await getDocs(q);
-
-      if (!querySnapshot.empty) {
-        // Iteriere über alle gefundenen Dokumente und aktualisiere jedes davon
-        querySnapshot.forEach(async (doc) => {
-          const docRef = doc.ref;
-
-          // Das Dokument aktualisieren, um das productName-Feld zu aktualisieren
-          await updateDoc(docRef, {
-            product: newProductName,
-            price: productPrise,
-          });
-
-          console.log(`Produkt mit der ID ${doc.id} erfolgreich aktualisiert.`);
-        });
-
-        console.log('Alle entsprechenden Produkte erfolgreich aktualisiert.');
+      if (isAnonymous) {
+        productsRef = collection(this.db, 'guest_orders');
       } else {
-        console.log('Keine Produkte mit der angegebenen Produkt-ID gefunden.');
+        productsRef = collection(this.db, 'orders');
       }
+      await this.updateDataInFirebaseOrdersFromEditProducts(
+        productId,
+        newProductName,
+        productPrise,
+        productsRef
+      );
+    } catch (error) {
+      console.error('Fehler beim Aktualisieren des Dokuments:', error);
+    }
+  }
+
+  /**
+   * Asynchronously updates data in Firebase orders from editing products.
+   *
+   * @param {string} productId - ID of the product.
+   * @param {string} newProductName - New name of the product.
+   * @param {number} productPrice - New price of the product.
+   * @param {any} productsRef - Reference to the products collection in Firebase.
+   */
+  async updateDataInFirebaseOrdersFromEditProducts(
+    productId: string,
+    newProductName: string,
+    productPrice: number,
+    productsRef: any
+  ) {
+    try {
+      const currentProductId = productId;
+      const q = this.createQIs(productsRef, currentProductId);
+      const querySnapshot = await getDocs(q);
+      await this.updateDocuments(querySnapshot, newProductName, productPrice);
     } catch (error) {
       console.error('Fehler beim Aktualisieren der Produkte:', error);
     }
+  }
+
+  /**
+   * Asynchronously updates documents based on the query snapshot.
+   *
+   * @param {any} querySnapshot - Snapshot of the query result.
+   * @param {string} newProductName - New name of the product.
+   * @param {number} productPrice - New price of the product.
+   */
+  async updateDocuments(
+    querySnapshot: any,
+    newProductName: string,
+    productPrice: number
+  ) {
+    if (!querySnapshot.empty) {
+      querySnapshot.forEach(async (doc: any) => {
+        const docRef = doc.ref;
+        await updateDoc(docRef, {
+          product: newProductName,
+          price: productPrice,
+        });
+      });
+    } else {
+    }
+  }
+
+  /**
+   * Creates a query to filter products by the current product ID.
+   *
+   * @param {any} productsRef - Reference to the products collection in Firebase.
+   * @param {string} currentProductId - Current product ID.
+   */
+  createQIs(productsRef: any, currentProductId: string) {
+    return query(
+      productsRef,
+      where('currentProductId', '==', currentProductId)
+    );
   }
 }
