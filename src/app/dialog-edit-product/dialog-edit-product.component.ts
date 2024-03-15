@@ -47,6 +47,9 @@ export class DialogEditProductComponent implements OnInit {
     this.updateProduct();
   }
 
+  /**
+   * Asynchronously updates a product in the database.
+   */
   async updateProduct() {
     const newProductName = this.product.productName;
 

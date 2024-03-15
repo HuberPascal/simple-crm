@@ -87,32 +87,54 @@ export class SidenavComponent {
   }
 
   /**
-   * Determines whether to activate the specified route segment based on the current URL.
-   * If the route segment matches the first segment of the URL, it activates the segment.
-   * If an ID follows the route segment, it deactivates the segment.
-   * @param {string} first - The route segment to check for activation.
-   * @returns {boolean} True if the route segment should be activated, otherwise false.
+   * Determines whether the specified segment should be activated based on the current URL.
+   *
+   * @param {string} segmentName - The name of the segment to check activation for.
+   * @returns {boolean} - A boolean indicating whether the segment should be activated.
    */
   shouldActivate(segmentName: string): boolean {
     const currentUrl = this.router.url;
     const segments = currentUrl.split('/');
-    if (
-      (segments[1] === 'guest' && segments[2] === segmentName) ||
-      segments[1] === segmentName
-    ) {
-      if (
-        segments.length === 3 ||
-        segments.length === 2 ||
-        segments[3].length === 0
-      ) {
-        this.isVisible = false;
-        return true; // 'active' Klasse zuweisen, wenn keine ID folgt
-      } else {
-        this.isVisible = true;
-        return false; // 'active' Klasse nicht zuweisen, wenn eine ID folgt
-      }
+
+    if (segments[1] === 'guest' && segments[2] === segmentName) {
+      return this.loggedInAsGuest(segments);
+    } else if (segments[1] === segmentName && segments[2]?.length > 0) {
+      return this.loggedInAsUser(segments);
     } else {
-      return false; // 'active' Klasse nicht zuweisen für andere Links
+      this.isVisible = false;
+      return false;
+    }
+  }
+
+  /**
+   * Handles visibility logic for a guest user.
+   *
+   * @param {string[]} segments - The segments of the current URL.
+   * @returns {boolean} - A boolean indicating whether the segment should be visible.
+   */
+  loggedInAsGuest(segments: string[]): boolean {
+    if (segments.length === 3) {
+      this.isVisible = false;
+      return true;
+    } else {
+      this.isVisible = true;
+      return false;
+    }
+  }
+
+  /**
+   * Handles visibility logic for a logged-in user.
+   *
+   * @param {string[]} segments - The segments of the current URL.
+   * @returns {boolean} - A boolean indicating whether the segment should be visible.
+   */
+  loggedInAsUser(segments: string[]): boolean {
+    if (segments.length === 3) {
+      this.isVisible = true;
+      return false;
+    } else {
+      this.isVisible = false;
+      return true;
     }
   }
 
