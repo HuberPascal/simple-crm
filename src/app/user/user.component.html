@@ -46,6 +46,10 @@
       </tr>
     </thead>
     <tbody [ngClass]="{ dNone: filterNotFound }">
+      <div *ngIf="loading" class="loading-spinner">
+        <mat-spinner></mat-spinner>
+      </div>
+
       <ng-container
         *ngIf="filteredUsersInputField.length > 0; else allUserssBlock"
       >
@@ -89,7 +93,7 @@
 </mat-card>
 
 <button
-  (click)="openDialog()"
+  (click)="openDialogAddUser()"
   class="add-user-btn"
   mat-fab
   color="primary"

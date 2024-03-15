@@ -23,6 +23,7 @@ import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
 import { UserDetailComponent } from './user-detail/user-detail.component';
 import { MatMenuModule } from '@angular/material/menu';
@@ -103,6 +104,7 @@ import { DialogSwapTaskComponent } from './dialog-swap-task/dialog-swap-task.com
     MatNativeDateModule,
     FormsModule,
     MatProgressBarModule,
+    MatProgressSpinnerModule,
     MatCardModule,
     MatMenuModule,
     MatSelectModule,

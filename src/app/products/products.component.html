@@ -55,6 +55,10 @@
       </tr>
     </thead>
     <tbody [ngClass]="{ dNone: filterNotFound }">
+      <div *ngIf="loading" class="loading-spinner">
+        <mat-spinner></mat-spinner>
+      </div>
+
       <ng-container
         *ngIf="filteredProductsInputField.length > 0; else allProductsBlock"
       >

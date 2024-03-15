@@ -1,0 +1,6 @@
+RewriteEngine On
+# Nicht vorhandene Dateien oder Verzeichnisse umleiten
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+# Umleitung aller Anfragen an die index.html
+RewriteRule ^ index.html [L]

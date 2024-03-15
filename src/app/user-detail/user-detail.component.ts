@@ -37,6 +37,7 @@ export class UserDetailComponent {
   productNameFromProducts: any;
   productNameFromOrdersArray: any[] = [];
   productNameFromProductsArray: any[] = [];
+  loading: boolean = false;
 
   constructor(
     public db: Firestore,
@@ -73,18 +74,70 @@ export class UserDetailComponent {
    * @param user The name of the collection where user data is stored.
    */
   getUser(userId: any, user: string) {
-    onSnapshot(doc(this.db, user, userId), (doc) => {
-      if (doc.exists()) {
-        const userData = doc.data();
-        if (userData['birthDate']) {
-          const userObj = this.convertTimestampToDate(userData['birthDate']);
-          userData['birthDate'] = this.formatDateBirthday(userObj);
+    this.loading = true; // Ladezustand aktivieren
+    onSnapshot(
+      doc(this.db, user, userId),
+      (doc) => {
+        if (doc.exists()) {
+          const userData = doc.data();
+          if (userData['birthDate']) {
+            const userObj = this.convertTimestampToDate(userData['birthDate']);
+            userData['birthDate'] = this.formatDateBirthday(userObj);
+          }
+          this.user = new User(userData);
+        } else {
+          console.error('Keine Daten gefunden!');
         }
-        this.user = new User(userData);
-      } else {
-        console.error('Keine Daten gefunden!');
+        this.loading = false;
+      },
+      (error) => {
+        console.error('Fehler beim Laden der User Daten:', error);
+        this.loading = false;
       }
-    });
+    );
+  }
+
+  /**
+   * Retrieves orders associated with the given user ID from Firestore.
+   * @param userId The ID of the user whose orders are to be retrieved.
+   * @param orders The name of the collection where orders are stored.
+   */
+  getOrders(userId: any, orders: string) {
+    this.loading = true; // Ladezustand aktivieren
+    const ordersRef = collection(this.db, orders);
+    const q = query(ordersRef, where('userId', '==', userId));
+
+    onSnapshot(
+      q,
+      (querySnapshot) => {
+        this.allOrders = [];
+        querySnapshot.forEach((doc) => {
+          const orderId = doc.id;
+          const orderData = doc.data();
+          orderData['orderId'] = orderId;
+          this.getOrderData(orderData);
+          this.sortOrders();
+        });
+        this.loading = false;
+      },
+      (error) => {
+        console.error('Fehler beim Abrufen der Order Daten: ', error);
+        this.loading = false;
+      }
+    );
+  }
+
+  /**
+   * Processes the retrieved order data and adds it to the list of all orders.
+   * @param orderData The data of the order to be processed and added.
+   */
+  getOrderData(orderData: any) {
+    if (orderData['orderDate']) {
+      const dateObj = this.convertTimestampToDate(orderData['orderDate']);
+      orderData['orderDate'] = this.formatDate(dateObj);
+      this.order = new Order(orderData);
+    }
+    this.allOrders.push(orderData);
   }
 
   /**
@@ -154,46 +207,6 @@ export class UserDetailComponent {
   deleteOrder(order: string) {
     const dialog = this.dialog.open(DialogDeleteOrderComponent);
     dialog.componentInstance.order = new Order(order);
-  }
-
-  /**
-   * Retrieves orders associated with the given user ID from Firestore.
-   * @param userId The ID of the user whose orders are to be retrieved.
-   * @param orders The name of the collection where orders are stored.
-   */
-  getOrders(userId: any, orders: string) {
-    const ordersRef = collection(this.db, orders);
-    const q = query(ordersRef, where('userId', '==', userId));
-
-    onSnapshot(
-      q,
-      (querySnapshot) => {
-        this.allOrders = [];
-        querySnapshot.forEach((doc) => {
-          const orderId = doc.id;
-          const orderData = doc.data();
-          orderData['orderId'] = orderId;
-          this.getOrderData(orderData);
-          this.sortOrders(); // Bestellunge der Reihe nach sortieren
-        });
-      },
-      (error) => {
-        console.error('Fehler beim Abrufen der Bestellungen: ', error);
-      }
-    );
-  }
-
-  /**
-   * Processes the retrieved order data and adds it to the list of all orders.
-   * @param orderData The data of the order to be processed and added.
-   */
-  getOrderData(orderData: any) {
-    if (orderData['orderDate']) {
-      const dateObj = this.convertTimestampToDate(orderData['orderDate']);
-      orderData['orderDate'] = this.formatDate(dateObj);
-      this.order = new Order(orderData);
-    }
-    this.allOrders.push(orderData);
   }
 
   /**

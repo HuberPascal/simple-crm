@@ -15,7 +15,7 @@ import { DatabaseService } from '../services/database.service';
 })
 export class UserComponent {
   user = new User();
-  allUsers: any[] = []; // Ihre vollständigen Benutzerdaten
+  allUsers: any[] = []; // Vollständigen Benutzerdaten
   filteredUsers: any[] = []; // Gefilterte Benutzerdaten
   selectedFilter: string = 'First Name'; // Standardmäßig nach 'First Name' filtern
   isAnonymous: boolean = false;
@@ -23,6 +23,7 @@ export class UserComponent {
   filterInputValue: any; // Eingabe vom Suchfeld
   filterNotFound: boolean = false;
   mobileView: boolean = false;
+  loading: boolean = false;
 
   constructor(
     public db: Firestore,
@@ -51,6 +52,7 @@ export class UserComponent {
    * @param {string} user - The name of the collection from which to fetch user data.
    */
   async getUserData(user: string) {
+    this.loading = true;
     try {
       const usersCollectionRef = collection(this.db, user);
       this.getUserDataOnSnapshot(usersCollectionRef);
@@ -66,26 +68,34 @@ export class UserComponent {
    * @param {any} usersCollectionRef - The reference to the collection in Firestore.
    */
   getUserDataOnSnapshot(usersCollectionRef: any) {
-    onSnapshot(usersCollectionRef, (snapshot: { docs: any[] }) => {
-      this.allUsers = snapshot.docs.map((doc) => {
-        const userData = doc.data();
+    onSnapshot(
+      usersCollectionRef,
+      (snapshot: { docs: any[] }) => {
+        this.allUsers = snapshot.docs.map((doc) => {
+          const userData = doc.data();
 
-        return {
-          id: doc.id,
-          firstName: userData['firstName'],
-          lastName: userData['lastName'],
-          email: userData['email'],
-          city: userData['city'],
-        };
-      });
-      this.filterUsers();
-    });
+          return {
+            id: doc.id,
+            firstName: userData['firstName'],
+            lastName: userData['lastName'],
+            email: userData['email'],
+            city: userData['city'],
+          };
+        });
+        this.filterUsers();
+        this.loading = false;
+      },
+      (error) => {
+        console.error('Fehler beim laden der User Daten:', error);
+        this.loading = false;
+      }
+    );
   }
 
   /**
    * Opens the dialog for adding a new user.
    */
-  openDialog() {
+  openDialogAddUser() {
     this.dialog.open(DialogAddUserComponent);
   }
 

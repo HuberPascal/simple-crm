@@ -24,6 +24,7 @@ export class ProductsComponent implements OnInit {
   filterInputValue: any; // Eingabe vom Suchfeld
   filterNotFound: boolean = false;
   mobileView: boolean = false;
+  loading: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -48,6 +49,7 @@ export class ProductsComponent implements OnInit {
    * @param {string} product - The name of the collection from which to fetch user data.
    */
   async getProductData(product: string) {
+    this.loading = true;
     try {
       const productCollectionRef = collection(this.db, product);
       this.getOProductDataSnapShot(productCollectionRef);
@@ -63,16 +65,24 @@ export class ProductsComponent implements OnInit {
    * @param {any} productCollectionRef - The reference to the collection in Firestore.
    */
   getOProductDataSnapShot(productCollectionRef: any) {
-    onSnapshot(productCollectionRef, (snapshot: { docs: any[] }) => {
-      this.allProducts = [];
-      snapshot.docs.forEach((doc) => {
-        const productData = doc.data();
-        const productId = doc.id;
-        productData['productId'] = productId;
-        this.allProducts.push(productData);
-      });
-      this.filterProducts();
-    });
+    onSnapshot(
+      productCollectionRef,
+      (snapshot: { docs: any[] }) => {
+        this.allProducts = [];
+        snapshot.docs.forEach((doc) => {
+          const productData = doc.data();
+          const productId = doc.id;
+          productData['productId'] = productId;
+          this.allProducts.push(productData);
+        });
+        this.filterProducts();
+        this.loading = false;
+      },
+      (error) => {
+        console.error('Fehler beim laden der Produkte Daten:', error);
+        this.loading = false;
+      }
+    );
   }
 
   /**
