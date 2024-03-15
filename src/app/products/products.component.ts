@@ -131,6 +131,9 @@ export class ProductsComponent implements OnInit {
       this.filteredProducts = this.allProducts.sort((a, b) =>
         a.productName.localeCompare(b.productName)
       );
+      this.filteredProductsInputField = this.allProducts.sort((a, b) =>
+        a.productName.localeCompare(b.productName)
+      );
     } else {
       this.filteredProducts = this.allProducts;
     }
@@ -142,6 +145,9 @@ export class ProductsComponent implements OnInit {
    */
   filterByPricePerUnit() {
     this.filteredProducts = this.allProducts.sort((a, b) => a.price - b.price);
+    this.filteredProductsInputField = this.allProducts.sort(
+      (a, b) => a.price - b.price
+    );
   }
 
   /**
@@ -150,6 +156,9 @@ export class ProductsComponent implements OnInit {
    */
   filterByType() {
     this.filteredProducts = this.allProducts.sort((a, b) =>
+      a.orderType.localeCompare(b.orderType)
+    );
+    this.filteredProductsInputField = this.allProducts.sort((a, b) =>
       a.orderType.localeCompare(b.orderType)
     );
   }
