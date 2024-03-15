@@ -127,6 +127,9 @@ export class UserComponent {
     this.filteredUsers = this.allUsers.sort((a, b) =>
       a.firstName.localeCompare(b.firstName)
     );
+    this.filteredUsersInputField = this.allUsers.sort((a, b) =>
+      a.firstName.localeCompare(b.firstName)
+    );
   }
 
   /**
@@ -137,6 +140,9 @@ export class UserComponent {
     this.filteredUsers = this.allUsers.sort((a, b) =>
       a.lastName.localeCompare(b.lastName)
     );
+    this.filteredUsersInputField = this.allUsers.sort((a, b) =>
+      a.lastName.localeCompare(b.lastName)
+    );
   }
 
   /**
@@ -145,6 +151,9 @@ export class UserComponent {
    */
   filterByCity() {
     this.filteredUsers = this.allUsers.sort((a, b) =>
+      a.city.localeCompare(b.city)
+    );
+    this.filteredUsersInputField = this.allUsers.sort((a, b) =>
       a.city.localeCompare(b.city)
     );
   }

@@ -21,9 +21,9 @@
 >
   <mat-icon>add</mat-icon>
 </button>
-
 <app-kanban-drag-and-drop
   *ngIf="showKanbanDragAndDropComponent"
   [allNotesfromKanban]="allNotes"
   (editNote)="onEditNote($event)"
-></app-kanban-drag-and-drop>
+>
+</app-kanban-drag-and-drop>

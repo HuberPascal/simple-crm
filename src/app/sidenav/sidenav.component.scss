@@ -45,6 +45,10 @@ mat-toolbar-row {
   height: calc(100% - 57px);
   background-color: #282953;
   color: #fff;
+
+  @media (max-height: 1200px) {
+    height: calc(100% - 100px);
+  }
 }
 
 .menu-items {
