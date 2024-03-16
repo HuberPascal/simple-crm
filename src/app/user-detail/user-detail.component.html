@@ -1,5 +1,12 @@
 <mat-card class="user-detail-header">
-  <button class="pin-right-upper-corner" mat-icon-button (click)="deleteUser()">
+  <button
+    class="pin-right-upper-corner"
+    mat-icon-button
+    aria-label="Example icon button with a delete icon"
+    matTooltip="Delete {{ user.firstName }} {{ user.lastName }}"
+    matTooltipPosition="above"
+    (click)="deleteUser()"
+  >
     <mat-icon>delete</mat-icon>
   </button>
 

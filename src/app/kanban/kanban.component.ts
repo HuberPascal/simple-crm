@@ -36,10 +36,11 @@ export class KanbanComponent implements OnInit {
 
     if (this.isAnonymous) {
       await this.getKanbanData('guest_kanban');
+      await this.getUserData('guest_users');
     } else {
       await this.getKanbanData('kanban');
+      await this.getUserData('users');
     }
-    this.getUserData();
   }
 
   /**
@@ -53,7 +54,6 @@ export class KanbanComponent implements OnInit {
     } catch (error) {
       console.error('Fehler beim laden der Kanban Daten von Firebase:', error);
     }
-    this.getUserData();
   }
 
   /**
@@ -79,19 +79,10 @@ export class KanbanComponent implements OnInit {
   }
 
   /**
-   * Opens the dialog for adding a new task.
-   */
-  openDialogAddTask() {
-    const dialog = this.dialog.open(DialogAddTaskConmponent);
-    dialog.componentInstance.user = new User(this.user.toJSON());
-    dialog.componentInstance.allUsers = this.allUsers;
-  }
-
-  /**
    * Retrieves user data from Firestore.
    */
-  async getUserData() {
-    const usersCollectionRef = collection(this.db, 'guest_users');
+  async getUserData(userData: any) {
+    const usersCollectionRef = collection(this.db, userData);
     onSnapshot(usersCollectionRef, (snapshot: { docs: any[] }) => {
       this.allUsers = snapshot.docs.map((doc) => {
         const userData = doc.data();
@@ -106,6 +97,15 @@ export class KanbanComponent implements OnInit {
       });
       this.renderKanbanDragAndDropComponent();
     });
+  }
+
+  /**
+   * Opens the dialog for adding a new task.
+   */
+  openDialogAddTask() {
+    const dialog = this.dialog.open(DialogAddTaskConmponent);
+    dialog.componentInstance.user = new User(this.user.toJSON());
+    dialog.componentInstance.allUsers = this.allUsers;
   }
 
   /**

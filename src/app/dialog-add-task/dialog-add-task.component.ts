@@ -51,6 +51,7 @@ export class DialogAddTaskConmponent implements OnInit {
       lastName: user.lastName,
       viewValue: `${user.firstName} ${user.lastName}`,
     }));
+    console.log('userName ist', this.userName);
   }
 
   /**
