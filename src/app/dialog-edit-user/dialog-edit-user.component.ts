@@ -30,8 +30,7 @@ export class DialogEditUserComponent implements OnInit {
     this.loading = true;
     try {
       const userData = this.user.toJSON();
-
-      this.database.updateUser(userData, this.userId);
+      await this.database.updateUser(userData, this.userId);
     } catch (error) {
       console.error('Fehler beim updaten des Users:', error);
     }

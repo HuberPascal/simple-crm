@@ -24,8 +24,8 @@ export class User {
   public toJSON() {
     let birthdayDateTimestamp = null;
 
-    // überprüfen ob OrderDate das richtige Format hat
-    if (this.birthDate instanceof Date) {
+    // Überprüfen, ob birthDate ein gültiges Date-Objekt ist und nicht null ist
+    if (this.birthDate instanceof Date && !isNaN(this.birthDate.getTime())) {
       birthdayDateTimestamp = firebase.firestore.Timestamp.fromDate(
         this.birthDate
       );

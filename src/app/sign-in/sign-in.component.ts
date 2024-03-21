@@ -53,7 +53,7 @@ export class SignInComponent {
     this.SidenavComponent.loggedIn = true;
     this.SidenavComponent.checkIsDrawerOpened();
     this.SidenavComponent.checkScreenSize();
-    this.SidenavComponent.isUserLoggedIn = true;
+    this.SidenavComponent.ngOnInit();
     await this.getUserByName();
     this.router.navigate(['dashboard']);
     this.authService.openSnackBarLogin('Logged in as', this.displayName);
@@ -70,7 +70,7 @@ export class SignInComponent {
       this.SidenavComponent.loggedIn = true;
       this.SidenavComponent.checkIsDrawerOpened();
       this.SidenavComponent.checkScreenSize();
-      this.SidenavComponent.isUserLoggedIn = true;
+      this.SidenavComponent.ngOnInit();
       await this.getUserByName();
       this.router.navigate(['dashboard']);
       this.authService.openSnackBarLogin('Logged in as', this.displayName);
@@ -88,7 +88,7 @@ export class SignInComponent {
     this.loading = true;
     try {
       await this.authService.guestLogin();
-      this.SidenavComponent.loggedIn = true;
+      this.SidenavComponent.ngOnInit();
       this.SidenavComponent.checkIsDrawerOpened();
       this.SidenavComponent.checkScreenSize();
       this.router.navigate(['guest/dashboard']);

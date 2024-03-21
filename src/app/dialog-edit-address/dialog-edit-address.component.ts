@@ -25,7 +25,7 @@ export class DialogEditAddressComponent {
     this.loading = true;
     try {
       const userData = this.user.toJSON();
-      await this.database.updateUser(userData, this.userId);
+      await this.database.updateUserAdress(userData, this.userId);
     } catch (error) {
       console.error('Fehler beim updaten der Adresse:', error);
     }

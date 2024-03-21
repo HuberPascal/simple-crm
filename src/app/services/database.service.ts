@@ -6,11 +6,9 @@ import {
   doc,
   deleteDoc,
   updateDoc,
-  getDoc,
   getDocs,
   where,
   query,
-  onSnapshot,
 } from 'firebase/firestore';
 import { Firestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
@@ -193,15 +191,54 @@ export class DatabaseService {
    * @param userData
    */
   async updateUserDataInFirebase(firebaseData: any, userData: any | null) {
-    await updateDoc(firebaseData, {
-      street: userData.street,
-      zipCode: userData.zipCode,
-      city: userData.city,
-      firstName: userData.firstName,
-      lastName: userData.lastName,
-      email: userData.email,
-      birthDate: userData.birthDate,
-    });
+    if (userData && userData.birthDate !== undefined) {
+      await updateDoc(firebaseData, {
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        email: userData.email,
+        birthDate: userData.birthDate,
+      });
+    }
+  }
+
+  /**
+   * Provide the user data for firebase to update the document.
+   * @param userData
+   * @param userId
+   */
+  async updateUserAdress(userData: any | null, userId: string | null) {
+    this.userId = userId;
+    let firebaseData: any;
+
+    try {
+      const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
+
+      if (isAnonymous) {
+        firebaseData = this.guestUserFirebaseData();
+      } else {
+        firebaseData = this.userFirebaseData();
+      }
+      await this.updateUserAdressDataInFirebase(firebaseData, userData);
+    } catch (error) {
+      console.error('Fehler beim updaten des Users:', error);
+    }
+  }
+
+  /**
+   * Updates the user data in firebase.
+   * @param userData
+   */
+  async updateUserAdressDataInFirebase(
+    firebaseData: any,
+    userData: any | null
+  ) {
+    if (userData && userData.birthDate !== undefined) {
+      await updateDoc(firebaseData, {
+        street: userData.street,
+        zipCode: userData.zipCode,
+        city: userData.city,
+      });
+    }
   }
 
   /**

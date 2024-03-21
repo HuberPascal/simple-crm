@@ -37,7 +37,10 @@ export class RegisterComponent {
    * Validates the entered name to ensure it contains at least 4 alphabetical characters.
    */
   validateName() {
-    const namePattern = /^[a-zA-Z]{4,}$/.test(this.name); // Mindestens 4 Buchstaben im Namen
+    const namePattern =
+      /^(?=.*[a-zA-Z\u00C0-\u017F])[a-zA-Z\u00C0-\u017F\s]{4,}$/.test(
+        this.name.trim()
+      ); // Mindestens 4 Buchstaben im Namen. Ä, Ö und Ü zulassen
     this.isNameValid = namePattern;
 
     if (this.isNameValid) {
@@ -158,6 +161,7 @@ export class RegisterComponent {
     this.userEmail = email;
     this.userPassword = password;
     this.SidenavComponent.loggedIn = true;
+    this.SidenavComponent.ngOnInit();
     this.SidenavComponent.isDrawerOpened = true;
     this.router.navigate(['/dashboard']);
   }

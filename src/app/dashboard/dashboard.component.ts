@@ -233,7 +233,7 @@ export class DashboardComponent implements OnInit {
     this.updateProductsWithLowestCount(sortedProducts);
     this.updateTopThreeProducts(sortedProducts, productCount);
     this.createChartProducts();
-    this.checkScreenSize950px();
+    this.checkScreenSize1150px();
   }
 
   /**
@@ -320,8 +320,8 @@ export class DashboardComponent implements OnInit {
    */
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
-    // this.checkScreenSize750px();
-    // this.checkScreenSize950px();
+    this.checkScreenSize750px();
+    this.checkScreenSize1150px();
   }
 
   /**
@@ -351,9 +351,9 @@ export class DashboardComponent implements OnInit {
   /**
    * Adjusts chart responsiveness based on screen size.
    */
-  checkScreenSize950px() {
+  checkScreenSize1150px() {
     if (typeof window !== 'undefined') {
-      let mobileView = window.innerWidth < 950;
+      let mobileView = window.innerWidth < 1150;
 
       if (mobileView) {
         this.chartProducts.config.options.responsive = true;
