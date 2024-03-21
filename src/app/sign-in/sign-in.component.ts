@@ -3,6 +3,7 @@ import { AuthService } from '../services/firebase-auth.service';
 import { Router } from '@angular/router';
 import { SidenavComponent } from '../sidenav/sidenav.component';
 import { MatDrawer } from '@angular/material/sidenav';
+import { DatabaseService } from '../services/database.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -25,7 +26,8 @@ export class SignInComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private SidenavComponent: SidenavComponent
+    private SidenavComponent: SidenavComponent,
+    private database: DatabaseService
   ) {}
 
   /**
@@ -49,6 +51,7 @@ export class SignInComponent {
    * Handles successful user login by updating relevant properties and navigating to the dashboard.
    */
   async handleSuccessfulLogin() {
+    await this.database.checkIsAnonymous();
     this.authService.getUserName();
     this.SidenavComponent.loggedIn = true;
     this.SidenavComponent.checkIsDrawerOpened();
@@ -67,6 +70,7 @@ export class SignInComponent {
     this.loading = true;
     try {
       await this.authService.googleLogin();
+      await this.database.checkIsAnonymous();
       this.SidenavComponent.loggedIn = true;
       this.SidenavComponent.checkIsDrawerOpened();
       this.SidenavComponent.checkScreenSize();
@@ -88,6 +92,7 @@ export class SignInComponent {
     this.loading = true;
     try {
       await this.authService.guestLogin();
+      await this.database.checkIsAnonymous();
       this.SidenavComponent.ngOnInit();
       this.SidenavComponent.checkIsDrawerOpened();
       this.SidenavComponent.checkScreenSize();

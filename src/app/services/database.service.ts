@@ -29,6 +29,13 @@ export class DatabaseService {
     private router: Router
   ) {}
 
+  /**
+   * Check if the user is anonymous.
+   */
+  async checkIsAnonymous() {
+    this.isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
+  }
+
   ////////// Save //////////
 
   /**
@@ -66,9 +73,7 @@ export class DatabaseService {
    */
   async saveOrderInFirebase(orderData: any) {
     try {
-      const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
-
-      if (isAnonymous) {
+      if (this.isAnonymous) {
         await addDoc(collection(this.db, 'guest_orders'), orderData);
       } else {
         await addDoc(collection(this.db, 'orders'), orderData);
@@ -102,9 +107,7 @@ export class DatabaseService {
    */
   async saveProductInFirebase(productData: any) {
     try {
-      const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
-
-      if (isAnonymous) {
+      if (this.isAnonymous) {
         await addDoc(collection(this.db, 'guest_products'), productData);
       } else {
         await addDoc(collection(this.db, 'products'), productData);
@@ -120,9 +123,7 @@ export class DatabaseService {
    */
   async saveUser(userData: any) {
     try {
-      const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
-
-      if (isAnonymous) {
+      if (this.isAnonymous) {
         await addDoc(collection(this.db, 'guest_users'), userData);
       } else {
         await addDoc(collection(this.db, 'users'), userData);
@@ -151,9 +152,8 @@ export class DatabaseService {
   }
 
   async saveNoteInFirebase(kanbanData: any) {
-    const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
     try {
-      if (isAnonymous) {
+      if (this.isAnonymous) {
         await addDoc(collection(this.db, 'guest_kanban'), kanbanData);
       } else {
         await addDoc(collection(this.db, 'kanban'), kanbanData);
@@ -173,9 +173,7 @@ export class DatabaseService {
     let firebaseData: any;
 
     try {
-      const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
-
-      if (isAnonymous) {
+      if (this.isAnonymous) {
         firebaseData = this.guestUserFirebaseData();
       } else {
         firebaseData = this.userFirebaseData();
@@ -211,9 +209,7 @@ export class DatabaseService {
     let firebaseData: any;
 
     try {
-      const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
-
-      if (isAnonymous) {
+      if (this.isAnonymous) {
         firebaseData = this.guestUserFirebaseData();
       } else {
         firebaseData = this.userFirebaseData();
@@ -267,9 +263,7 @@ export class DatabaseService {
     this.orderId = orderId;
 
     try {
-      const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
-
-      if (isAnonymous) {
+      if (this.isAnonymous) {
         docRef = this.guestOrderFirebaseData();
       } else {
         docRef = this.userOrderFirebaseData();
@@ -320,9 +314,7 @@ export class DatabaseService {
     this.productId = productId;
 
     try {
-      const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
-
-      if (isAnonymous) {
+      if (this.isAnonymous) {
         docRef = this.guestUserProductFirebaseData();
       } else {
         docRef = this.userProductFirebaseData();
@@ -371,9 +363,7 @@ export class DatabaseService {
     this.taskId = taskId;
 
     try {
-      const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
-
-      if (isAnonymous) {
+      if (this.isAnonymous) {
         docRef = this.getGuestTaskFirebaseData();
       } else {
         docRef = this.getTaskFirebaseData();
@@ -427,9 +417,7 @@ export class DatabaseService {
    */
   async deleteOrder(orderId: string) {
     try {
-      const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
-
-      if (isAnonymous) {
+      if (this.isAnonymous) {
         await deleteDoc(doc(this.db, 'guest_orders', `${orderId}`));
       } else {
         await deleteDoc(doc(this.db, 'orders', `${orderId}`));
@@ -445,9 +433,7 @@ export class DatabaseService {
    */
   async deleteProduct(productId: string) {
     try {
-      const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
-
-      if (isAnonymous) {
+      if (this.isAnonymous) {
         await deleteDoc(doc(this.db, 'guest_products', `${productId}`));
       } else {
         await deleteDoc(doc(this.db, 'products', `${productId}`));
@@ -463,9 +449,7 @@ export class DatabaseService {
    */
   async deleteUser(userId: string | null) {
     try {
-      const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
-
-      if (isAnonymous) {
+      if (this.isAnonymous) {
         await deleteDoc(doc(this.db, 'guest_users', `${userId}`));
         this.router.navigate(['guest/user']);
       } else {
@@ -482,9 +466,7 @@ export class DatabaseService {
    * @param productId
    */
   async deleteTask(taskId: any) {
-    const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
-
-    if (isAnonymous) {
+    if (this.isAnonymous) {
       await deleteDoc(doc(this.db, 'guest_kanban', `${taskId}`));
     } else {
       await deleteDoc(doc(this.db, 'kanban', `${taskId}`));
@@ -502,9 +484,7 @@ export class DatabaseService {
     this.orderId = orderId;
 
     try {
-      const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
-
-      if (isAnonymous) {
+      if (this.isAnonymous) {
         docRef = this.guestOrderFirebaseData();
       } else {
         docRef = this.userOrderFirebaseData();
@@ -544,9 +524,7 @@ export class DatabaseService {
   ) {
     let productsRef: any;
     try {
-      const isAnonymous = await this.authService.checkAuthLoggedInAsGuest();
-
-      if (isAnonymous) {
+      if (this.isAnonymous) {
         productsRef = collection(this.db, 'guest_orders');
       } else {
         productsRef = collection(this.db, 'orders');
